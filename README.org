@@ -1,0 +1,6 @@
+* emacs.d
+Here is my emacs config. 
+Mainly for Golang development.
+
+** License
+[[file:LICENSE][GNU General Public License v3.0]]
