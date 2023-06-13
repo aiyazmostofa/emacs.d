@@ -15,7 +15,7 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
-(set-frame-font "JetbrainsMono-14" nil t)
+(set-frame-font "Jetbrains Mono-14" nil t)
 
 ;; Setup package
 (require 'package)
