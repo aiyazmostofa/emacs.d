@@ -50,6 +50,9 @@
 ;; Setup go
 (use-package go-mode)
 
+;; Setup Dockerfile support
+(use-package dockerfile-mode)
+
 ;; Setup vertico
 (use-package vertico :config (vertico-mode 1))
 
