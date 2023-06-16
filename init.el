@@ -53,6 +53,14 @@
 ;; Setup Dockerfile support
 (use-package dockerfile-mode)
 
+;; Setup yaml support
+(use-package yaml-mode
+  :init
+  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+  (add-hook 'yaml-mode-hook
+            '(lambda ()
+               (define-key yaml-mode-map "\C-m" 'newline-and-indent))))
+
 ;; Setup vertico
 (use-package vertico :config (vertico-mode 1))
 
@@ -85,6 +93,10 @@
 (use-package tree-sitter-langs :init (require 'tree-sitter-langs))
 (add-hook 'go-mode-hook #'tree-sitter-mode)
 (add-hook 'go-mode-hook #'tree-sitter-hl-mode)
+
+;; Setup tramp
+(require 'tramp)
+(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 
 ;; Setup general
 (use-package general
