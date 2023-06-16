@@ -92,10 +92,6 @@
   (setq general-override-states '(normal))
   (require 'keybindings))
 
-;; Setup powerline
-(require 'powerline)
-(powerline-default-theme)
-
 ;; Set custom file
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
