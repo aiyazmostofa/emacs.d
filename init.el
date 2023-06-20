@@ -74,7 +74,12 @@
   (:map corfu-map
         ([tab] . corfu-next)
         ([backtab] . corfu-previous))
-  :hook ((go-mode . corfu-mode)))
+  :hook ((go-mode . corfu-mode))
+  :init
+  (setq-local corfu-auto t
+              corfu-auto-delay 0
+              corfu-auto-prefix 0
+              completion-styles '(basic)))
 
 ;; Setup eglot
 (use-package eglot :init (add-hook 'go-mode-hook 'eglot-ensure))
