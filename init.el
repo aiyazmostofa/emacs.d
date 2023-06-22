@@ -86,7 +86,7 @@
          (js-mode . corfu-mode)
          (java-mode . corfu-mode))
   :init
-  (setq-local corfu-auto t
+  (setq corfu-auto t
               corfu-auto-delay 0
               corfu-auto-prefix 0
               completion-styles '(basic)))
