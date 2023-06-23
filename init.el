@@ -84,12 +84,7 @@
          (html-mode . corfu-mode)
          (css-mode . corfu-mode)
          (js-mode . corfu-mode)
-         (java-mode . corfu-mode))
-  :init
-  (setq corfu-auto t
-              corfu-auto-delay 0
-              corfu-auto-prefix 0
-              completion-styles '(basic)))
+         (java-mode . corfu-mode)))
 
 ;; Setup eglot
 (use-package eglot :init
