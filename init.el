@@ -61,6 +61,9 @@
             '(lambda ()
                (define-key yaml-mode-map "\C-m" 'newline-and-indent))))
 
+;; Setup vue support
+(use-package vue-mode)
+
 ;; Setup vertico
 (use-package vertico :config (vertico-mode 1))
 
@@ -70,6 +73,7 @@
   (add-hook 'html-mode-hook #'yas-minor-mode)
   (add-hook 'css-mode-hook #'yas-minor-mode)
   (add-hook 'js-mode-hook #'yas-minor-mode)
+  (add-hook 'vue-mode-hook #'yas-minor-mode)
   (add-hook 'java-mode-hook #'yas-minor-mode))
 
 ;; Setup corfu
@@ -83,6 +87,7 @@
          (html-mode . corfu-mode)
          (css-mode . corfu-mode)
          (js-mode . corfu-mode)
+         (vue-mode . corfu-mode)
          (java-mode . corfu-mode)))
 
 ;; Setup eglot
@@ -91,6 +96,7 @@
   (add-hook 'html-mode-hook 'eglot-ensure)
   (add-hook 'css-mode-hook 'eglot-ensure)
   (add-hook 'js-mode-hook 'eglot-ensure)
+  (add-hook 'vue-mode-hook 'eglot-ensure)
   (add-hook 'java-mode-hook 'eglot-ensure))
 
 ;; If you want java working
@@ -106,6 +112,7 @@
   (add-hook 'html-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'css-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'js-mode-hook 'rainbow-delimiters-mode)
+  (add-hook 'vue-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'java-mode-hook 'rainbow-delimiters-mode))
 
 ;; Setup tree sitter
