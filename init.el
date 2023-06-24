@@ -16,7 +16,6 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (set-frame-font "Jetbrains Mono-14" nil t)
-(set-buffer-file-coding-system 'unix)
 
 ;; Setup package
 (require 'package)
