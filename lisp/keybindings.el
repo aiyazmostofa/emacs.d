@@ -28,11 +28,10 @@
  "wd" 'delete-window
 
  "ca" 'eglot-code-actions
- "cb" 'code-build
+ "cc" 'eglot
  "cd" 'eglot-find-implementation
  "cf" 'eglot-format
- "cr" 'eglot-rename
- "ct" 'code-test)
+ "cr" 'eglot-rename)
 
 (provide 'keybindings)
 ;;; keybindings.el ends here
