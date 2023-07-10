@@ -61,20 +61,12 @@
             '(lambda ()
                (define-key yaml-mode-map "\C-m" 'newline-and-indent))))
 
-;; Setup vue support
-(use-package vue-mode)
-
 ;; Setup vertico
 (use-package vertico :config (vertico-mode 1))
 
 ;; Setup yasnippet
 (use-package yasnippet :init
-  (add-hook 'go-mode-hook #'yas-minor-mode)
-  (add-hook 'html-mode-hook #'yas-minor-mode)
-  (add-hook 'css-mode-hook #'yas-minor-mode)
-  (add-hook 'js-mode-hook #'yas-minor-mode)
-  (add-hook 'vue-mode-hook #'yas-minor-mode)
-  (add-hook 'java-mode-hook #'yas-minor-mode))
+  (add-hook 'go-mode-hook #'yas-minor-mode))
 
 ;; Setup corfu
 (use-package corfu
@@ -83,52 +75,23 @@
   (:map corfu-map
         ([tab] . corfu-next)
         ([backtab] . corfu-previous))
-  :hook ((go-mode . corfu-mode)
-         (html-mode . corfu-mode)
-         (css-mode . corfu-mode)
-         (js-mode . corfu-mode)
-         (vue-mode . corfu-mode)
-         (java-mode . corfu-mode)))
+  :hook ((go-mode . corfu-mode)))
 
 ;; Setup eglot
 (use-package eglot :init
-  (add-hook 'go-mode-hook 'eglot-ensure)
-  (add-hook 'html-mode-hook 'eglot-ensure)
-  (add-hook 'css-mode-hook 'eglot-ensure)
-  (add-hook 'js-mode-hook 'eglot-ensure)
-  (add-hook 'vue-mode-hook 'eglot-ensure)
-  (add-hook 'java-mode-hook 'eglot-ensure))
-
-;; If you want java working
-(cl-defmethod eglot-execute-command
-  (_server (_cmd (eql java.apply.workspaceEdit)) arguments)
-  "Eclipse JDT breaks spec and replies with edits as arguments."
-  (mapc #'eglot--apply-workspace-edit arguments))
+  (add-hook 'go-mode-hook 'eglot-ensure))
 
 ;; Setup rainbow delimiters
 (use-package rainbow-delimiters
   :init
-  (add-hook 'go-mode-hook 'rainbow-delimiters-mode)
-  (add-hook 'html-mode-hook 'rainbow-delimiters-mode)
-  (add-hook 'css-mode-hook 'rainbow-delimiters-mode)
-  (add-hook 'js-mode-hook 'rainbow-delimiters-mode)
-  (add-hook 'vue-mode-hook 'rainbow-delimiters-mode)
-  (add-hook 'java-mode-hook 'rainbow-delimiters-mode))
+  (add-hook 'go-mode-hook 'rainbow-delimiters-mode))
 
 ;; Setup tree sitter
 (use-package tree-sitter :init (require 'tree-sitter))
 (use-package tree-sitter-langs :init
   (require 'tree-sitter-langs)
   (add-hook 'go-mode-hook #'tree-sitter-mode)
-  (add-hook 'go-mode-hook #'tree-sitter-hl-mode)
-  (add-hook 'java-mode-hook #'tree-sitter-mode)
-  (add-hook 'java-mode-hook #'tree-sitter-hl-mode)
-  (add-hook 'html-mode-hook #'tree-sitter-mode)
-  (add-hook 'html-mode-hook #'tree-sitter-hl-mode)
-  (add-hook 'css-mode-hook #'tree-sitter-mode)
-  (add-hook 'css-mode-hook #'tree-sitter-hl-mode)
-  (add-hook 'js-mode-hook #'tree-sitter-mode)
-  (add-hook 'js-mode-hook #'tree-sitter-hl-mode))
+  (add-hook 'go-mode-hook #'tree-sitter-hl-mode))
 
 ;; Setup tramp
 (require 'tramp)
