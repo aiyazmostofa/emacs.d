@@ -89,11 +89,11 @@
 ;; Setup tree sitter
 (use-package tree-sitter
   :init (require 'tree-sitter)
-  :hook ((go-mode c-mode) . #'tree-sitter-mode))
+  :hook (go-mode . #'tree-sitter-mode))
 
 (use-package tree-sitter-langs
   :init (require 'tree-sitter-langs)
-  :hook ((go-mode c-mode) . #'tree-sitter-hl-mode))
+  :hook (go-mode . #'tree-sitter-hl-mode))
 
 ;; Setup tramp
 (require 'tramp)
