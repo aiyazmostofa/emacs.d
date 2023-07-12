@@ -75,23 +75,25 @@
   (:map corfu-map
         ([tab] . corfu-next)
         ([backtab] . corfu-previous))
-  :hook ((go-mode . corfu-mode)))
+  :hook ((go-mode c-mode) . corfu-mode))
 
 ;; Setup eglot
-(use-package eglot :init
-  (add-hook 'go-mode-hook 'eglot-ensure))
+(use-package eglot
+  :config (add-to-list 'eglot-server-programs '((c++-mode c-mode) "ccls"))
+  :hook ((go-mode c-mode) . eglot-ensure))
 
 ;; Setup rainbow delimiters
 (use-package rainbow-delimiters
-  :init
-  (add-hook 'go-mode-hook 'rainbow-delimiters-mode))
+  :hook ((go-mode c-mode) . rainbow-delimiters-mode))
 
 ;; Setup tree sitter
-(use-package tree-sitter :init (require 'tree-sitter))
-(use-package tree-sitter-langs :init
-  (require 'tree-sitter-langs)
-  (add-hook 'go-mode-hook #'tree-sitter-mode)
-  (add-hook 'go-mode-hook #'tree-sitter-hl-mode))
+(use-package tree-sitter
+  :init (require 'tree-sitter)
+  :hook ((go-mode c-mode) . #'tree-sitter-mode))
+
+(use-package tree-sitter-langs
+  :init (require 'tree-sitter-langs)
+  :hook ((go-mode c-mode) . #'tree-sitter-hl-mode))
 
 ;; Setup tramp
 (require 'tramp)
