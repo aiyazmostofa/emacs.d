@@ -12,9 +12,9 @@ public class Main {
     Katti in;
     PrintWriter out;
 
-    Main(InputStream input, OutputStream output) {
-        in = new Katti(input);
-        out = new PrintWriter(output);
+    Main(InputStream is, OutputStream os) {
+        in = new Katti(is);
+        out = new PrintWriter(os);
     }
 
     public static void main(String[] args) throws IOException {
