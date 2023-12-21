@@ -15,7 +15,8 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
-(set-frame-font "Jetbrains Mono-14" nil t)
+(set-frame-font "Jetbrains Mono-16" nil t)
+(add-to-list 'exec-path (concat user-emacs-directory "jdtls/bin"))
 
 ;; Setup package
 (require 'package)
@@ -34,6 +35,12 @@
 ;; Setup theme
 (use-package doom-themes :config (load-theme 'doom-gruvbox t))
 
+;; Setup go-mode
+(use-package go-mode)
+
+;; Setup dart-mode
+(use-package dart-mode)
+
 ;; Setup evil
 (use-package undo-fu)
 (use-package evil
@@ -47,27 +54,19 @@
         (?\{ . ?\})))
 (electric-pair-mode 1)
 
-;; Setup go
-(use-package go-mode)
-
-;; Setup Dockerfile support
-(use-package dockerfile-mode)
-
-;; Setup yaml support
-(use-package yaml-mode
-  :init
-  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
-  (add-hook 'yaml-mode-hook
-            '(lambda ()
-               (define-key yaml-mode-map "\C-m" 'newline-and-indent))))
-
 ;; Setup vertico
 (use-package vertico :config (vertico-mode 1))
 
 ;; Setup yasnippet
 (use-package yasnippet :init
+  (add-hook 'java-mode-hook #'yas-minor-mode)
   (add-hook 'go-mode-hook #'yas-minor-mode)
-  (add-hook 'c-mode-hook #'yas-minor-mode))
+  (add-hook 'emacs-lisp-mode-hook #'yas-minor-mode)
+  (add-hook 'html-mode-hook #'yas-minor-mode)
+  (add-hook 'dart-mode-hook #'yas-minor-mode)
+  (add-hook 'js-mode-hook #'yas-minor-mode)
+  (add-hook 'css-mode-hook #'yas-minor-mode)
+  (add-hook 'python-mode-hook #'yas-minor-mode))
 
 ;; Setup corfu
 (use-package corfu
@@ -77,35 +76,65 @@
         ([tab] . corfu-next)
         ([backtab] . corfu-previous))
   :hook
+  (java-mode . corfu-mode)
   (go-mode . corfu-mode)
-  (c-mode . corfu-mode))
+  (html-mode . corfu-mode)
+  (dart-mode . corfu-mode)
+  (css-mode . corfu-mode)
+  (js-mode . corfu-mode)
+  (emacs-lisp-mode . corfu-mode)
+  (python-mode . corfu-mode))
 
 ;; Setup eglot
 (use-package eglot
   :hook
+  (java-mode . eglot-ensure)
   (go-mode . eglot-ensure)
-  (c-mode . eglot-ensure))
+  (html-mode . eglot-ensure)
+  (dart-mode . eglot-ensure)
+  (css-mode . eglot-ensure)
+  (js-mode . eglot-ensure)
+  (python-mode . eglot-ensure))
 
 ;; Setup rainbow delimiters
 (use-package rainbow-delimiters
   :hook
+  (java-mode . rainbow-delimiters-mode)
   (go-mode . rainbow-delimiters-mode)
-  (c-mode . rainbow-delimiters-mode))
+  (html-mode . rainbow-delimiters-mode)
+  (dart-mode . rainbow-delimiters-mode)
+  (css-mode . rainbow-delimiters-mode)
+  (js-mode . rainbow-delimiters-mode)
+  (emacs-lisp-mode . rainbow-delimiters-mode)
+  (python-mode . rainbow-delimiters-mode))
 
 ;; Setup tree sitter
 (use-package tree-sitter
   :init
   (require 'tree-sitter)
-  (add-hook 'go-mode-hook #'tree-sitter-mode))
+  (add-hook 'java-mode-hook #'tree-sitter-mode)
+  (add-hook 'go-mode-hook #'tree-sitter-mode)
+  (add-hook 'js-mode-hook #'tree-sitter-mode)
+  (add-hook 'python-mode-hook #'tree-sitter-mode))
 
 (use-package tree-sitter-langs
   :init
   (require 'tree-sitter-langs)
-  (add-hook 'go-mode-hook #'tree-sitter-hl-mode))
+  (add-hook 'java-mode-hook #'tree-sitter-hl-mode)
+  (add-hook 'go-mode-hook #'tree-sitter-hl-mode)
+  (add-hook 'js-mode-hook #'tree-sitter-hl-mode)
+  (add-hook 'python-mode-hook #'tree-sitter-hl-mode))
 
-;; Setup tramp
-(require 'tramp)
-(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+(org-babel-do-load-languages
+ 'org-babel-load-languages '((gnuplot . t)))
+(defun my-org-confirm-babel-evaluate (lang body)
+  (not (member lang '("gnuplot"))))
+(setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+
+;; Setup CP Enjoyer
+(use-package web-server)
+(require 'cp)
+(setenv "CP_ENJOYER" "1")
 
 ;; Setup general
 (use-package general
