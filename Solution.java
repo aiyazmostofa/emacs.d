@@ -3,36 +3,27 @@ import java.io.*;
 import java.math.*;
 
 // %s
-public class Main {
+public class Solution {
     void run() {
     }
 
-    static String IN = "%s";
-    static String OUT = "%s";
-    Katti in;
+    CP.Reader in;
     PrintWriter out;
 
-    Main(InputStream is, OutputStream os) {
-        in = new Katti(is);
-        out = new PrintWriter(os);
+    public static void main(String[] args) throws Exception {
+        CP.exec();
     }
+}
 
-    public static void main(String[] args) throws IOException {
-        Main main = new Main(
-                IN.length() == 0 || System.getenv("CP_ENJOYER") != null ? System.in
-                        : new FileInputStream(IN),
-                OUT.length() == 0 || System.getenv("CP_ENJOYER") != null ? System.out
-                        : new FileOutputStream(OUT));
-        main.run();
-        main.in.br.close();
-        main.out.close();
-    }
+class CP {
+    static String IN = "%s";
+    static String OUT = "%s";
 
-    class Katti {
+    static class Reader {
         BufferedReader br;
         StringTokenizer st;
 
-        Katti(InputStream is) {
+        Reader(InputStream is) {
             br = new BufferedReader(new InputStreamReader(is));
         }
 
@@ -57,5 +48,16 @@ public class Main {
         double nextDouble() {
             return Double.parseDouble(next());
         }
+    }
+
+    static void exec() throws Exception {
+        Solution s = new Solution();
+        s.in = new CP.Reader(IN.length() == 0 || System.getenv("CP_ENJOYER") != null ? System.in
+                : new FileInputStream(IN));
+        s.out = new PrintWriter(OUT.length() == 0 || System.getenv("CP_ENJOYER") != null ? System.out
+                : new FileOutputStream(OUT));
+        s.run();
+        s.in.br.close();
+        s.out.close();
     }
 }

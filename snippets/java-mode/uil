@@ -9,11 +9,12 @@ import java.math.*;
 import static java.lang.System.out;
 
 public class `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` {
-    void run(Scanner in) {
-         $0
+    void run() {
+        Scanner in = new Scanner(System.in);
+        $0
     }
 
-    public static void main(String[] args) throws Exception {
-        new `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`().run(new Scanner(new File("`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`.dat")));
+    public static void main(String[] args) {
+        new `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`().run();
     }
 }
