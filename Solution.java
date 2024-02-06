@@ -55,7 +55,7 @@ class CP {
         s.in = new CP.Reader(IN.length() == 0 || System.getenv("CP_ENJOYER") != null ? System.in
                 : new FileInputStream(IN));
         s.out = new PrintWriter(OUT.length() == 0 || System.getenv("CP_ENJOYER") != null ? System.out
-                : new FileOutputStream(OUT));
+                : new FileOutputStream(OUT), System.getenv("CP_ENJOYER") != null);
         s.run();
         s.in.br.close();
         s.out.close();
