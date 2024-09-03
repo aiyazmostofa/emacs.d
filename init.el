@@ -70,16 +70,21 @@
  :bind
  (:map corfu-map ([tab] . corfu-next) ([backtab] . corfu-previous))
  :hook
- ((c++-mode go-mode java-mode emacs-lisp-mode) . corfu-mode))
+ ((c++-mode go-mode java-mode emacs-lisp-mode latex-mode)
+  .
+  corfu-mode))
 
 ;; Setup eglot
-(use-package eglot :hook ((go-mode java-mode c++-mode) . eglot-ensure))
+(use-package
+ eglot
+ :init (setq eglot-autoshutdown t)
+ :hook ((go-mode java-mode c++-mode latex-mode) . eglot-ensure))
 
 ;; Setup rainbow delimiters
 (use-package
  rainbow-delimiters
  :hook
- ((emacs-lisp-mode go-mode java-mode c++-mode)
+ ((emacs-lisp-mode go-mode java-mode c++-mode latex-mode)
   .
   rainbow-delimiters-mode))
 
@@ -104,6 +109,19 @@
  :init
  (setq general-override-states '(normal))
  (require 'keybindings))
+
+;; Add latex-hook
+(add-hook
+ 'after-save-hook
+ (lambda ()
+   (interactive)
+   (when (and (eq major-mode 'latex-mode) (file-exists-p "build.sh"))
+     (setq build-output
+           (shell-command-to-string
+            (format "bash build.sh %s" (buffer-file-name))))
+     (with-temp-file "log.txt"
+       (insert build-output))
+     (message "Build output in log.txt!"))))
 
 ;; Set custom file
 (setq custom-file "~/.emacs.d/custom.el")
