@@ -5,7 +5,8 @@
 (setq display-line-numbers-type 'relative)
 (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
 (add-to-list 'load-path "~/.emacs.d/lisp/")
-(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 2)
 (set-frame-font "Jetbrains Mono-14" nil t)
 
 ;; Setup package
@@ -73,6 +74,10 @@
  ((c++-mode go-mode java-mode emacs-lisp-mode latex-mode)
   .
   corfu-mode))
+(cl-defmethod eglot-execute-command
+    (_server (_cmd (eql java.apply.workspaceEdit)) arguments)
+    "Eclipse JDT breaks spec and replies with edits as arguments."
+    (mapc #'eglot--apply-workspace-edit arguments))
 
 ;; Setup eglot
 (use-package
@@ -98,6 +103,9 @@
  tree-sitter-langs
  :init (require 'tree-sitter-langs)
  :hook ((go-mode java-mode c++-mode) . tree-sitter-hl-mode))
+
+;; Setup Markdown
+(use-package markdown-mode)
 
 ;; Setup CP
 (use-package web-server)
