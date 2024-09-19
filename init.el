@@ -7,7 +7,8 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
-(set-frame-font "Jetbrains Mono-14" nil t)
+(setq-default c-basic-offset 2)
+(set-frame-font "Jetbrains Mono-12" nil t)
 
 ;; Setup package
 (require 'package)
@@ -41,6 +42,26 @@
 ;; Setup go-mode
 (use-package go-mode)
 
+;; Setup web-mode
+(use-package
+ web-mode
+ :init
+ (setq web-mode-markup-indent-offset 2)
+ (setq web-mode-css-indent-offset 2)
+ (setq web-mode-code-indent-offset 2)
+ (setq web-mode-attr-indent-offset 2)
+ (setq web-mode-attr-value-indent-offset 2)
+ (setq web-mode-indentless-elements 2)
+ (setq web-mode-markup-indent-offset 2)
+ (setq web-mode-sql-indent-offset 2)
+ (setq web-mode-style-padding 2)
+ (setq web-mode-script-padding 2)
+ (setq web-mode-block-padding 2))
+;; Astro mode
+(define-derived-mode astro-mode web-mode "astro")
+(setq auto-mode-alist
+      (append '((".*\\.astro\\'" . astro-mode)) auto-mode-alist))
+
 ;; Setup vertico
 (use-package
  orderless
@@ -71,19 +92,31 @@
  :bind
  (:map corfu-map ([tab] . corfu-next) ([backtab] . corfu-previous))
  :hook
- ((c++-mode go-mode java-mode emacs-lisp-mode latex-mode)
-  .
-  corfu-mode))
+ ((c++-mode go-mode java-mode emacs-lisp-mode latex-mode astro-mode)
+  . corfu-mode))
+
+
+;; Java fix
 (cl-defmethod eglot-execute-command
     (_server (_cmd (eql java.apply.workspaceEdit)) arguments)
-    "Eclipse JDT breaks spec and replies with edits as arguments."
-    (mapc #'eglot--apply-workspace-edit arguments))
+  "Eclipse JDT breaks spec and replies with edits as arguments."
+  (mapc #'eglot--apply-workspace-edit arguments))
 
 ;; Setup eglot
 (use-package
  eglot
  :init (setq eglot-autoshutdown t)
- :hook ((go-mode java-mode c++-mode latex-mode) . eglot-ensure))
+ :config
+ (add-to-list
+  'eglot-server-programs
+  '(astro-mode
+    .
+    ("astro-ls"
+     "--stdio"
+     :initializationOptions
+     (:typescript (:tsdk "./node_modules/typescript/lib")))))
+ :hook
+ ((go-mode java-mode c++-mode latex-mode astro-mode) . eglot-ensure))
 
 ;; Setup rainbow delimiters
 (use-package
