@@ -13,11 +13,11 @@ rm compile.log
 for i in *.in; do
     [ -f "$i" ] || break
     cp $i $PREFIX.in
-    timeout 5 ./a.out
     echo "* $i"
     echo "#+BEGIN_SRC"
-    cat $PREFIX.out
+    timeout 5 ./a.out < $PREFIX.in
+    [ -f "$PREFIX.out" ] && cat "$PREFIX.out"
     echo "#+END_SRC"
-    rm $PREFIX.in $PREFIX.out
+    rm -f $PREFIX.in $PREFIX.out
 done
 rm a.out

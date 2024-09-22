@@ -5,4 +5,6 @@
 using namespace std;
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
+  // freopen("puthere.in", "r", stdin);
+  // freopen("puthere.out", "w", stdout);
 }
