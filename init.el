@@ -7,9 +7,6 @@
 (global-display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
 (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 2)
-(setq-default c-basic-offset 2)
 (set-frame-font "Jetbrains Mono-12" nil t)
 
 ;; Setup package
@@ -40,25 +37,15 @@
 ;; Setup electric-pairs
 (setq electric-pair-pairs '((?\" . ?\") (?\{ . ?\})))
 (electric-pair-mode 1)
-
 ;; Setup go-mode
 (use-package go-mode)
 
+;; Setup Markdown
+(use-package markdown-mode)
+
 ;; Setup web-mode
-(use-package
- web-mode
- :init
- (setq web-mode-markup-indent-offset 2)
- (setq web-mode-css-indent-offset 2)
- (setq web-mode-code-indent-offset 2)
- (setq web-mode-attr-indent-offset 2)
- (setq web-mode-attr-value-indent-offset 2)
- (setq web-mode-indentless-elements 2)
- (setq web-mode-markup-indent-offset 2)
- (setq web-mode-sql-indent-offset 2)
- (setq web-mode-style-padding 2)
- (setq web-mode-script-padding 2)
- (setq web-mode-block-padding 2))
+(use-package web-mode)
+
 ;; Astro mode
 (define-derived-mode astro-mode web-mode "astro")
 (setq auto-mode-alist
@@ -140,9 +127,6 @@
  :init (require 'tree-sitter-langs)
  :hook
  ((go-mode java-mode c++-mode c-mode) . tree-sitter-hl-mode))
-
-;; Setup Markdown
-(use-package markdown-mode)
 
 ;; Setup general
 (use-package
