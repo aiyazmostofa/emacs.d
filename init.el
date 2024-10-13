@@ -1,10 +1,12 @@
+(setq custom-file "~/.emacs.d/custom.el")
+(when (file-exists-p custom-file)
+  (load custom-file))
 (setq auto-save-default nil)
 (setq make-backup-files nil)
 (set-default 'truncate-lines t)
 (global-display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
 (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
-(add-to-list 'load-path "~/.emacs.d/lisp/")
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
 (setq-default c-basic-offset 2)
@@ -92,7 +94,8 @@
  :bind
  (:map corfu-map ([tab] . corfu-next) ([backtab] . corfu-previous))
  :hook
- ((c++-mode go-mode java-mode emacs-lisp-mode latex-mode astro-mode)
+ ((c++-mode
+   c-mode go-mode java-mode emacs-lisp-mode latex-mode astro-mode)
   . corfu-mode))
 
 
@@ -116,55 +119,80 @@
      :initializationOptions
      (:typescript (:tsdk "./node_modules/typescript/lib")))))
  :hook
- ((go-mode java-mode c++-mode latex-mode astro-mode) . eglot-ensure))
+ ((go-mode java-mode c++-mode c-mode latex-mode astro-mode)
+  . eglot-ensure))
 
 ;; Setup rainbow delimiters
 (use-package
  rainbow-delimiters
  :hook
- ((emacs-lisp-mode go-mode java-mode c++-mode latex-mode)
-  .
-  rainbow-delimiters-mode))
+ ((emacs-lisp-mode go-mode java-mode c++-mode c-mode latex-mode)
+  . rainbow-delimiters-mode))
 
 ;; Setup tree sitter
 (use-package
  tree-sitter
  :init (require 'tree-sitter)
- :hook ((go-mode java-mode c++-mode) . tree-sitter-mode))
+ :hook ((go-mode java-mode c++-mode c-mode) . tree-sitter-mode))
 
 (use-package
  tree-sitter-langs
  :init (require 'tree-sitter-langs)
- :hook ((go-mode java-mode c++-mode) . tree-sitter-hl-mode))
+ :hook
+ ((go-mode java-mode c++-mode c-mode) . tree-sitter-hl-mode))
 
 ;; Setup Markdown
 (use-package markdown-mode)
 
-;; Setup CP
-(use-package web-server)
-(require 'cp)
-
 ;; Setup general
 (use-package
  general
- :init
- (setq general-override-states '(normal))
- (require 'keybindings))
-
-;; Add latex-hook
-(add-hook
- 'after-save-hook
- (lambda ()
-   (interactive)
-   (when (and (eq major-mode 'latex-mode) (file-exists-p "build.sh"))
-     (setq build-output
-           (shell-command-to-string
-            (format "bash build.sh %s" (buffer-file-name))))
-     (with-temp-file "log.txt"
-       (insert build-output))
-     (message "Build output in log.txt!"))))
-
-;; Set custom file
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
-(message "Startup finished.")
+ :init (setq general-override-states 'normal)
+ :config (general-create-definer leader :prefix "SPC")
+ (leader
+  :states 'normal
+  :keymaps
+  'override
+  "SPC"
+  'execute-extended-command
+  "eq"
+  'kill-emacs
+  "fs"
+  'save-buffer
+  "ff"
+  'find-file
+  "bs"
+  'switch-to-buffer
+  "bk"
+  'kill-current-buffer
+  "be"
+  'eval-buffer
+  "wh"
+  (lambda ()
+    (interactive)
+    (split-window-horizontally)
+    (other-window 1))
+  "wv"
+  (lambda ()
+    (interactive)
+    (split-window-vertically)
+    (other-window 1))
+  "wo"
+  'other-window
+  "wd"
+  (lambda ()
+    (interactive)
+    (if (eq (length (get-buffer-window-list)) 1)
+        (kill-buffer-and-window)
+      (delete-window)))
+  "ca"
+  'eglot-code-actions
+  "cf"
+  'eglot-format
+  "cr"
+  'eglot-rename
+  "jk"
+  (lambda ()
+    (interactive)
+    (if (file-exists-p "cmd.el")
+        (load-file "cmd.el")))))
