@@ -12,7 +12,7 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (when (find-font (font-spec :name "Jetbrains Mono"))
-  (set-frame-font "Jetbrains Mono-12"))
+  (set-frame-font "Jetbrains Mono-12" nil t))
 
 ;; Set scratch to org-mode, along with home page
 (setq inhibit-splash-screen t)
@@ -67,8 +67,7 @@
           (evil-normal-state-p)
           (not isearch-mode)
           cmd))))
-
-(global-set-key (kbd "C-SPC") 'execute-extended-command)
+(evil-global-set-key 'normal (kbd "C-SPC") 'execute-extended-command)
 (global-set-key
  (kbd "C-c c")
  (lambda ()
