@@ -1,182 +1,109 @@
+;; Dispose of custom settings in custom-file
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
   (load custom-file))
+
+;; Stop the emacs save/backup shit
 (setq auto-save-default nil)
 (setq make-backup-files nil)
+
+;; Cleanup the look
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(when (find-font (font-spec :name "Jetbrains Mono"))
+  (set-frame-font "Jetbrains Mono-12"))
+
+;; Set scratch to org-mode, along with home page
+(setq inhibit-splash-screen t)
+(setq initial-scratch-message "")
+(setq initial-major-mode 'org-mode)
+
+;; Set line settings
 (set-default 'truncate-lines t)
 (global-display-line-numbers-mode)
-(setq display-line-numbers-type 'relative)
-(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
-(set-frame-font "Jetbrains Mono-12" nil t)
 
-;; Setup package
+;; Make escape into quit to make life easier
+(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+
+;; Setup package management
 (require 'package)
-(setq package-archives
-      '(("melpa" . "https://melpa.org/packages/")
-        ("gnu" . "https://elpa.gnu.org/packages/")))
+(add-to-list
+ 'package-archives '("melpa" . "https://melpa.org/packages/")
+ t)
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
-
-;; Setup use-package
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
 (require 'use-package)
-(setq use-package-always-ensure t)
 
 ;; Setup theme
-(use-package doom-themes :config (load-theme 'doom-gruvbox t))
+(use-package
+ ef-themes
+ :ensure t
+ :config (load-theme 'ef-day :no-confirm))
 
-;; Setup evil
-(use-package undo-fu)
+;; Setup rainbow-delimiters
+(use-package
+ rainbow-delimiters
+ :ensure t
+ :hook (prog-mode . rainbow-delimiters-mode))
+
+;; Setup evil-mode
+(use-package undo-fu :ensure t)
 (use-package
  evil
- :config (evil-mode 1)
- :init (setq evil-undo-system 'undo-fu))
+ :ensure t
+ :init (setq evil-undo-system 'undo-fu)
+ :config (evil-mode 1))
 
-;; Setup electric-pairs
+;; Special evil-mode space -> ctrl binding
+(define-key
+ key-translation-map " "
+ '(menu-item
+   "" event-apply-control-modifier
+   :filter
+   (lambda (cmd)
+     (and (fboundp 'evil-normal-state-p)
+          (evil-normal-state-p)
+          (not isearch-mode)
+          cmd))))
+
+(global-set-key (kbd "C-SPC") 'execute-extended-command)
+(global-set-key
+ (kbd "C-c c")
+ (lambda ()
+   (interactive)
+   (when (file-exists-p "cmd.el")
+     (load-file "cmd.el"))))
+
+;; Electric pairs
 (setq electric-pair-pairs '((?\" . ?\") (?\{ . ?\})))
 (electric-pair-mode 1)
-;; Setup go-mode
-(use-package go-mode)
-
-;; Setup Markdown
-(use-package markdown-mode)
-
-;; Setup web-mode
-(use-package web-mode)
-
-;; Astro mode
-(define-derived-mode astro-mode web-mode "astro")
-(setq auto-mode-alist
-      (append '((".*\\.astro\\'" . astro-mode)) auto-mode-alist))
 
 ;; Setup vertico
 (use-package
  orderless
+ :ensure t
  :custom
  (completion-styles '(orderless basic))
  (completion-category-defaults nil)
  (completion-category-overrides
   '((file (styles partial-completion)))))
-(use-package vertico :config (vertico-mode 1))
+(use-package vertico :ensure t :config (vertico-mode 1))
 
-;; Setup yasnippet
+;; Setup company
 (use-package
- yasnippet
- :config
- (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
- (yas-global-mode 1))
-
-;; Setup corfu
-(use-package cape)
-(use-package
- corfu
- :custom (corfu-auto t)
- :config
- (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
- (advice-add
-  'eglot-completion-at-point
-  :around #'cape-wrap-noninterruptible)
- :bind
- (:map corfu-map ([tab] . corfu-next) ([backtab] . corfu-previous))
- :hook
- ((c++-mode
-   c-mode go-mode java-mode emacs-lisp-mode latex-mode astro-mode)
-  . corfu-mode))
-
-
-;; Java fix
-(cl-defmethod eglot-execute-command
-    (_server (_cmd (eql java.apply.workspaceEdit)) arguments)
-  "Eclipse JDT breaks spec and replies with edits as arguments."
-  (mapc #'eglot--apply-workspace-edit arguments))
+ company
+ :ensure t
+ :hook ((c-mode c++-mode emacs-lisp-mode) . company-mode))
 
 ;; Setup eglot
 (use-package
  eglot
+ :ensure t
  :init (setq eglot-autoshutdown t)
- :config
- (add-to-list
-  'eglot-server-programs
-  '(astro-mode
-    .
-    ("astro-ls"
-     "--stdio"
-     :initializationOptions
-     (:typescript (:tsdk "./node_modules/typescript/lib")))))
- :hook
- ((go-mode java-mode c++-mode c-mode latex-mode astro-mode)
-  . eglot-ensure))
-
-;; Setup rainbow delimiters
-(use-package
- rainbow-delimiters
- :hook
- ((emacs-lisp-mode go-mode java-mode c++-mode c-mode latex-mode)
-  . rainbow-delimiters-mode))
-
-;; Setup tree sitter
-(use-package
- tree-sitter
- :init (require 'tree-sitter)
- :hook ((go-mode java-mode c++-mode c-mode) . tree-sitter-mode))
-
-(use-package
- tree-sitter-langs
- :init (require 'tree-sitter-langs)
- :hook
- ((go-mode java-mode c++-mode c-mode) . tree-sitter-hl-mode))
-
-;; Setup general
-(use-package
- general
- :init (setq general-override-states 'normal)
- :config (general-create-definer leader :prefix "SPC")
- (leader
-  :states 'normal
-  :keymaps
-  'override
-  "SPC"
-  'execute-extended-command
-  "eq"
-  'kill-emacs
-  "fs"
-  'save-buffer
-  "ff"
-  'find-file
-  "bs"
-  'switch-to-buffer
-  "bk"
-  'kill-current-buffer
-  "be"
-  'eval-buffer
-  "wh"
-  (lambda ()
-    (interactive)
-    (split-window-horizontally)
-    (other-window 1))
-  "wv"
-  (lambda ()
-    (interactive)
-    (split-window-vertically)
-    (other-window 1))
-  "wo"
-  'other-window
-  "wd"
-  (lambda ()
-    (interactive)
-    (if (eq (length (get-buffer-window-list)) 1)
-        (kill-buffer-and-window)
-      (delete-window)))
-  "ca"
-  'eglot-code-actions
-  "cf"
-  'eglot-format
-  "cr"
-  'eglot-rename
-  "jk"
-  (lambda ()
-    (interactive)
-    (if (file-exists-p "cmd.el")
-        (load-file "cmd.el")))))
+ :hook ((c-mode c++-mode) . eglot-ensure)
+ :bind
+ (("C-c r" . eglot-rename)
+  ("C-c f" . eglot-format)
+  ("C-c a" . eglot-actions)))
