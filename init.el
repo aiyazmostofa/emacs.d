@@ -39,12 +39,6 @@
  :ensure t
  :config (load-theme 'ef-day :no-confirm))
 
-;; Setup rainbow-delimiters
-(use-package
- rainbow-delimiters
- :ensure t
- :hook (prog-mode . rainbow-delimiters-mode))
-
 ;; Setup evil-mode
 (use-package undo-fu :ensure t)
 (use-package
@@ -65,8 +59,8 @@
           (not isearch-mode)
           cmd))))
 
-;; Make escape into quit to make life easier
-(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+;; Set escape to quit to make life easier
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Convenience keybinding for me
 (evil-global-set-key 'normal (kbd "C-SPC") 'execute-extended-command)
@@ -99,6 +93,14 @@
  company
  :ensure t
  :hook ((c-mode c++-mode emacs-lisp-mode) . company-mode))
+
+;; Setup rainbow-delimiters
+(use-package
+ rainbow-delimiters
+ :ensure t
+ :config
+ :hook
+ ((c-mode c++-mode emacs-lisp-mode) . rainbow-delimiters-mode))
 
 ;; Setup eglot
 (use-package
