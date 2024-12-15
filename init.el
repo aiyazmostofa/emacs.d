@@ -23,9 +23,6 @@
 (set-default 'truncate-lines t)
 (global-display-line-numbers-mode)
 
-;; Make escape into quit to make life easier
-(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
-
 ;; Setup package management
 (require 'package)
 (add-to-list
@@ -58,7 +55,7 @@
 
 ;; Special evil-mode space -> ctrl binding
 (define-key
- key-translation-map " "
+ key-translation-map (kbd "SPC")
  '(menu-item
    "" event-apply-control-modifier
    :filter
@@ -67,7 +64,14 @@
           (evil-normal-state-p)
           (not isearch-mode)
           cmd))))
+
+;; Make escape into quit to make life easier
+(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+
+;; Convenience keybinding for me
 (evil-global-set-key 'normal (kbd "C-SPC") 'execute-extended-command)
+
+;; Run a eshell script called cmd.el from the current directory
 (global-set-key
  (kbd "C-c c")
  (lambda ()
