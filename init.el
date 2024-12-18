@@ -37,7 +37,7 @@
 (use-package
  ef-themes
  :ensure t
- :config (load-theme 'ef-day :no-confirm))
+ :config (load-theme 'ef-bio :no-confirm))
 
 ;; Setup evil-mode
 (use-package undo-fu :ensure t)
