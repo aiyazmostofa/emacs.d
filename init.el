@@ -37,10 +37,11 @@
 (use-package
  ef-themes
  :ensure t
- :config (load-theme 'ef-bio :no-confirm))
+ :config (load-theme 'ef-dream :no-confirm))
 
 ;; Load a random theme from the pre specified list in ef-themes
-(load-theme (nth (random (length ef-themes-items)) ef-themes-items) :no-confirm)
+;; (load-theme (nth (random (length ef-themes-items)) ef-themes-items)
+;;             :no-confirm)
 
 ;; Setup evil-mode
 (use-package undo-fu :ensure t)
