@@ -33,11 +33,14 @@
   (package-refresh-contents))
 (require 'use-package)
 
-;; Setup theme
+;; Setup themes ef-themes
 (use-package
  ef-themes
  :ensure t
  :config (load-theme 'ef-bio :no-confirm))
+
+;; Load a random theme from the pre specified list in ef-themes
+(load-theme (nth (random (length ef-themes-items)) ef-themes-items) :no-confirm)
 
 ;; Setup evil-mode
 (use-package undo-fu :ensure t)
