@@ -77,6 +77,9 @@
    (when (file-exists-p "cmd.el")
      (load-file "cmd.el"))))
 
+;; Install web-server for copeforces
+(use-package web-server :ensure t)
+
 ;; Copeforces keybinding
 (global-set-key
  (kbd "C-c C")
@@ -101,18 +104,14 @@
 (use-package vertico :ensure t :config (vertico-mode 1))
 
 ;; Setup company
-(use-package
- company
- :ensure t
- :hook (emacs-lisp-mode . company-mode))
+(use-package company :ensure t :hook (emacs-lisp-mode . company-mode))
 
 ;; Setup rainbow-delimiters
 (use-package
  rainbow-delimiters
  :ensure t
  :config
- :hook
- (emacs-lisp-mode . rainbow-delimiters-mode))
+ :hook (emacs-lisp-mode . rainbow-delimiters-mode))
 
 ;; Setup eglot
 (use-package
