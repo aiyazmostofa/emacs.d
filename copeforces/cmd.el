@@ -17,6 +17,15 @@
        (when (file-exists-p "main")
          (delete-file "main"))))
 
+    ;; Insert big header
+    (insert "* ")
+    (insert
+     (format "[[%s][%s]]"
+             (file-name-concat default-directory "main.cpp")
+             (file-name-nondirectory
+              (directory-file-name default-directory))))
+    (insert "\n")
+
     ;; Compile the program
     (setq-local compiler-output
                 (shell-command-to-string
@@ -24,7 +33,7 @@
 
     ;; Display compiler output if needed
     (unless (string-empty-p compiler-output)
-      (insert "* Compiler Output\n")
+      (insert "** Compiler Output\n")
       (insert "#+BEGIN_SRC\n")
       (insert compiler-output)
       (insert "#+END_SRC\n"))
@@ -34,7 +43,7 @@
         ;; Go through each .txt file and run program with file as input
         (dolist (file (directory-files "." t "^[0-9]+$"))
           ;; Create the header
-          (insert "* " (file-name-nondirectory file) "\n")
+          (insert "** " (file-name-nondirectory file) "\n")
           (insert "#+BEGIN_SRC\n")
 
           ;; Create a new process
@@ -80,7 +89,7 @@
 
     ;; Set the keybinding to delete buffer/window
     (evil-local-set-key
-     'normal (kbd "d")
+     'normal (kbd "q")
      (lambda ()
        (interactive)
        (kill-buffer (current-buffer))
@@ -88,7 +97,7 @@
 
     ;; Set the keybinding that starts GDB
     (evil-local-set-key
-     'normal (kbd "t")
+     'normal (kbd "d")
      (lambda ()
        (interactive)
        (gdb "gdb -i=mi main")

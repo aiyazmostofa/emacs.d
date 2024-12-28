@@ -74,10 +74,16 @@
  (kbd "C-c c")
  (lambda ()
    (interactive)
-   (if (file-exists-p "cmd.el")
-       (load-file "cmd.el")
-     (load-file
-      (file-name-concat user-emacs-directory "copeforces.el")))))
+   (when (file-exists-p "cmd.el")
+     (load-file "cmd.el"))))
+
+;; Copeforces keybinding
+(global-set-key
+ (kbd "C-c C")
+ (lambda ()
+   (interactive)
+   (load-file
+    (file-name-concat user-emacs-directory "copeforces.el"))))
 
 ;; Electric pairs
 (setq electric-pair-pairs '((?\" . ?\") (?\{ . ?\})))

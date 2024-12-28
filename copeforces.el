@@ -13,8 +13,7 @@
     (org-mode)
 
     ;; Create the header
-    (insert
-     (format "* [[file:%s][copeforces]]\n" copeforces-directory))
+    (insert (format "* [[%s]]\n" copeforces-directory))
 
     ;; Start (and store) the server
     (setq-local
@@ -49,9 +48,11 @@
                 (insert (gethash "input" test))))
             (setq-local count (+ count 1)))
 
-          ;; Insert name notifying of success
+          ;; Insert name notifying of success (with links to cpp file)
           (insert "** ")
-          (insert name)
+          (insert
+           (format "[[%s][%s]]"
+                   (file-name-concat copeforces-directory name "main.cpp") name))
           (insert "\n")))
       10043))
 
@@ -65,7 +66,7 @@
 
     ;; Set the keybinding to delete buffer/window
     (evil-local-set-key
-     'normal (kbd "d")
+     'normal (kbd "q")
      (lambda ()
        (interactive)
        (kill-buffer (current-buffer))
