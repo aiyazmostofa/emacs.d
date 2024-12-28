@@ -74,8 +74,10 @@
  (kbd "C-c c")
  (lambda ()
    (interactive)
-   (when (file-exists-p "cmd.el")
-     (load-file "cmd.el"))))
+   (if (file-exists-p "cmd.el")
+       (load-file "cmd.el")
+     (load-file
+      (file-name-concat user-emacs-directory "copeforces.el")))))
 
 ;; Electric pairs
 (setq electric-pair-pairs '((?\" . ?\") (?\{ . ?\})))
