@@ -104,7 +104,7 @@
 (use-package
  company
  :ensure t
- :hook ((c-mode c++-mode emacs-lisp-mode) . company-mode))
+ :hook (emacs-lisp-mode . company-mode))
 
 ;; Setup rainbow-delimiters
 (use-package
@@ -112,15 +112,25 @@
  :ensure t
  :config
  :hook
- ((c-mode c++-mode emacs-lisp-mode) . rainbow-delimiters-mode))
+ (emacs-lisp-mode . rainbow-delimiters-mode))
 
 ;; Setup eglot
 (use-package
  eglot
  :ensure t
  :init (setq eglot-autoshutdown t)
- :hook ((c-mode c++-mode) . eglot-ensure)
  :bind
  (("C-c r" . eglot-rename)
   ("C-c f" . eglot-format)
   ("C-c a" . eglot-actions)))
+
+;; General function hook to enable "ide-like" support
+(defun ide-enable ()
+  (interactive)
+  (eglot-ensure)
+  (rainbow-delimiters-mode 1)
+  (company-mode 1))
+
+;; Add as you please
+(add-hook 'c++-mode-hook 'ide-enable)
+(add-hook 'c-mode-hook 'ide-enable)
