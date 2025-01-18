@@ -77,6 +77,9 @@
    (when (file-exists-p "cmd.el")
      (load-file "cmd.el"))))
 
+;; Install web-server for copeforces
+(use-package web-server :ensure t)
+
 ;; Copeforces keybinding
 (global-set-key
  (kbd "C-c C")
