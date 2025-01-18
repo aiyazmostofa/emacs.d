@@ -37,7 +37,7 @@
 (use-package
  ef-themes
  :ensure t
- :config (load-theme 'ef-dream :no-confirm))
+ :config (load-theme 'ef-day :no-confirm))
 
 ;; Load a random theme from the pre specified list in ef-themes
 ;; (load-theme (nth (random (length ef-themes-items)) ef-themes-items)
@@ -101,36 +101,38 @@
 (use-package vertico :ensure t :config (vertico-mode 1))
 
 ;; Setup company
-(use-package
- company
- :ensure t
- :hook (emacs-lisp-mode . company-mode))
+(use-package company :ensure t :hook (emacs-lisp-mode . company-mode))
 
 ;; Setup rainbow-delimiters
 (use-package
  rainbow-delimiters
  :ensure t
  :config
- :hook
- (emacs-lisp-mode . rainbow-delimiters-mode))
+ :hook (emacs-lisp-mode . rainbow-delimiters-mode))
 
 ;; Setup eglot
 (use-package
  eglot
  :ensure t
  :init (setq eglot-autoshutdown t)
+ :config
+ (add-hook
+  'eglot-managed-mode-hook
+  (lambda ()
+    (interactive)
+    (rainbow-delimiters-mode 1)
+    (company-mode 1)))
+ :hook ((c-mode c++-mode) . eglot-ensure)
  :bind
- (("C-c r" . eglot-rename)
+ (:map
+  eglot-mode-map
+  ("C-c r" . eglot-rename)
   ("C-c f" . eglot-format)
-  ("C-c a" . eglot-actions)))
+  ("C-c a" . eglot-code-actions)))
 
-;; General function hook to enable "ide-like" support
-(defun ide-enable ()
-  (interactive)
-  (eglot-ensure)
-  (rainbow-delimiters-mode 1)
-  (company-mode 1))
-
-;; Add as you please
-(add-hook 'c++-mode-hook 'ide-enable)
-(add-hook 'c-mode-hook 'ide-enable)
+;; Setup elisp-autofmt
+(use-package
+ elisp-autofmt
+ :ensure t
+ :bind
+ (:map emacs-lisp-mode-map ("C-c f" . elisp-autofmt-buffer)))

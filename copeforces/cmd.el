@@ -1,6 +1,6 @@
 ;; Delete any stray buffers
-(when (get-buffer "cf-output")
-  (kill-buffer "cf-output"))
+(when (get-buffer "*copeforces*")
+  (kill-buffer "*copeforces*"))
 
 ;; Create a new buffer
 (let ((buffer (generate-new-buffer "*copeforces*")))
@@ -29,13 +29,16 @@
     ;; Compile the program
     (setq-local compiler-output
                 (shell-command-to-string
-                 "g++ -g -Wall main.cpp -o main"))
+                 "g++ -g -Wall -fdiagnostics-color main.cpp -o main"))
 
     ;; Display compiler output if needed
     (unless (string-empty-p compiler-output)
       (insert "** Compiler Output\n")
       (insert "#+BEGIN_SRC\n")
       (insert compiler-output)
+      ;; Display ansi colors
+      (let ((inhibit-read-only t))
+        (ansi-color-apply-on-region (point-min) (point-max)))
       (insert "#+END_SRC\n"))
 
     ;; Only run if executable exists
