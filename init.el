@@ -37,7 +37,7 @@
 (use-package
  ef-themes
  :ensure t
- :config (load-theme 'ef-day :no-confirm))
+ :config (load-theme 'ef-deuteranopia-dark :no-confirm))
 
 ;; Load a random theme from the pre specified list in ef-themes
 ;; (load-theme (nth (random (length ef-themes-items)) ef-themes-items)
