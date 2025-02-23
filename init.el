@@ -95,6 +95,9 @@
  :config
  :hook (emacs-lisp-mode . rainbow-delimiters-mode))
 
+;; Install go-mode
+(use-package go-mode)
+
 ;; Setup eglot
 (use-package
  eglot
@@ -107,7 +110,7 @@
     (interactive)
     (rainbow-delimiters-mode 1)
     (company-mode 1)))
- :hook ((c-mode c++-mode) . eglot-ensure)
+ :hook ((c-mode c++-mode go-mode python-mode) . eglot-ensure)
  :bind
  (:map
   eglot-mode-map
