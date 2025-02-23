@@ -3,6 +3,9 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
+;; Disable nativecomp messages
+(setq native-comp-async-report-warnings-errors nil)
+
 ;; Stop the emacs save/backup shit
 (setq auto-save-default nil)
 (setq make-backup-files nil)
