@@ -81,7 +81,6 @@
  :ensure t
  :custom
  (completion-styles '(orderless basic))
- (completion-category-defaults nil)
  (completion-category-overrides
   '((file (styles partial-completion)))))
 (use-package vertico :ensure t :config (vertico-mode 1))
