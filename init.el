@@ -79,8 +79,7 @@
 (use-package
  orderless
  :ensure t
- :custom
- (completion-styles '(orderless basic))
+ :custom (completion-styles '(orderless basic))
  (completion-category-overrides
   '((file (styles partial-completion)))))
 (use-package vertico :ensure t :config (vertico-mode 1))
@@ -96,7 +95,7 @@
  :hook (emacs-lisp-mode . rainbow-delimiters-mode))
 
 ;; Install go-mode
-(use-package go-mode)
+(use-package go-mode :ensure t)
 
 ;; Setup eglot
 (use-package
