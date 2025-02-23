@@ -31,6 +31,7 @@
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
+(add-to-list 'load-path "~/.emacs.d/lisp")
 (require 'use-package)
 
 ;; Setup themes ef-themes
@@ -38,10 +39,6 @@
  ef-themes
  :ensure t
  :config (load-theme 'ef-dream :no-confirm))
-
-;; Load a random theme from the pre specified list in ef-themes
-;; (load-theme (nth (random (length ef-themes-items)) ef-themes-items)
-;;             :no-confirm)
 
 ;; Setup evil-mode
 (use-package undo-fu :ensure t)
@@ -51,23 +48,13 @@
  :init (setq evil-undo-system 'undo-fu)
  :config (evil-mode 1))
 
-;; Special evil-mode space -> ctrl binding
-(define-key
- key-translation-map (kbd "SPC")
- '(menu-item
-   "" event-apply-control-modifier
-   :filter
-   (lambda (cmd)
-     (and (fboundp 'evil-normal-state-p)
-          (evil-normal-state-p)
-          (not isearch-mode)
-          cmd))))
+;; Setup spacemaster
+(use-package
+ spacemaster
+ :config (evil-global-set-key 'normal (kbd "SPC") 'spacemaster))
 
 ;; Set escape to quit to make life easier
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-;; Convenience keybinding for me
-(evil-global-set-key 'normal (kbd "C-SPC") 'execute-extended-command)
 
 ;; Run a eshell script called cmd.el from the current directory
 (global-set-key
@@ -77,16 +64,9 @@
    (when (file-exists-p "cmd.el")
      (load-file "cmd.el"))))
 
-;; Install web-server for copeforces
+;; Install copeforces
 (use-package web-server :ensure t)
-
-;; Copeforces keybinding
-(global-set-key
- (kbd "C-c C")
- (lambda ()
-   (interactive)
-   (load-file
-    (file-name-concat user-emacs-directory "copeforces.el"))))
+(use-package copeforces :bind (("C-c C" . copeforces)))
 
 ;; Electric pairs
 (setq electric-pair-pairs '((?\" . ?\") (?\{ . ?\})))
