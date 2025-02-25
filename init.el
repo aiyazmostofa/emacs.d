@@ -15,7 +15,7 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (when (find-font (font-spec :name "Jetbrains Mono"))
-  (set-frame-font "Jetbrains Mono-12" nil t))
+  (set-frame-font "Jetbrains Mono-10" nil t))
 
 ;; Set scratch to org-mode, along with home page
 (setq inhibit-splash-screen t)
@@ -56,6 +56,10 @@
  spacemaster
  :config (evil-global-set-key 'normal (kbd "SPC") 'spacemaster))
 
+(use-package
+ dired
+ :config (define-key dired-mode-map (kbd "SPC") 'spacemaster))
+
 ;; Set escape to quit to make life easier
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
@@ -85,7 +89,11 @@
 (use-package vertico :ensure t :config (vertico-mode 1))
 
 ;; Setup company
-(use-package company :ensure t :hook (emacs-lisp-mode . company-mode))
+(use-package
+ company
+ :ensure t
+ :config (setq company-tooltip-align-annotations t)
+ :hook (emacs-lisp-mode . company-mode))
 
 ;; Setup rainbow-delimiters
 (use-package
@@ -94,14 +102,46 @@
  :config
  :hook (emacs-lisp-mode . rainbow-delimiters-mode))
 
-;; Install go-mode
+;; Install treesitter (for web dev only ): )
+(use-package tree-sitter :ensure t)
+(use-package
+ tree-sitter-langs
+ :ensure t
+ :hook ((tsx-ts-mode) . setup-tide-mode))
+
+;; Install magit
+(use-package magit :ensure t :bind (("C-c m" . magit)))
+
+;; Install programming modes
 (use-package go-mode :ensure t)
+
+;; Install tide (for web dev)
+(use-package
+ tide
+ :ensure t
+ :init
+ (defun setup-tide-mode ()
+   (interactive)
+   (tide-setup)
+   (flycheck-mode 1)
+   (setq flycheck-check-syntax-automatically '(save mode-enabled))
+   (eldoc-mode 1)
+   (tide-hl-identifier-mode 1)
+   (rainbow-delimiters-mode 1)
+   (company-mode 1))
+ :hook ((typescript-mode typescript-ts-mode) . setup-tide-mode)
+ :bind
+ (:map
+  tide-mode-map
+  ("C-c r" . tide-rename-symbol)
+  ("C-c f" . tide-format)
+  ("C-c a" . tide-fix)))
 
 ;; Setup eglot
 (use-package
  eglot
  :ensure t
- :init (setq eglot-autoshutdown t)
+ :init (setq eglot-autoshutdown t) (setq eglot-events-buffer-config 0)
  :config
  (add-hook
   'eglot-managed-mode-hook
