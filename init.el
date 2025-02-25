@@ -40,7 +40,7 @@
 (use-package
  ef-themes
  :ensure t
- :config (load-theme 'ef-dream :no-confirm))
+ :config (load-theme 'ef-autumn :no-confirm))
 
 ;; Setup evil-mode
 (use-package undo-fu :ensure t)
@@ -54,7 +54,6 @@
 (use-package
  spacemaster
  :config (evil-global-set-key 'normal (kbd "SPC") 'spacemaster))
-
 (use-package
  dired
  :config (define-key dired-mode-map (kbd "SPC") 'spacemaster))
@@ -73,6 +72,9 @@
 ;; Install copeforces
 (use-package web-server :ensure t)
 (use-package copeforces :bind (("C-c C" . copeforces)))
+
+;; Install mood-line
+(use-package mood-line :ensure t :config (mood-line-mode))
 
 ;; Electric pairs
 (setq electric-pair-pairs '((?\" . ?\") (?\{ . ?\})))
