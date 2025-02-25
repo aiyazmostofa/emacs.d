@@ -3,27 +3,26 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
-;; Disable nativecomp messages
-(setq native-comp-async-report-warnings-errors nil)
+;; General settings
+(setq
+ native-comp-async-report-warnings-errors nil
+ auto-save-default nil
+ make-backup-files nil)
 
-;; Stop the emacs save/backup shit
-(setq auto-save-default nil)
-(setq make-backup-files nil)
+;; Home page settings
+(setq
+ inhibit-splash-screen t
+ initial-scratch-message ""
+ initial-major-mode 'org-mode)
 
-;; Cleanup the look
+;; Configure appearence
 (menu-bar-mode -1)
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-(when (find-font (font-spec :name "Jetbrains Mono"))
-  (set-frame-font "Jetbrains Mono-10" nil t))
-
-;; Set scratch to org-mode, along with home page
-(setq inhibit-splash-screen t)
-(setq initial-scratch-message "")
-(setq initial-major-mode 'org-mode)
-
-;; Set line settings
-(set-default 'truncate-lines t)
+(when (display-graphic-p)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+  (when (find-font (font-spec :name "Jetbrains Mono"))
+    (set-frame-font "Jetbrains Mono-10" nil t)))
+(setq truncate-lines t)
 (global-display-line-numbers-mode)
 
 ;; Setup package management
@@ -124,12 +123,12 @@
    (interactive)
    (tide-setup)
    (flycheck-mode 1)
-   (setq flycheck-check-syntax-automatically '(save mode-enabled))
    (eldoc-mode 1)
    (tide-hl-identifier-mode 1)
    (rainbow-delimiters-mode 1)
    (company-mode 1))
  :hook ((typescript-mode typescript-ts-mode) . setup-tide-mode)
+ :config (setq flycheck-check-syntax-automatically '(save mode-enabled))
  :bind
  (:map
   tide-mode-map
@@ -141,7 +140,10 @@
 (use-package
  eglot
  :ensure t
- :init (setq eglot-autoshutdown t) (setq eglot-events-buffer-config 0)
+ :init
+ (setq
+  eglot-autoshutdown t
+  eglot-events-buffer-config 0)
  :config
  (add-hook
   'eglot-managed-mode-hook
