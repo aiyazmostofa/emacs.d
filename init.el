@@ -110,6 +110,12 @@
  :ensure t
  :hook ((tsx-ts-mode) . setup-tide-mode))
 
+;; Set transient escape preference
+(use-package
+ transient
+ :config
+ (define-key transient-map (kbd "<escape>") 'transient-quit-one))
+
 ;; Install magit
 (use-package magit :ensure t :bind (("C-c m" . magit)))
 
