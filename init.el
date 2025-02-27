@@ -40,7 +40,7 @@
 (use-package
  ef-themes
  :ensure t
- :config (load-theme 'ef-melissa-dark :no-confirm))
+ :config (load-theme 'ef-tritanopia-dark :no-confirm))
 
 ;; Setup evil-mode
 (use-package undo-fu :ensure t)
