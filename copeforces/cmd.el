@@ -29,7 +29,7 @@
     ;; Compile the program
     (setq-local compiler-output
                 (shell-command-to-string
-                 "g++ -g -Wall -fdiagnostics-color main.cpp -o main"))
+                 "g++ -g -Wall -fsanitize=address -fdiagnostics-color main.cpp -o main"))
 
     ;; Display compiler output if needed
     (unless (string-empty-p compiler-output)
