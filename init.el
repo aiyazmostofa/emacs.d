@@ -22,7 +22,7 @@
   (tool-bar-mode -1)
   (when (find-font (font-spec :name "Jetbrains Mono"))
     (set-frame-font "Jetbrains Mono-10" nil t)))
-(setq truncate-lines t)
+(setq-default truncate-lines t)
 (global-display-line-numbers-mode)
 
 ;; Setup package management
@@ -40,7 +40,7 @@
 (use-package
  ef-themes
  :ensure t
- :config (load-theme 'ef-autumn :no-confirm))
+ :config (load-theme 'ef-melissa-dark :no-confirm))
 
 ;; Setup evil-mode
 (use-package undo-fu :ensure t)
