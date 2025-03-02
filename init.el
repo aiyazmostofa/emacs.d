@@ -43,12 +43,15 @@
  :config (load-theme 'ef-tritanopia-dark :no-confirm))
 
 ;; Setup evil-mode
+
 (use-package undo-fu :ensure t)
 (use-package
  evil
  :ensure t
  :init (setq evil-undo-system 'undo-fu)
- :config (evil-mode 1))
+ :config
+ (evil-mode 1)
+ (add-hook 'view-mode-hook 'evil-motion-state))
 
 ;; Setup spacemaster
 (use-package
