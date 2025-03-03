@@ -18,11 +18,10 @@
 
 ;; Configure appearence
 (menu-bar-mode -1)
-(when (display-graphic-p)
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-  (when (find-font (font-spec :name "Jetbrains Mono"))
-    (set-frame-font "Jetbrains Mono-10" nil t)))
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(when (find-font (font-spec :name "Jetbrains Mono"))
+  (set-frame-font "Jetbrains Mono-10" nil t))
 (setq-default truncate-lines t)
 (global-display-line-numbers-mode)
 
@@ -42,42 +41,6 @@
  ef-themes
  :ensure t
  :config (load-theme 'ef-tritanopia-dark :no-confirm))
-
-;; Setup evil-mode
-
-(use-package undo-fu :ensure t)
-(use-package
- evil
- :ensure t
- :init (setq evil-undo-system 'undo-fu)
- :config
- (evil-mode 1)
- (add-hook 'view-mode-hook 'evil-motion-state))
-
-;; Setup spacemaster
-(use-package
- spacemaster
- :config
- (evil-global-set-key 'normal (kbd "SPC") 'spacemaster)
- (evil-global-set-key 'visual (kbd "SPC") 'spacemaster))
-(use-package
- dired
- :config (define-key dired-mode-map (kbd "SPC") 'spacemaster))
-
-;; Set escape to quit to make life easier
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-;; Run a eshell script called cmd.el from the current directory
-(global-set-key
- (kbd "C-c c")
- (lambda ()
-   (interactive)
-   (when (file-exists-p "cmd.el")
-     (load-file "cmd.el"))))
-
-;; Install copeforces
-(use-package web-server :ensure t)
-(use-package copeforces :bind (("C-c C" . copeforces)))
 
 ;; Install mood-line
 (use-package mood-line :ensure t :config (mood-line-mode))
@@ -115,12 +78,6 @@
  tree-sitter-langs
  :ensure t
  :hook ((tsx-ts-mode) . setup-tide-mode))
-
-;; Set transient escape preference
-(use-package
- transient
- :config
- (define-key transient-map (kbd "<escape>") 'transient-quit-one))
 
 ;; Install magit
 (use-package magit :ensure t :bind (("C-c m" . magit)))
