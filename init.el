@@ -7,7 +7,8 @@
 (setq
  native-comp-async-report-warnings-errors nil
  auto-save-default nil
- make-backup-files nil)
+ make-backup-files nil
+ ring-bell-function 'ignore)
 
 ;; Home page settings
 (setq
@@ -56,7 +57,9 @@
 ;; Setup spacemaster
 (use-package
  spacemaster
- :config (evil-global-set-key 'normal (kbd "SPC") 'spacemaster))
+ :config
+ (evil-global-set-key 'normal (kbd "SPC") 'spacemaster)
+ (evil-global-set-key 'visual (kbd "SPC") 'spacemaster))
 (use-package
  dired
  :config (define-key dired-mode-map (kbd "SPC") 'spacemaster))
