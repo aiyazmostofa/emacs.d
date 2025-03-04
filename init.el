@@ -42,6 +42,10 @@
  :ensure t
  :config (load-theme 'ef-tritanopia-dark :no-confirm))
 
+;; Setup undo-fu
+(use-package undo-fu
+  :ensure t)
+
 ;; Setup god-mode
 (use-package
  god-mode
@@ -53,7 +57,13 @@
   (kbd "<escape>")
   #'(lambda ()
       (interactive)
-      (god-local-mode 1))))
+      (god-local-mode 1)))
+ (defun god-mode-update-cursor-type ()
+   (setq cursor-type
+         (if (or god-local-mode buffer-read-only)
+             'box
+           'bar)))
+ (add-hook 'post-command-hook #'god-mode-update-cursor-type))
 
 ;; Install mood-line
 (use-package mood-line :ensure t :config (mood-line-mode))
