@@ -42,6 +42,19 @@
  :ensure t
  :config (load-theme 'ef-tritanopia-dark :no-confirm))
 
+;; Setup god-mode
+(use-package
+ god-mode
+ :ensure t
+ :config
+ (god-mode)
+ (define-key god-local-mode-map (kbd "i") #'god-local-mode)
+ (global-set-key
+  (kbd "<escape>")
+  #'(lambda ()
+      (interactive)
+      (god-local-mode 1))))
+
 ;; Install mood-line
 (use-package mood-line :ensure t :config (mood-line-mode))
 
