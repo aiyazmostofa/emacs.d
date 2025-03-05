@@ -109,13 +109,6 @@
  :config
  :hook (emacs-lisp-mode . rainbow-delimiters-mode))
 
-;; Install treesitter (for web dev only ): )
-(use-package tree-sitter :ensure t)
-(use-package
- tree-sitter-langs
- :ensure t
- :hook ((tsx-ts-mode) . setup-tide-mode))
-
 ;; Set transient escape preference
 (use-package
  transient
@@ -129,6 +122,27 @@
 (use-package go-mode :ensure t)
 
 ;; Install tide (for web dev)
+(setq treesit-language-source-alist
+      '((javascript
+         "https://github.com/tree-sitter/tree-sitter-javascript"
+         "master"
+         "src")
+        (tsx
+         "https://github.com/tree-sitter/tree-sitter-typescript"
+         "master"
+         "tsx/src")
+        (typescript
+         "https://github.com/tree-sitter/tree-sitter-typescript"
+         "master"
+         "typescript/src")))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
+(setq
+ typescript-ts-mode-indent-offset 4
+ tsx-ts-mode-indent-offset 4
+ js-ts-mode-indent-offset 4
+ treesit-font-lock-level 4)
 (use-package
  tide
  :ensure t
@@ -141,7 +155,7 @@
    (tide-hl-identifier-mode 1)
    (rainbow-delimiters-mode 1)
    (company-mode 1))
- :hook ((typescript-mode typescript-ts-mode) . setup-tide-mode)
+ :hook ((tsx-ts-mode js-ts-mode typescript-ts-mode) . setup-tide-mode)
  :config (setq flycheck-check-syntax-automatically '(save mode-enabled))
  :bind
  (:map
