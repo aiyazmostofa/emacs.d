@@ -40,7 +40,7 @@
 (use-package
  ef-themes
  :ensure t
- :config (load-theme 'ef-autumn :no-confirm))
+ :config (load-theme 'ef-melissa-dark :no-confirm))
 
 ;; Setup evil-mode
 
