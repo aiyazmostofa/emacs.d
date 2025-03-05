@@ -48,15 +48,20 @@
  :ensure t
  :config (spacious-padding-mode))
 
+;; Set escape to quit to make life easier
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(use-package
+ transient
+ :config
+ (define-key transient-map (kbd "<escape>") 'transient-quit-one))
+
 ;; Setup evil-mode
 (use-package undo-fu :ensure t)
 (use-package
  evil
  :ensure t
  :init (setq evil-undo-system 'undo-fu)
- :config
- (evil-mode 1)
- (add-hook 'view-mode-hook 'evil-motion-state))
+ :config (evil-mode 1))
 
 ;; Setup spacemaster
 (use-package
@@ -66,16 +71,8 @@
  (evil-global-set-key 'visual (kbd "SPC") 'spacemaster))
 (use-package
  dired
- :config (define-key dired-mode-map (kbd "SPC") 'spacemaster))
-
-;; Set escape to quit to make life easier
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-;; Set transient escape preference
-(use-package
- transient
- :config
- (define-key transient-map (kbd "<escape>") 'transient-quit-one))
+ :config (define-key dired-mode-map (kbd "SPC") 'spacemaster)
+ :after spacemaster)
 
 ;; Run a eshell script called cmd.el from the current directory
 (global-set-key
@@ -129,7 +126,7 @@
 ;; Install programming modes
 (use-package go-mode :ensure t)
 
-;; Install treesitter (for web dev)
+;; Install treesitter
 (use-package
  treesit-auto
  :ensure t
