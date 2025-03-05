@@ -21,7 +21,7 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (when (find-font (font-spec :name "Jetbrains Mono"))
-  (set-frame-font "Jetbrains Mono-10" nil t))
+  (set-frame-font "Jetbrains Mono-16" nil t))
 (setq-default truncate-lines t)
 (global-display-line-numbers-mode)
 
@@ -42,8 +42,13 @@
  :ensure t
  :config (load-theme 'ef-melissa-dark :no-confirm))
 
-;; Setup evil-mode
+;; Setup spacious padding
+(use-package
+ spacious-padding
+ :ensure t
+ :config (spacious-padding-mode))
 
+;; Setup evil-mode
 (use-package undo-fu :ensure t)
 (use-package
  evil
