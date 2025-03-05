@@ -17,9 +17,6 @@
 (defun spacemaster--handle-space ()
   "Handle space key being pressed in spacemaster."
   (cond
-   ((string-equal spacemaster--buffer "C-")
-    (call-interactively 'execute-extended-command)
-    (setq spacemaster--buffer ""))
    ((string-match-p "C-\\'\\|M-\\'" spacemaster--buffer)
     (setq spacemaster--buffer (concat spacemaster--buffer "SPC")))
    (t
@@ -64,8 +61,6 @@ Here are some example keybinding conversions:
 'SPC ESC a' -> 'M-a'
 'SPC ESC a b' -> 'M-a b'
 'SPC ESC a SPC b' -> 'M-a C-b'
-
-The only exception to this is 'SPC SPC', which causes the command prompt to come up, instead of 'C-SPC'.
 "
   (interactive)
   (setq spacemaster--buffer "C-")

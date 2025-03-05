@@ -68,7 +68,10 @@
  spacemaster
  :config
  (evil-global-set-key 'normal (kbd "SPC") 'spacemaster)
- (evil-global-set-key 'visual (kbd "SPC") 'spacemaster))
+ (evil-global-set-key 'visual (kbd "SPC") 'spacemaster)
+ (evil-global-set-key 'normal (kbd "C-SPC") 'execute-extended-command)
+ (evil-global-set-key
+  'visual (kbd "C-SPC") 'execute-extended-command))
 (use-package
  dired
  :config (define-key dired-mode-map (kbd "SPC") 'spacemaster)
