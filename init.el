@@ -104,7 +104,10 @@
 (use-package
  company
  :ensure t
- :config (setq company-tooltip-align-annotations t)
+ :config
+ (setq
+  company-tooltip-align-annotations t
+  company-idle-delay nil)
  :hook (emacs-lisp-mode . company-mode))
 
 ;; Setup rainbow-delimiters
