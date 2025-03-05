@@ -18,11 +18,10 @@
 
 ;; Configure appearence
 (menu-bar-mode -1)
-(when (display-graphic-p)
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-  (when (find-font (font-spec :name "Jetbrains Mono"))
-    (set-frame-font "Jetbrains Mono-10" nil t)))
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(when (find-font (font-spec :name "Jetbrains Mono"))
+  (set-frame-font "Jetbrains Mono-10" nil t))
 (setq-default truncate-lines t)
 (global-display-line-numbers-mode)
 
@@ -67,6 +66,12 @@
 ;; Set escape to quit to make life easier
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
+;; Set transient escape preference
+(use-package
+ transient
+ :config
+ (define-key transient-map (kbd "<escape>") 'transient-quit-one))
+
 ;; Run a eshell script called cmd.el from the current directory
 (global-set-key
  (kbd "C-c c")
@@ -109,12 +114,6 @@
  :config
  :hook (emacs-lisp-mode . rainbow-delimiters-mode))
 
-;; Set transient escape preference
-(use-package
- transient
- :config
- (define-key transient-map (kbd "<escape>") 'transient-quit-one))
-
 ;; Install magit
 (use-package magit :ensure t :bind (("C-c m" . magit)))
 
@@ -122,22 +121,13 @@
 (use-package go-mode :ensure t)
 
 ;; Install tide (for web dev)
-(setq treesit-language-source-alist
-      '((javascript
-         "https://github.com/tree-sitter/tree-sitter-javascript"
-         "master"
-         "src")
-        (tsx
-         "https://github.com/tree-sitter/tree-sitter-typescript"
-         "master"
-         "tsx/src")
-        (typescript
-         "https://github.com/tree-sitter/tree-sitter-typescript"
-         "master"
-         "typescript/src")))
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
+(use-package
+ treesit-auto
+ :ensure t
+ :custom (treesit-auto-install 'prompt)
+ :config
+ (treesit-auto-add-to-auto-mode-alist 'all)
+ (global-treesit-auto-mode))
 (setq
  typescript-ts-mode-indent-offset 4
  tsx-ts-mode-indent-offset 4
