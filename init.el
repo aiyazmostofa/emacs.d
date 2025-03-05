@@ -3,6 +3,17 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
+;; Setup package management
+(require 'package)
+(add-to-list
+ 'package-archives '("melpa" . "https://melpa.org/packages/")
+ t)
+(package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents))
+(add-to-list 'load-path "~/.emacs.d/lisp")
+(require 'use-package)
+
 ;; General settings
 (setq
  native-comp-async-report-warnings-errors nil
@@ -24,17 +35,6 @@
   (set-frame-font "Jetbrains Mono-16" nil t))
 (setq-default truncate-lines t)
 (global-display-line-numbers-mode)
-
-;; Setup package management
-(require 'package)
-(add-to-list
- 'package-archives '("melpa" . "https://melpa.org/packages/")
- t)
-(package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
-(add-to-list 'load-path "~/.emacs.d/lisp")
-(require 'use-package)
 
 ;; Setup themes ef-themes
 (use-package
