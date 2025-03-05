@@ -1,3 +1,4 @@
+;;; init.el --- The emacs config. -*- lexical-binding: t; -*-
 ;; Set gc cap high so gc is limited
 (setq gc-cons-threshold (* 50 1000 1000))
 
@@ -175,7 +176,13 @@
  elisp-autofmt
  :ensure t
  :bind
- (:map emacs-lisp-mode-map ("C-c f" . elisp-autofmt-buffer)))
+ (:map
+  emacs-lisp-mode-map
+  ("C-c f" .
+   (lambda ()
+     (interactive)
+     (message "Formatting...")
+     (elisp-autofmt-buffer)))))
 
 ;; Setup gc back to a decently normal level
 (setq gc-cons-threshold (* 2 1000 1000))
