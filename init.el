@@ -135,8 +135,7 @@
 (setq
  typescript-ts-mode-indent-offset 4
  tsx-ts-mode-indent-offset 4
- js-ts-mode-indent-offset 4
- treesit-font-lock-level 4)
+ js-ts-mode-indent-offset 4)
 
 ;; Setup eglot
 (use-package
@@ -151,15 +150,15 @@
     (rainbow-delimiters-mode 1)
     (company-mode 1)))
  :hook
- ((c-mode
-   c++-mode
-   go-mode
-   python-mode
+ ((c-ts-mode
+   c++-ts-mode
+   go-ts-mode
+   python-ts-mode
    typescript-ts-mode
    tsx-ts-mode
    js-ts-mode
-   html-mode
-   css-mode)
+   html-ts-mode
+   css-ts-mode)
   . eglot-ensure)
  :bind
  (:map
@@ -167,10 +166,7 @@
   ("C-c r" . eglot-rename)
   ("C-c f" . eglot-format)
   ("C-c a" . eglot-code-actions)))
-(use-package
- eglot-booster
- :after eglot
- :config (eglot-booster-mode))
+(use-package eglot-booster :after eglot :config (eglot-booster-mode))
 
 ;; Setup elisp-autofmt
 (use-package
