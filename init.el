@@ -124,7 +124,7 @@
 ;; Install programming modes
 (use-package go-mode :ensure t)
 
-;; Install tide (for web dev)
+;; Install treesitter (for web dev)
 (use-package
  treesit-auto
  :ensure t
@@ -142,10 +142,8 @@
 (use-package
  eglot
  :ensure t
- :init
- (setq eglot-autoshutdown t)
- (setf (plist-get eglot-events-buffer-config :size) 0)
- :config
+ :init (setq eglot-autoshutdown t)
+ :config (setf (plist-get eglot-events-buffer-config :size) 0)
  (add-hook
   'eglot-managed-mode-hook
   (lambda ()
