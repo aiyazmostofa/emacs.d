@@ -107,7 +107,8 @@
  :config
  (setq
   company-tooltip-align-annotations t
-  company-idle-delay nil)
+  company-minimum-prefix-length 1
+  company-idle-delay 0)
  :hook (emacs-lisp-mode . company-mode))
 
 ;; Setup rainbow-delimiters
@@ -142,9 +143,8 @@
  eglot
  :ensure t
  :init
- (setq
-  eglot-autoshutdown t
-  eglot-events-buffer-config 0)
+ (setq eglot-autoshutdown t)
+ (setf (plist-get eglot-events-buffer-config :size) 0)
  :config
  (add-hook
   'eglot-managed-mode-hook
