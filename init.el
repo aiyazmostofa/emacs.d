@@ -133,26 +133,6 @@
  tsx-ts-mode-indent-offset 4
  js-ts-mode-indent-offset 4
  treesit-font-lock-level 4)
-(use-package
- tide
- :ensure t
- :init
- (defun setup-tide-mode ()
-   (interactive)
-   (tide-setup)
-   (flycheck-mode 1)
-   (eldoc-mode 1)
-   (tide-hl-identifier-mode 1)
-   (rainbow-delimiters-mode 1)
-   (company-mode 1))
- :hook ((tsx-ts-mode js-ts-mode typescript-ts-mode) . setup-tide-mode)
- :config (setq flycheck-check-syntax-automatically '(save mode-enabled))
- :bind
- (:map
-  tide-mode-map
-  ("C-c r" . tide-rename-symbol)
-  ("C-c f" . tide-format)
-  ("C-c a" . tide-fix)))
 
 ;; Setup eglot
 (use-package
@@ -169,7 +149,17 @@
     (interactive)
     (rainbow-delimiters-mode 1)
     (company-mode 1)))
- :hook ((c-mode c++-mode go-mode python-mode) . eglot-ensure)
+ :hook
+ ((c-mode
+   c++-mode
+   go-mode
+   python-mode
+   typescript-ts-mode
+   tsx-ts-mode
+   js-ts-mode
+   html-mode
+   css-mode)
+  . eglot-ensure)
  :bind
  (:map
   eglot-mode-map
