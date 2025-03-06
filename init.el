@@ -139,6 +139,12 @@
  tsx-ts-mode-indent-offset 4
  js-ts-mode-indent-offset 4)
 
+;; Setup yasnippet
+(use-package
+ yasnippet
+ :ensure t
+ :hook ((emacs-lisp-mode . yas-minor-mode)))
+
 ;; Setup eglot
 (use-package
  eglot
@@ -150,6 +156,7 @@
   (lambda ()
     (interactive)
     (rainbow-delimiters-mode 1)
+    (yas-minor-mode 1)
     (company-mode 1)))
  :hook
  ((c-ts-mode
@@ -162,6 +169,9 @@
    html-ts-mode
    css-ts-mode)
   . eglot-ensure)
+ :custom
+ (eglot-ignored-server-capabilities
+  '(:documentOnTypeFormattingProvider))
  :bind
  (:map
   eglot-mode-map
@@ -179,6 +189,7 @@
 (use-package
  elisp-autofmt
  :ensure t
+ :commands (elisp-autofmt-buffer)
  :bind
  (:map
   emacs-lisp-mode-map
