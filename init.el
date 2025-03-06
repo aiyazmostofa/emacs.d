@@ -87,7 +87,6 @@
      (load-file "cmd.el"))))
 
 ;; Install copeforces
-(use-package web-server :ensure t)
 (use-package copeforces :bind (("C-c C" . copeforces)))
 
 ;; Install mood-line
