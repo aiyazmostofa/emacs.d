@@ -169,7 +169,12 @@
   ("C-c r" . eglot-rename)
   ("C-c f" . eglot-format)
   ("C-c a" . eglot-code-actions)))
-(use-package eglot-booster :after eglot :config (eglot-booster-mode))
+(use-package
+ eglot-booster
+ :vc
+ (:url "https://github.com/jdtsmith/eglot-booster.git" :rev :newest)
+ :after eglot
+ :config (eglot-booster-mode))
 
 ;; Setup elisp-autofmt
 (use-package
