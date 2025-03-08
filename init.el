@@ -58,6 +58,14 @@
 (with-eval-after-load 'transient
   (define-key transient-map (kbd "<escape>") 'transient-quit-one))
 
+(defun kill-window-possibly-buffer ()
+  "Kill the current window.
+If the buffer associated with the window is not in any other window, kill it too."
+  (interactive)
+  (if (eq (length (get-buffer-window-list)) 1)
+      (kill-buffer-and-window)
+    (delete-window)))
+
 ;; Setup evil-mode
 (use-package
  evil
@@ -65,7 +73,7 @@
  :init (setq evil-undo-system 'undo-fu)
  :config
  (evil-mode 1)
- (evil-global-set-key 'normal (kbd "q") 'kill-current-buffer))
+ (evil-global-set-key 'normal (kbd "q") 'kill-window-possibly-buffer))
 (use-package undo-fu :ensure t)
 
 ;; Setup spacemaster
