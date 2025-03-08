@@ -65,7 +65,7 @@
  :init (setq evil-undo-system 'undo-fu)
  :config
  (evil-mode 1)
- (evil-global-set-key 'normal (kbd "q") 'quit-window))
+ (evil-global-set-key 'normal (kbd "q") 'kill-current-buffer))
 (use-package undo-fu :ensure t)
 
 ;; Setup spacemaster
