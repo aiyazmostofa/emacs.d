@@ -62,9 +62,12 @@
   "Kill the current window.
 If the buffer associated with the window is not in any other window, kill it too."
   (interactive)
-  (if (eq (length (get-buffer-window-list)) 1)
-      (kill-buffer-and-window)
-    (delete-window)))
+  (if (eq (length (window-list)) 1)
+      (if (eq (length (get-buffer-window-list)) 1)
+          (kill-current-buffer))
+    (if (eq (length (get-buffer-window-list)) 1)
+        (kill-buffer-and-window)
+      (delete-window))))
 
 ;; Setup evil-mode
 (use-package
