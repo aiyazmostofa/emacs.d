@@ -45,7 +45,7 @@
 (use-package
  ef-themes
  :ensure t
- :config (load-theme 'ef-melissa-dark :no-confirm))
+ :config (ef-themes-select 'ef-melissa-dark))
 
 ;; Setup spacious padding
 (use-package
