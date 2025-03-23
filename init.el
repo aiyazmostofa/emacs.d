@@ -137,7 +137,10 @@ If the buffer associated with the window is not in any other window, kill it too
 (use-package
  corfu
  :ensure t
- :custom (corfu-auto t)
+ :custom
+ (corfu-auto t)
+ (corfu-auto-delay 0)
+ (corfu-auto-prefix 1)
  :hook (emacs-lisp-mode . corfu-mode))
 
 ;; Setup rainbow-delimiters
