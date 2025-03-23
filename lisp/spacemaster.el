@@ -35,7 +35,7 @@
     (setq spacemaster--buffer
           (concat (substring spacemaster--buffer nil -2) "C-M-")))
    (t
-    (setq spacemaster--buffer ""))))
+    (setq spacemaster--buffer (concat spacemaster--buffer " TAB")))))
 
 (defun spacemaster--handle-misc ()
   "Handle any character not specially handled by spacemaster."
@@ -52,7 +52,7 @@ If it cannot, handle accordingly."
           (key-binding (kbd spacemaster--buffer)))
     (cond
      ((not spacemaster--candidate-function)
-      (spacemaster--echo "Invalid key sequence")
+      (spacemaster--echo (concat spacemaster--buffer " is undefined"))
       (setq spacemaster--buffer ""))
      ((not (keymapp spacemaster--candidate-function))
       (call-interactively spacemaster--candidate-function)
