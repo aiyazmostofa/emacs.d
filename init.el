@@ -99,6 +99,12 @@ If the buffer associated with the window is not in any other window, kill it too
    (when (file-exists-p "cmd.el")
      (load-file "cmd.el"))))
 
+;; Get eat
+(use-package
+ eat
+ :ensure t
+ :config (add-hook 'eshell-load-hook #'eat-eshell-mode))
+
 ;; Install copeforces
 (use-package copeforces :bind (("C-c C" . copeforces)))
 
