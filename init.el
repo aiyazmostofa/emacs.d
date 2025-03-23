@@ -76,7 +76,10 @@ If the buffer associated with the window is not in any other window, kill it too
  :init (setq evil-undo-system 'undo-fu)
  :config
  (evil-mode 1)
- (evil-global-set-key 'normal (kbd "q") 'kill-window-possibly-buffer))
+ (evil-global-set-key 'normal (kbd "q") 'kill-window-possibly-buffer)
+ (evil-global-set-key 'insert (kbd "C-n") nil)
+ (evil-global-set-key 'insert (kbd "C-p") nil))
+
 (use-package undo-fu :ensure t)
 
 ;; Setup spacemaster
@@ -124,16 +127,12 @@ If the buffer associated with the window is not in any other window, kill it too
   '((file (styles partial-completion)))))
 (use-package vertico :ensure t :config (vertico-mode 1))
 
-;; Setup company
+;; Setup corfu
 (use-package
- company
+ corfu
  :ensure t
- :config
- (setq
-  company-tooltip-align-annotations t
-  company-minimum-prefix-length 1
-  company-idle-delay 0)
- :hook (emacs-lisp-mode . company-mode))
+ :custom (corfu-auto t)
+ :hook (emacs-lisp-mode . corfu-mode))
 
 ;; Setup rainbow-delimiters
 (use-package
@@ -176,7 +175,7 @@ If the buffer associated with the window is not in any other window, kill it too
     (interactive)
     (rainbow-delimiters-mode 1)
     (yas-minor-mode 1)
-    (company-mode 1)))
+    (corfu-mode 1)))
  :hook
  ((c-ts-mode
    c++-ts-mode
