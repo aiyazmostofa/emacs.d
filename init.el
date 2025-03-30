@@ -151,7 +151,7 @@ If the buffer associated with the window is not in any other window, kill it too
  :hook (emacs-lisp-mode . rainbow-delimiters-mode))
 
 ;; Install magit
-(use-package magit :ensure t :bind (("C-c m" . magit)))
+(use-package magit :ensure t)
 
 ;; Install treesitter
 (use-package
