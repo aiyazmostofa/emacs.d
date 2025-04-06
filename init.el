@@ -139,7 +139,7 @@ If the buffer associated with the window is not in any other window, kill it too
  :ensure t
  :custom
  (corfu-auto t)
- (corfu-auto-delay 0)
+ (corfu-auto-delay 0.01)
  (corfu-auto-prefix 1)
  :hook (emacs-lisp-mode . corfu-mode))
 
@@ -225,6 +225,14 @@ If the buffer associated with the window is not in any other window, kill it too
      (interactive)
      (message "Formatting...")
      (elisp-autofmt-buffer)))))
+
+;; Setup eshell keybinding
+(global-set-key
+ (kbd "C-c e")
+ (lambda ()
+   (interactive)
+   (eshell t)))
+(evil-set-initial-state 'eshell-mode 'normal)
 
 ;; Setup gc back to a decently normal level
 (setq gc-cons-threshold (* 2 1000 1000))
