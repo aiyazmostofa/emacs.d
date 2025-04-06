@@ -79,14 +79,12 @@ If the buffer associated with the window is not in any other window, kill it too
 (use-package
  evil
  :ensure t
- :init (setq evil-undo-system 'undo-fu)
+ :init (setq evil-undo-system 'undo-redo)
  :config
  (evil-mode 1)
  (evil-global-set-key 'normal (kbd "q") 'kill-window-possibly-buffer)
  (evil-global-set-key 'insert (kbd "C-n") nil)
  (evil-global-set-key 'insert (kbd "C-p") nil))
-
-(use-package undo-fu :ensure t)
 
 ;; Setup spacemaster
 (use-package
@@ -100,6 +98,7 @@ If the buffer associated with the window is not in any other window, kill it too
  (evil-global-set-key 'motion (kbd "SPC") 'spacemaster))
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "SPC") 'spacemaster))
+(setq dired-kill-when-opening-new-dired-buffer t)
 
 ;; Run a eshell script called cmd.el from the current directory
 (global-set-key
