@@ -92,11 +92,12 @@ If the buffer associated with the window is not in any other window, kill it too
 (use-package
  spacemaster
  :config
+ (evil-global-set-key 'normal (kbd "C-SPC") 'execute-extended-command)
+ (evil-global-set-key 'visual (kbd "C-SPC") 'execute-extended-command)
+ (evil-global-set-key 'motion (kbd "C-SPC") 'execute-extended-command)
  (evil-global-set-key 'normal (kbd "SPC") 'spacemaster)
  (evil-global-set-key 'visual (kbd "SPC") 'spacemaster)
- (evil-global-set-key 'normal (kbd "C-SPC") 'execute-extended-command)
- (evil-global-set-key
-  'visual (kbd "C-SPC") 'execute-extended-command))
+ (evil-global-set-key 'motion (kbd "SPC") 'spacemaster))
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "SPC") 'spacemaster))
 
