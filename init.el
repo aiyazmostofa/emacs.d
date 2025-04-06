@@ -232,7 +232,6 @@ If the buffer associated with the window is not in any other window, kill it too
  (lambda ()
    (interactive)
    (eshell t)))
-(evil-set-initial-state 'eshell-mode 'normal)
 
 ;; Setup gc back to a decently normal level
 (setq gc-cons-threshold (* 2 1000 1000))
