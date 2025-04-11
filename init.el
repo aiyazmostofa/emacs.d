@@ -36,8 +36,8 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-(when (find-font (font-spec :name "Jetbrains Mono"))
-  (set-frame-font "Jetbrains Mono-16" nil t))
+(when (find-font (font-spec :name "JetBrains Mono"))
+  (set-frame-font "JetBrains Mono-16" nil t))
 (setq-default truncate-lines t)
 (global-display-line-numbers-mode)
 
@@ -151,7 +151,7 @@ If the buffer associated with the window is not in any other window, kill it too
  :hook (emacs-lisp-mode . rainbow-delimiters-mode))
 
 ;; Install magit
-(use-package magit :ensure t)
+(use-package magit :ensure t :defer t)
 
 ;; Install treesitter
 (use-package
