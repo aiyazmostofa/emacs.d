@@ -42,16 +42,10 @@
 (global-display-line-numbers-mode)
 
 ;; Setup themes ef-themes
-;(use-package
-; ef-themes
-; :ensure t
-; :config (ef-themes-select 'ef-melissa-dark))
-
-;; Setup doom themes
 (use-package
- doom-themes
+ ef-themes
  :ensure t
- :config (load-theme 'doom-gruvbox :no-confirm))
+ :config (ef-themes-select 'ef-rosa))
 
 ;; Setup spacious padding
 (use-package
