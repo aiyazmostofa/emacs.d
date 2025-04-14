@@ -42,10 +42,7 @@
 (global-display-line-numbers-mode)
 
 ;; Setup themes ef-themes
-(use-package
- ef-themes
- :ensure t
- :config (ef-themes-select 'ef-rosa))
+(use-package ef-themes :ensure t :config (ef-themes-select 'ef-rosa))
 
 ;; Setup spacious padding
 (use-package
@@ -198,7 +195,8 @@ If the buffer associated with the window is not in any other window, kill it too
   eglot-mode-map
   ("C-c r" . eglot-rename)
   ("C-c f" . eglot-format)
-  ("C-c a" . eglot-code-actions)))
+  ("C-c a" . eglot-code-actions)
+  ("C-c d" . xref-find-definitions)))
 (use-package
  eglot-booster
  :vc
