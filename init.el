@@ -200,7 +200,8 @@ If the buffer associated with the window is not in any other window, kill it too
   ("C-c r" . eglot-rename)
   ("C-c f" . eglot-format)
   ("C-c a" . eglot-code-actions)
-  ("C-c d" . xref-find-definitions)))
+  ("C-c D" . xref-find-definitions)
+  ("C-c R" . xref-find-references)))
 (use-package
  eglot-booster
  :vc
@@ -220,7 +221,8 @@ If the buffer associated with the window is not in any other window, kill it too
    (lambda ()
      (interactive)
      (message "Formatting...")
-     (elisp-autofmt-buffer)))))
+     (elisp-autofmt-buffer)))
+  ("C-c D" . xref-find-definitions) ("C-c R" . xref-find-references)))
 
 ;; Setup eshell keybinding
 (defun eshell-buffer-p (buffer)
