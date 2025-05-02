@@ -75,7 +75,17 @@ If the buffer associated with the window is not in any other window, kill it too
  (evil-mode 1)
  (evil-global-set-key 'normal (kbd "q") 'kill-window-possibly-buffer)
  (evil-global-set-key 'insert (kbd "C-n") nil)
- (evil-global-set-key 'insert (kbd "C-p") nil))
+ (evil-global-set-key 'insert (kbd "C-p") nil)
+ (evil-define-key
+  'insert
+  eshell-mode-map
+  (kbd "C-p")
+  'eshell-previous-matching-input-from-input)
+ (evil-define-key
+  'insert
+  eshell-mode-map
+  (kbd "C-n")
+  'eshell-next-matching-input-from-input))
 
 ;; Setup spacemaster
 (use-package
@@ -241,16 +251,6 @@ If the buffer associated with the window is not in any other window, kill it too
  (lambda ()
    (interactive)
    (eshell t)))
-(evil-define-key
- 'insert
- 'eshell-mode-map
- (kbd "C-p")
- 'eshell-previous-matching-input-from-input)
-(evil-define-key
- 'insert
- 'eshell-mode-map
- (kbd "C-n")
- 'eshell-next-matching-input-from-input)
 
 ;; Setup gc back to a decently normal level
 (setq gc-cons-threshold (* 2 1000 1000))
