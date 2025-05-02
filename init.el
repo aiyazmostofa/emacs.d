@@ -219,8 +219,20 @@ If the buffer associated with the window is not in any other window, kill it too
      (elisp-autofmt-buffer)))))
 
 ;; Setup eshell keybinding
+(defun eshell-buffer-p (buffer)
+  (with-current-buffer buffer
+    (eq major-mode 'eshell-mode)))
+(defun switch-to-eshell-buffer ()
+  (interactive)
+  (let ((buffer
+         (completing-read "Switch to eshell buffer: "
+                          (mapcar #'buffer-name (buffer-list))
+                          #'eshell-buffer-p
+                          t)))
+    (switch-to-buffer buffer)))
+(global-set-key (kbd "C-c e") #'switch-to-eshell-buffer)
 (global-set-key
- (kbd "C-c e")
+ (kbd "C-c E")
  (lambda ()
    (interactive)
    (eshell t)))
