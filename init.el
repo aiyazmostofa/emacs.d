@@ -41,8 +41,8 @@
 (setq-default truncate-lines t)
 (global-display-line-numbers-mode)
 
-;; Setup themes ef-themes
-(use-package ef-themes :ensure t :config (ef-themes-select 'ef-rosa))
+;; Nice theme
+(load-theme 'modus-vivendi-tritanopia :no-confirm)
 
 ;; Setup spacious padding
 (use-package
