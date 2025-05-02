@@ -224,18 +224,34 @@ If the buffer associated with the window is not in any other window, kill it too
     (eq major-mode 'eshell-mode)))
 (defun switch-to-eshell-buffer ()
   (interactive)
-  (let ((buffer
-         (completing-read "Switch to eshell buffer: "
-                          (mapcar #'buffer-name (buffer-list))
-                          #'eshell-buffer-p
-                          t)))
-    (switch-to-buffer buffer)))
+  (let ((buffers
+         (seq-filter
+          #'eshell-buffer-p (mapcar #'buffer-name (buffer-list)))))
+    (cond
+     ((eq (length buffers) 0)
+      (message "No eshell buffers open."))
+     ((eq (length buffers) 1)
+      (switch-to-buffer (car buffers)))
+     (t
+      (switch-to-buffer
+       (completing-read "Switch to eshell buffer: " buffers
+                        nil t))))))
 (global-set-key (kbd "C-c e") #'switch-to-eshell-buffer)
 (global-set-key
  (kbd "C-c E")
  (lambda ()
    (interactive)
    (eshell t)))
+(evil-define-key
+ 'insert
+ 'eshell-mode-map
+ (kbd "C-p")
+ 'eshell-previous-matching-input-from-input)
+(evil-define-key
+ 'insert
+ 'eshell-mode-map
+ (kbd "C-n")
+ 'eshell-next-matching-input-from-input)
 
 ;; Setup gc back to a decently normal level
 (setq gc-cons-threshold (* 2 1000 1000))
