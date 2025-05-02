@@ -47,12 +47,6 @@
  :ensure t
  :config (ef-themes-select 'ef-cyprus))
 
-;; Setup spacious padding
-(use-package
- spacious-padding
- :ensure t
- :config (spacious-padding-mode))
-
 ;; Set escape to quit to make life easier
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (with-eval-after-load 'transient
@@ -74,19 +68,18 @@ If the buffer associated with the window is not in any other window, kill it too
  evil
  :ensure t
  :init (setq evil-undo-system 'undo-redo)
- :config
- (evil-mode 1)
- (evil-global-set-key 'normal (kbd "q") 'kill-window-possibly-buffer)
- (evil-global-set-key 'insert (kbd "C-n") nil)
- (evil-global-set-key 'insert (kbd "C-p") nil)
+ :config (evil-mode 1)
+ (evil-define-key
+  '(normal visual motion)
+  'global
+  (kbd "q")
+  'kill-window-possibly-buffer)
+ (evil-define-key 'insert 'global (kbd "C-n") nil (kbd "C-p") nil)
  (evil-define-key
   'insert
   eshell-mode-map
   (kbd "C-p")
-  'eshell-previous-matching-input-from-input)
- (evil-define-key
-  'insert
-  eshell-mode-map
+  'eshell-previous-matching-input-from-input
   (kbd "C-n")
   'eshell-next-matching-input-from-input))
 
@@ -94,12 +87,13 @@ If the buffer associated with the window is not in any other window, kill it too
 (use-package
  spacemaster
  :config
- (evil-global-set-key 'normal (kbd "C-SPC") 'execute-extended-command)
- (evil-global-set-key 'visual (kbd "C-SPC") 'execute-extended-command)
- (evil-global-set-key 'motion (kbd "C-SPC") 'execute-extended-command)
- (evil-global-set-key 'normal (kbd "SPC") 'spacemaster)
- (evil-global-set-key 'visual (kbd "SPC") 'spacemaster)
- (evil-global-set-key 'motion (kbd "SPC") 'spacemaster))
+ (evil-define-key
+  '(normal visual motion)
+  'global
+  (kbd "C-SPC")
+  'execute-extended-command
+  (kbd "SPC")
+  'spacemaster))
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "SPC") 'spacemaster))
 (setq dired-kill-when-opening-new-dired-buffer t)
@@ -120,9 +114,6 @@ If the buffer associated with the window is not in any other window, kill it too
 
 ;; Install copeforces
 (use-package copeforces :bind (("C-c C" . copeforces)))
-
-;; Install mood-line
-(use-package mood-line :ensure t :config (mood-line-mode))
 
 ;; Electric pairs
 (setq electric-pair-pairs '((?\" . ?\") (?\{ . ?\})))
