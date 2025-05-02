@@ -42,7 +42,10 @@
 (global-display-line-numbers-mode)
 
 ;; Nice theme
-(load-theme 'modus-vivendi-tritanopia :no-confirm)
+(use-package
+ ef-themes
+ :ensure t
+ :config (ef-themes-select 'ef-cyprus))
 
 ;; Setup spacious padding
 (use-package
