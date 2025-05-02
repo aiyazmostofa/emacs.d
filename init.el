@@ -224,9 +224,7 @@ If the buffer associated with the window is not in any other window, kill it too
     (eq major-mode 'eshell-mode)))
 (defun switch-to-eshell-buffer ()
   (interactive)
-  (let ((buffers
-         (seq-filter
-          #'eshell-buffer-p (mapcar #'buffer-name (buffer-list)))))
+  (let ((buffers (seq-filter #'eshell-buffer-p (buffer-list))))
     (cond
      ((eq (length buffers) 0)
       (message "No eshell buffers open."))
@@ -234,8 +232,9 @@ If the buffer associated with the window is not in any other window, kill it too
       (switch-to-buffer (car buffers)))
      (t
       (switch-to-buffer
-       (completing-read "Switch to eshell buffer: " buffers
-                        nil t))))))
+       (completing-read
+        "Switch to eshell buffer: " (mapcar #'buffer-name buffers)
+        nil t))))))
 (global-set-key (kbd "C-c e") #'switch-to-eshell-buffer)
 (global-set-key
  (kbd "C-c E")
