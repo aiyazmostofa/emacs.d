@@ -247,5 +247,8 @@ If the buffer associated with the window is not in any other window, kill it too
    (interactive)
    (eshell t)))
 
+(use-package
+ mostline
+ :config (setq-default mode-line-format mostline-format))
 ;; Setup gc back to a decently normal level
 (setq gc-cons-threshold (* 2 1000 1000))
