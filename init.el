@@ -224,6 +224,59 @@ If the buffer associated with the window is not in any other window, kill it too
      (elisp-autofmt-buffer)))
   ("C-c D" . xref-find-definitions) ("C-c R" . xref-find-references)))
 
+;; buffer name
+(defun my-modeline--buffer-name ()
+  (format " %s " (buffer-name)))
+(defvar-local my-modeline-buffer-name
+    '(:eval (propertize (my-modeline--buffer-name) 'face 'bold)))
+(put 'my-modeline-buffer-name 'risky-local-variable t)
+
+;; evil state
+(defface evil-normal-state-face '((t))
+  "bjksldf")
+(ef-themes-with-colors
+ (set-face-attribute 'evil-normal-state-face nil
+                     :background fg-mode-line
+                     :foreground bg-mode-line))
+(force-mode-line-update)
+(defun my-modeline--evil-state ()
+  (format " <%s> "
+          (cond
+           ((evil-normal-state-p)
+            "N")
+           ((evil-replace-state-p)
+            "R")
+           ((evil-motion-state-p)
+            "M")
+           ((evil-visual-state-p)
+            "V")
+           ((evil-operator-state-p)
+            "O")
+           ((evil-insert-state-p)
+            "I")
+           (t
+            "E"))))
+(defvar-local my-modeline-evil-state
+    '(:eval
+      (propertize (my-modeline--evil-state)
+                  'face
+                  'evil-normal-state-face)))
+(put 'my-modeline-evil-state 'risky-local-variable t)
+
+;; major mode
+(defun my-modeline--major-mode-name ()
+  "Return capitalized `major-mode' as a string."
+  (format " (%s) " (capitalize (symbol-name major-mode))))
+(defvar-local my-modeline-major-mode
+    '(:eval (my-modeline--major-mode-name))
+  "Mode line construct to display the major mode.")
+(put 'my-modeline-major-mode 'risky-local-variable t)
+(setq-default mode-line-format
+              '("%e"
+                my-modeline-evil-state
+                my-modeline-buffer-name
+                mode-line-format-right-align
+                my-modeline-major-mode))
 ;; Setup eshell keybinding
 (defun eshell-buffer-p (buffer)
   (with-current-buffer buffer
