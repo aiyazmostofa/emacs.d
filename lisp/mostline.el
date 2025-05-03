@@ -82,7 +82,7 @@
     mode-line-format-right-align
     mostline-major-mode
     mostline-lsp)
-  "The main entrypoint to use mostline.
+  "The main entrypoint for mostline.
  Set the `mode-line-format' variable using `setq-default'.")
 
 (provide 'mostline)
