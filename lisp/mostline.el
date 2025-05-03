@@ -49,7 +49,7 @@
 (put 'mostline-buffer 'risky-local-variable t)
 
 (defun mostline--saved ()
-  (if (buffer-modified-p)
+  (if (and buffer-file-name (buffer-modified-p))
       "*"
     ""))
 
