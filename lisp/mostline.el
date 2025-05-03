@@ -1,5 +1,4 @@
 ;;; mostline.el --- The worst mode line. -*- lexical-binding: t -*-
-;; State indicator (for evil)
 (defun mostline--state ()
   "Computes the text for the state indicator."
   (cond
