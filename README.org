@@ -292,7 +292,7 @@ If the buffer associated with the window is not in any other window, kill it too
 #+end_src
 
 ** Evil Mode Configuration
-Settings for the Evil text editing layer, including escape keybindings.
+Settings for the Evil text editing layer.
 
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package
@@ -314,7 +314,12 @@ Settings for the Evil text editing layer, including escape keybindings.
   (kbd "C-n")
   'eshell-next-matching-input-from-input))
 
-;; Set escape to quit to make life easier (Evil context)
+#+end_src
+
+** Escape Key Settings
+Set escape to quit to make life easier (Evil context)
+
+#+begin_src emacs-lisp :tangle "init.el"
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (use-package
  transient
