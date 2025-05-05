@@ -120,10 +120,6 @@ If the buffer associated with the window is not in any other window, kill it too
 ;; Install copeforces
 (use-package copeforces :bind (("C-c C" . copeforces)))
 
-;; Electric pairs
-(setq electric-pair-pairs '((?\" . ?\") (?\{ . ?\})))
-(electric-pair-mode 1)
-
 ;; Setup vertico
 (use-package
  orderless
@@ -140,15 +136,10 @@ If the buffer associated with the window is not in any other window, kill it too
  :custom
  (corfu-auto t)
  (corfu-auto-delay 0.01)
- (corfu-auto-prefix 1)
- :hook (emacs-lisp-mode . corfu-mode))
+ (corfu-auto-prefix 1))
 
 ;; Setup rainbow-delimiters
-(use-package
- rainbow-delimiters
- :ensure t
- :config
- :hook (emacs-lisp-mode . rainbow-delimiters-mode))
+(use-package rainbow-delimiters :ensure t)
 
 ;; Install magit
 (use-package magit :ensure t :defer t)
@@ -167,10 +158,18 @@ If the buffer associated with the window is not in any other window, kill it too
  js-ts-mode-indent-offset 4)
 
 ;; Setup yasnippet
+(use-package yasnippet :ensure t)
+
 (use-package
- yasnippet
- :ensure t
- :hook ((emacs-lisp-mode . yas-minor-mode)))
+ elisp-mode
+ :init
+ (add-hook
+  'emacs-lisp-mode-hook
+  (lambda ()
+    (electric-pair-local-mode 1)
+    (yas-minor-mode 1)
+    (rainbow-delimiters-mode 1)
+    (corfu-mode 1))))
 
 ;; Setup eglot
 (use-package
@@ -182,6 +181,7 @@ If the buffer associated with the window is not in any other window, kill it too
   'eglot-managed-mode-hook
   (lambda ()
     (interactive)
+    (electric-pair-local-mode 1)
     (rainbow-delimiters-mode 1)
     (yas-minor-mode 1)
     (corfu-mode 1)))
