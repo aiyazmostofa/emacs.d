@@ -1,6 +1,7 @@
 ;;; init.el --- The emacs config. -*- lexical-binding: t; -*-
 ;; Set gc cap high so gc is limited
 (setq gc-cons-threshold (* 50 1000 1000))
+(setq use-package-compute-statistics t)
 
 ;; Dispose of custom settings in custom-file
 (setq custom-file "~/.emacs.d/custom.el")
@@ -49,8 +50,10 @@
 
 ;; Set escape to quit to make life easier
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-(with-eval-after-load 'transient
-  (define-key transient-map (kbd "<escape>") 'transient-quit-one))
+(use-package
+ transient
+ :config
+ (define-key transient-map (kbd "<escape>") 'transient-quit-one))
 
 (defun kill-window-possibly-buffer ()
   "Kill the current window.
@@ -94,9 +97,11 @@ If the buffer associated with the window is not in any other window, kill it too
   'execute-extended-command
   (kbd "SPC")
   'spacemaster))
-(with-eval-after-load 'dired
-  (define-key dired-mode-map (kbd "SPC") 'spacemaster))
-(setq dired-kill-when-opening-new-dired-buffer t)
+
+(use-package
+ dired
+ :custom (dired-kill-when-opening-new-dired-buffer t)
+ :config (define-key dired-mode-map (kbd "SPC") 'spacemaster))
 
 ;; Run a eshell script called cmd.el from the current directory
 (global-set-key
@@ -246,9 +251,9 @@ If the buffer associated with the window is not in any other window, kill it too
  (lambda ()
    (interactive)
    (eshell t)))
-
 (use-package
  mostline
  :config (setq-default mode-line-format mostline-format))
+
 ;; Setup gc back to a decently normal level
 (setq gc-cons-threshold (* 2 1000 1000))
