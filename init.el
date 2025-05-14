@@ -46,7 +46,7 @@
 (use-package
  ef-themes
  :ensure t
- :config (ef-themes-select 'ef-cyprus))
+ :config (ef-themes-select 'ef-duo-dark))
 
 ;; Set escape to quit to make life easier
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
@@ -254,6 +254,14 @@ If the buffer associated with the window is not in any other window, kill it too
 (use-package
  mostline
  :config (setq-default mode-line-format mostline-format))
+
+;; Unfill paragraph
+(defun unfill-paragraph ()
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+(global-set-key (kbd "M-Q") 'unfill-paragraph)
 
 ;; Setup gc back to a decently normal level
 (setq gc-cons-threshold (* 2 1000 1000))
