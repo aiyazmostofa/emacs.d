@@ -46,7 +46,10 @@
 (use-package
  ef-themes
  :ensure t
- :config (ef-themes-select 'ef-duo-dark))
+ :config
+ (ef-themes-select
+  (nth
+   (random (length ef-themes-dark-themes)) ef-themes-dark-themes)))
 
 ;; Set escape to quit to make life easier
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
