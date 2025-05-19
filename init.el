@@ -71,12 +71,14 @@ If the buffer associated with the window is not in any other window, kill it too
  evil
  :ensure t
  :init (setq evil-undo-system 'undo-redo)
- :config (evil-mode 1)
+ :config (evil-mode 1) (setq evil-emacs-state-cursor 'bar)
  (evil-define-key
   '(normal visual motion)
   'global
   (kbd "q")
-  'kill-window-possibly-buffer)
+  'kill-window-possibly-buffer
+  (kbd "TAB")
+  nil)
  (evil-define-key 'insert 'global (kbd "C-n") nil (kbd "C-p") nil)
  (evil-define-key
   'insert
@@ -135,6 +137,7 @@ If the buffer associated with the window is not in any other window, kill it too
  :ensure t
  :custom
  (corfu-auto t)
+ (corfu-preselect 'prompt)
  (corfu-auto-delay 0.01)
  (corfu-auto-prefix 1))
 
