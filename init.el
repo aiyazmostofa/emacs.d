@@ -139,7 +139,14 @@ If the buffer associated with the window is not in any other window, kill it too
  (corfu-auto t)
  (corfu-preselect 'prompt)
  (corfu-auto-delay 0.01)
- (corfu-auto-prefix 1))
+ (corfu-auto-prefix 1)
+ :config
+ (defun corfu-insert ()
+   (interactive)
+   (if (>= corfu--index 0)
+       (corfu--insert 'finished)
+     (corfu-quit)
+     (newline-and-indent))))
 
 ;; Setup rainbow-delimiters
 (use-package rainbow-delimiters :ensure t)
