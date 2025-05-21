@@ -55,9 +55,8 @@
 (use-package
  ef-themes
  :ensure t
- :config
  ;; I am liking this theme the most (currently).
- (ef-themes-select 'ef-symbiosis))
+ :config (ef-themes-select 'ef-symbiosis))
 
 ;;; This is a personal package that contains my custom mode line.
 (use-package
@@ -75,10 +74,8 @@
  (kbd "C-c c")
  (lambda ()
    (interactive)
-   (when (locate-dominating-file "." "cmd.el")
-     (load-file
-      (file-name-concat (locate-dominating-file "." "cmd.el")
-                        "cmd.el")))))
+   (when-let ((directory (locate-dominating-file "." "cmd.el")))
+     (load-file (file-name-concat directory "cmd.el")))))
 
 ;; This is a personal package the downloading problems for competitive
 ;; programming. This package is due for a rewrite.
@@ -122,10 +119,11 @@ buffers. If only one buffer exists, automatically switch to that buffer."
    (interactive)
    (eshell t)))
 
-;; Configure dired to automatically quit buffers when traversing a file tree.
+;; Some Dired customizations.
 (use-package
  dired
- :custom (dired-kill-when-opening-new-dired-buffer t))
+ :custom (dired-kill-when-opening-new-dired-buffer t)
+ :config (add-hook 'dired-after-readin-hook 'hl-line-mode))
 
 ;; Setup Vertico and Orderless to make minibuffer completion not ass.
 (use-package
@@ -140,8 +138,10 @@ buffers. If only one buffer exists, automatically switch to that buffer."
 (use-package rainbow-delimiters :ensure t)
 
 ;; Magit, the best Git client. Notice the lack of evil-collection in
-;; this configuration. That means that Magit is to be used like it
-;; would be in standard Emacs.
+;; this configuration. This means that Magit is to be used like it
+;; would be in standard Emacs. I assume this package depends on
+;; external programs such as 'diff' and similar core utils (along with
+;; Git of course).
 (use-package magit :ensure t :defer t)
 
 ;; Help setup IDE-style autocompletion with Corfu. The defaults are
@@ -155,7 +155,8 @@ buffers. If only one buffer exists, automatically switch to that buffer."
  (corfu-auto-delay 0.01)
  (corfu-auto-prefix 1))
 
-;; YASnippet is here so that the autocompletion can work more seamlessly.
+;; YASnippet is here so that the autocompletion can work more
+;; seamlessly.
 (use-package yasnippet :ensure t)
 
 ;; To use Emacs 29's Treesit capabilities without having to setup
@@ -172,6 +173,9 @@ buffers. If only one buffer exists, automatically switch to that buffer."
 ;; We will use Eglot to have LSP support in Emacs.
 (use-package
  eglot
+ :custom
+ (eglot-ignored-server-capabilities
+  '(:documentOnTypeFormattingProvider))
  :init (setq eglot-autoshutdown t)
  ;; This is a simple optimization to speed up Eglot.
  :config (setf (plist-get eglot-events-buffer-config :size) 0)
@@ -186,10 +190,7 @@ buffers. If only one buffer exists, automatically switch to that buffer."
     (rainbow-delimiters-mode 1)
     (yas-minor-mode 1)
     (corfu-mode 1)))
- :hook ((c-ts-mode c++-ts-mode go-ts-mode) . eglot-ensure)
- :custom
- (eglot-ignored-server-capabilities
-  '(:documentOnTypeFormattingProvider))
+ :hook ((c-ts-mode c++-ts-mode go-ts-mode java-ts-mode) . eglot-ensure)
  :bind
  (:map
   eglot-mode-map
@@ -213,7 +214,8 @@ buffers. If only one buffer exists, automatically switch to that buffer."
 ;; Since Emacs Lisp doesn't need an LSP (all functionality can be
 ;; imitated through the editor itself), we will apply the same
 ;; configuration from Eglot, replacing with the builtin Emacs
-;; functions. This includes using an external package for formatting.
+;; functions. This includes using an external package for formatting,
+;; which depends on Python 3.8+.
 (use-package elisp-autofmt :ensure t)
 (use-package
  elisp-mode
@@ -228,12 +230,13 @@ buffers. If only one buffer exists, automatically switch to that buffer."
  :bind
  (:map
   emacs-lisp-mode-map
+  ("C-c D" . xref-find-definitions)
+  ("C-c R" . xref-find-references)
   ("C-c f" .
    (lambda ()
      (interactive)
      (message "Formatting...")
-     (elisp-autofmt-buffer)))
-  ("C-c D" . xref-find-definitions) ("C-c R" . xref-find-references)))
+     (elisp-autofmt-buffer)))))
 
 ;; Whenever we are editing text, it is sometimes useful to unfill
 ;; paragraphs.
@@ -251,8 +254,8 @@ buffers. If only one buffer exists, automatically switch to that buffer."
 ;; Here is a personal function for window management that I use a lot,
 ;; so much so that it overrides the Evil Mode keybinding for 'q'.
 (defun kill-window-possibly-buffer ()
-  "Kill the current window.
-If the buffer associated with the window is not in any other window, kill it too."
+  "Kill the current window. If the buffer associated with the window is not
+in any other window, kill it too."
   (interactive)
   (if (eq (length (window-list)) 1)
       (if (eq (length (get-buffer-window-list)) 1)
@@ -299,13 +302,20 @@ If the buffer associated with the window is not in any other window, kill it too
   'execute-extended-command
   (kbd "SPC")
   'spacemaster
+  ;; I used to type 'SPC x SPC s' to save and 'SPC x SPC f' to
+  ;; navigate files, which was pretty clumsy. Before Spacemaster, I
+  ;; used to manually set these to 'SPC f s' and 'SPC f f', which were
+  ;; nice and satisfying. Then, I realized that I can implement this
+  ;; elegantly into Spacemaster with a few tweaks.
   (kbd "C-f")
   (lambda ()
     (interactive)
     (spacemaster "C-x C-"))))
 
-;; Dired doesn't respect the 'SPC' override. So we manually override
-;; it.
+;; Dired doesn't respect the 'SPC' override for Spacemaster. So we
+;; manually override it. It also doesn't respect Evil's search
+;; navigation (which is really annoying because Dired was made to be
+;; searched), so we set that here as well.
 (use-package
  dired
  :config
