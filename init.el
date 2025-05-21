@@ -23,7 +23,7 @@
 ;; be isolated from the rest of my configuration.
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
-;; These contains general configuration for Emacs's behavior.
+;; These contain general configuration for Emacs's behavior.
 (setq
  native-comp-async-report-warnings-errors nil
  auto-save-default nil
@@ -33,7 +33,7 @@
  initial-scratch-message ""
  initial-major-mode 'org-mode)
 
-;; These contains general configuration for Emacs's appearance.
+;; These contain general configuration for Emacs's appearance.
 (menu-bar-mode -1)
 (when (display-graphic-p)
   (scroll-bar-mode -1)
@@ -51,7 +51,7 @@
                           :family "JetBrains Mono")
     (set-face-attribute 'default nil :height 140)))
 
-;; I like all of the dark themes provided by ef-themes.
+;; I like all of the dark themes provided by Ef themes.
 (use-package
  ef-themes
  :ensure t
@@ -76,10 +76,6 @@
    (interactive)
    (when-let ((directory (locate-dominating-file "." "cmd.el")))
      (load-file (file-name-concat directory "cmd.el")))))
-
-;; This is a personal package the downloading problems for competitive
-;; programming. This package is due for a rewrite.
-(use-package copeforces :bind (("C-c C" . copeforces)))
 
 ;; This package makes Eshell more usable for running complex terminal
 ;; applications.
@@ -112,12 +108,21 @@ buffers. If only one buffer exists, automatically switch to that buffer."
         nil t))))))
 (global-set-key (kbd "C-c e") #'switch-to-eshell-buffer)
 
-;; Have a keybinding to create a new Eshell buffer.
+;; I have a keybinding for creating new Eshell buffers.
 (global-set-key
  (kbd "C-c E")
  (lambda ()
    (interactive)
    (eshell t)))
+
+;; Whenever we are editing text, it is sometimes useful to unfill
+;; paragraphs.
+(defun unfill-paragraph ()
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+(global-set-key (kbd "M-Q") 'unfill-paragraph)
 
 ;; Some Dired customizations.
 (use-package
@@ -138,15 +143,15 @@ buffers. If only one buffer exists, automatically switch to that buffer."
 (use-package rainbow-delimiters :ensure t)
 
 ;; Magit, the best Git client. Notice the lack of evil-collection in
-;; this configuration. This means that Magit is to be used like it
-;; would be in standard Emacs. I assume this package depends on
-;; external programs such as 'diff' and similar core utils (along with
-;; Git of course).
+;; this configuration. This means that Magit uses vanilla Emacs
+;; navigation. I assume this package depends on external programs such
+;; as 'diff' and similar core utils (along with Git of course).
 (use-package magit :ensure t :defer t)
 
 ;; Help setup IDE-style autocompletion with Corfu. The defaults are
 ;; extremely aggressive, which might make this configuration unusable
-;; on slower computers.
+;; on slower computers. This package also doesn't work in terminal
+;; Emacs.
 (use-package
  corfu
  :ensure t
@@ -212,9 +217,8 @@ buffers. If only one buffer exists, automatically switch to that buffer."
  :config (eglot-booster-mode))
 
 ;; Since Emacs Lisp doesn't need an LSP (all functionality can be
-;; imitated through the editor itself), we will apply the same
-;; configuration from Eglot, replacing with the builtin Emacs
-;; functions. This includes using an external package for formatting,
+;; imitated through the editor itself), we configure its mode
+;; seperately. This includes using an external package for formatting,
 ;; which depends on Python 3.8+.
 (use-package elisp-autofmt :ensure t)
 (use-package
@@ -238,17 +242,12 @@ buffers. If only one buffer exists, automatically switch to that buffer."
      (message "Formatting...")
      (elisp-autofmt-buffer)))))
 
-;; Whenever we are editing text, it is sometimes useful to unfill
-;; paragraphs.
-(defun unfill-paragraph ()
-  "Takes a multi-line paragraph and makes it into a single line of text."
-  (interactive)
-  (let ((fill-column (point-max)))
-    (fill-paragraph nil)))
-(global-set-key (kbd "M-Q") 'unfill-paragraph)
+;; This is a personal package the downloading problems for competitive
+;; programming. This package is due for a rewrite.
+(use-package copeforces :bind (("C-c C" . copeforces)))
 
 ;; Everything from here to the end (except setting back the GC) is
-;; relevant to Evil Mode. You can safely delete this part from the
+;; relevant to Evil Mode. You can safely delete this part of the
 ;; config.
 
 ;; Here is a personal function for window management that I use a lot,
@@ -329,7 +328,8 @@ in any other window, kill it too."
   (kbd "p")
   'evil-search-previous))
 
-;; 'ESC' is much easier than 'C-g', so we override it where it's used.
+;; 'ESC' is much easier than 'C-g', so we override here it where it's
+;; used.
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (use-package
  transient
