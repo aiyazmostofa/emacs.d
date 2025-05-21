@@ -2,7 +2,7 @@
 
 ;;; Commentary: This mode line is very simple (even though it's called
 ;;; "mostline"). Starting from the left, we have a Evil Mode state
-;;; indicator. If Evil Mode is not installed, it defaults to 'E', for
+;;; indicator. If Evil Mode is not installed, nothing is shown, for
 ;;; "Emacs state". Next is the buffer name. Next is an indicator for
 ;;; whether or not the current buffer is saved. This indicator only
 ;;; shows if the buffer is both unsaved, and is associated with a
