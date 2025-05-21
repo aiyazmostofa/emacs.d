@@ -1,4 +1,7 @@
 ;;; copeforces.el --- Spend more time configuring your competitive programming setup than actually practicing. -*- lexical-binding: t -*-
+
+;;; Commentary: This package needs to be rewritten.
+
 (defun copeforces--strip-http-header (req)
   (replace-regexp-in-string (rx (*? anychar) "\r\n\r\n") "" req))
 (defun copeforces--server-filter (process request)
