@@ -1,131 +1,134 @@
 ;;; init.el --- The emacs config. -*- lexical-binding: t; -*-
-;; Set gc cap high so gc is limited
-(setq gc-cons-threshold (* 50 1000 1000))
-(setq use-package-compute-statistics t)
 
-;; Dispose of custom settings in custom-file
+;; This setting is set so that the GC isn't triggered as often when
+;; Emacs is starting up. This is to improve startup times. This
+;; setting is set to a more reasonable value at the end of this file
+;; to improve memory usage.
+(setq gc-cons-threshold (* 50 1000 1000))
+
+;; When you set a variable using Emacs's GUI, those are automatically
+;; placed in the 'init.el'. We prevent this by putting the settings in
+;; a "throwaway" file called 'custom.el'.
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
   (load custom-file))
 
-;; Setup package management
+;; To install external packages from both ELPA and MELPA.
 (require 'package)
 (package-initialize)
 (add-to-list
  'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'load-path "~/.emacs.d/lisp")
-(when (< emacs-major-version 29)
-  (unless (package-installed-p 'use-package)
-    (unless package-archive-contents
-      (package-refresh-contents))
-    (package-install 'use-package)))
 
-;; General settings
+;; This directory contains all of my personal packages that can safely
+;; be isolated from the rest of my configuration.
+(add-to-list 'load-path "~/.emacs.d/lisp")
+
+;; These contains general configuration for Emacs's behavior.
 (setq
  native-comp-async-report-warnings-errors nil
  auto-save-default nil
  make-backup-files nil
- ring-bell-function 'ignore)
-
-;; Home page settings
-(setq
+ ring-bell-function 'ignore
  inhibit-splash-screen t
  initial-scratch-message ""
  initial-major-mode 'org-mode)
 
-;; Configure appearence
+;; These contains general configuration for Emacs's appearance.
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-(when (find-font (font-spec :name "JetBrains Mono"))
-  (set-frame-font "JetBrains Mono-16" nil t))
 (setq-default truncate-lines t)
 (global-display-line-numbers-mode)
 
-;; Nice theme
+;; This section manages fonts. By default, we use JetBrains Mono, if
+;; available. We also set the font size to 16. We skip this section if
+;; we are in terminal Emacs.
+(when (display-graphic-p)
+  (set-face-attribute 'default nil :height 160)
+  (when (find-font (font-spec :name "JetBrains Mono"))
+    (set-frame-font "JetBrains Mono" nil t)))
+
+;; I like all of the dark themes provided by ef-themes.
 (use-package
  ef-themes
  :ensure t
+ ;; Instead of selecting one theme, getting bored, and then trying to
+ ;; find a new theme, I made Emacs choose a random theme for me at
+ ;; startup.
  :config
  (ef-themes-select
   (nth
    (random (length ef-themes-dark-themes)) ef-themes-dark-themes)))
 
-;; Set escape to quit to make life easier
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+;;; This is a personal package that contains my custom mode-line.
 (use-package
- transient
- :config
- (define-key transient-map (kbd "<escape>") 'transient-quit-one))
+ mostline
+ :config (setq-default mode-line-format mostline-format))
 
-(defun kill-window-possibly-buffer ()
-  "Kill the current window.
-If the buffer associated with the window is not in any other window, kill it too."
-  (interactive)
-  (if (eq (length (window-list)) 1)
-      (if (eq (length (get-buffer-window-list)) 1)
-          (kill-current-buffer))
-    (if (eq (length (get-buffer-window-list)) 1)
-        (kill-buffer-and-window)
-      (delete-window))))
-
-;; Setup evil-mode
-(use-package
- evil
- :ensure t
- :init (setq evil-undo-system 'undo-redo)
- :config (evil-mode 1) (setq evil-emacs-state-cursor 'bar)
- (evil-define-key
-  '(normal visual motion)
-  'global
-  (kbd "q")
-  'kill-window-possibly-buffer
-  (kbd "TAB")
-  nil)
- (evil-define-key 'insert 'global (kbd "C-n") nil (kbd "C-p") nil)
- (evil-define-key
-  'insert
-  eshell-mode-map
-  (kbd "C-p")
-  'eshell-previous-matching-input-from-input
-  (kbd "C-n")
-  'eshell-next-matching-input-from-input))
-
-;; Setup spacemaster
-(use-package
- spacemaster
- :config
- (evil-define-key
-  '(normal visual motion)
-  'global
-  (kbd "C-SPC")
-  'execute-extended-command
-  (kbd "SPC")
-  'spacemaster))
-
-(use-package
- dired
- :custom (dired-kill-when-opening-new-dired-buffer t)
- :config (define-key dired-mode-map (kbd "SPC") 'spacemaster))
-
-;; Run a eshell script called cmd.el from the current directory
+;; I like being able to run a quick, project specific script. For
+;; example, I could be working on a LaTeX project. In the project's
+;; root, there is a 'cmd.el', where I could have some code that opens
+;; up a new buffer/window, runs a LaTeX build command, then shows the
+;; build output. I can do all of this without having to change my
+;; actual config. My competitive programming configuration relies on
+;; this functionality.
 (global-set-key
  (kbd "C-c c")
  (lambda ()
    (interactive)
-   (when (file-exists-p "cmd.el")
-     (load-file "cmd.el"))))
+   (when (locate-dominating-file "." "cmd.el")
+     (load-file
+      (file-name-concat (locate-dominating-file "." "cmd.el")
+                        "cmd.el")))))
 
-;; Get eat
+;; This is a personal package the downloading problems for competitive
+;; programming. This package is due for a rewrite.
+(use-package copeforces :bind (("C-c C" . copeforces)))
+
+;; This package makes Eshell more usable for running complex terminal
+;; applications.
 (use-package
  eat
  :ensure t
  :config (add-hook 'eshell-load-hook #'eat-eshell-mode))
 
-;; Install copeforces
-(use-package copeforces :bind (("C-c C" . copeforces)))
+;; I want to be able to switch between Eshell buffers without having
+;; to dig through the normal buffer menu. So I have a dedicated
+;; keybinding for this.
+(defun eshell-buffer-p (buffer)
+  "Determines whether BUFFER is an Eshell buffer."
+  (with-current-buffer buffer
+    (eq major-mode 'eshell-mode)))
+(defun switch-to-eshell-buffer ()
+  "A command similar to `switch-to-buffer', filtering only for Eshell
+buffers. If only one buffer exists, automatically switch to that buffer."
+  (interactive)
+  (let ((buffers (seq-filter #'eshell-buffer-p (buffer-list))))
+    (cond
+     ((eq (length buffers) 0)
+      (message "No Eshell buffers open."))
+     ((eq (length buffers) 1)
+      (switch-to-buffer (car buffers)))
+     (t
+      (switch-to-buffer
+       (completing-read
+        "Switch to Eshell buffer: " (mapcar #'buffer-name buffers)
+        nil t))))))
+(global-set-key (kbd "C-c e") #'switch-to-eshell-buffer)
 
-;; Setup vertico
+;; Have a keybinding to create a new Eshell buffer.
+(global-set-key
+ (kbd "C-c E")
+ (lambda ()
+   (interactive)
+   (eshell t)))
+
+;; Configure dired to automatically quit buffers when traversing a file tree.
+(use-package
+ dired
+ :custom (dired-kill-when-opening-new-dired-buffer t))
+
+;; Setup Vertico and Orderless to make minibuffer completion not ass.
 (use-package
  orderless
  :ensure t
@@ -134,30 +137,31 @@ If the buffer associated with the window is not in any other window, kill it too
   '((file (styles partial-completion)))))
 (use-package vertico :ensure t :config (vertico-mode 1))
 
-;; Setup corfu
+;; Rainbow delimiters make code look better and easier to read.
+(use-package rainbow-delimiters :ensure t)
+
+;; Magit, the best Git client. Notice the lack of evil-collection in
+;; this configuration. That means that Magit is to be used like it
+;; would be in standard Emacs.
+(use-package magit :ensure t :defer t)
+
+;; Help setup IDE-style autocompletion with Corfu. The defaults are
+;; extremely aggressive, which might make this configuration unusable
+;; on slower computers.
 (use-package
  corfu
  :ensure t
  :custom
  (corfu-auto t)
- (corfu-preselect 'prompt)
  (corfu-auto-delay 0.01)
- (corfu-auto-prefix 1)
- :config
- (defun corfu-insert ()
-   (interactive)
-   (if (>= corfu--index 0)
-       (corfu--insert 'finished)
-     (corfu-quit)
-     (newline-and-indent))))
+ (corfu-auto-prefix 1))
 
-;; Setup rainbow-delimiters
-(use-package rainbow-delimiters :ensure t)
+;; YASnippet is here so that the autocompletion can work more seamlessly.
+(use-package yasnippet :ensure t)
 
-;; Install magit
-(use-package magit :ensure t :defer t)
-
-;; Install treesitter
+;; To use Emacs 29's Treesit capabilities without having to setup
+;; everything ourselves, we use this package to do the heavy lifting
+;; for us.
 (use-package
  treesit-auto
  :ensure t
@@ -165,31 +169,16 @@ If the buffer associated with the window is not in any other window, kill it too
  :config
  (treesit-auto-add-to-auto-mode-alist 'all)
  (global-treesit-auto-mode))
-(setq
- typescript-ts-mode-indent-offset 4
- tsx-ts-mode-indent-offset 4
- js-ts-mode-indent-offset 4)
 
-;; Setup yasnippet
-(use-package yasnippet :ensure t)
-
-(use-package
- elisp-mode
- :init
- (add-hook
-  'emacs-lisp-mode-hook
-  (lambda ()
-    (electric-pair-local-mode 1)
-    (yas-minor-mode 1)
-    (rainbow-delimiters-mode 1)
-    (corfu-mode 1))))
-
-;; Setup eglot
+;; We will use Eglot to have LSP support in Emacs.
 (use-package
  eglot
- :ensure t
  :init (setq eglot-autoshutdown t)
+ ;; This is a simple optimization to speed up Eglot.
  :config (setf (plist-get eglot-events-buffer-config :size) 0)
+ ;; We turn on all of our relevant plugins alongside Eglot so that at
+ ;; any point, if we want to use Eglot, we don't have to then turn on
+ ;; things like Corfu.
  (add-hook
   'eglot-managed-mode-hook
   (lambda ()
@@ -198,17 +187,7 @@ If the buffer associated with the window is not in any other window, kill it too
     (rainbow-delimiters-mode 1)
     (yas-minor-mode 1)
     (corfu-mode 1)))
- :hook
- ((c-ts-mode
-   c++-ts-mode
-   go-ts-mode
-   python-ts-mode
-   typescript-ts-mode
-   tsx-ts-mode
-   js-ts-mode
-   html-ts-mode
-   css-ts-mode)
-  . eglot-ensure)
+ :hook ((c-ts-mode c++-ts-mode go-ts-mode) . eglot-ensure)
  :custom
  (eglot-ignored-server-capabilities
   '(:documentOnTypeFormattingProvider))
@@ -220,6 +199,11 @@ If the buffer associated with the window is not in any other window, kill it too
   ("C-c a" . eglot-code-actions)
   ("C-c D" . xref-find-definitions)
   ("C-c R" . xref-find-references)))
+
+;; To enable the fastest experience with Eglot, we will use this
+;; package, that depends on an external program called
+;; 'emacs-lsp-booster'. Eglot can work without it, but it will display
+;; an error message on startup.
 (use-package
  eglot-booster
  :vc
@@ -227,11 +211,21 @@ If the buffer associated with the window is not in any other window, kill it too
  :after eglot
  :config (eglot-booster-mode))
 
-;; Setup elisp-autofmt
+;; Since Emacs Lisp doesn't need an LSP (all functionality can be
+;; imitated through the editor itself), we will apply the same
+;; configuration from Eglot, replacing with the builtin Emacs
+;; functions. This includes using an external package for formatting.
+(use-package elisp-autofmt :ensure t)
 (use-package
- elisp-autofmt
- :ensure t
- :commands (elisp-autofmt-buffer)
+ elisp-mode
+ :init
+ (add-hook
+  'emacs-lisp-mode-hook
+  (lambda ()
+    (electric-pair-local-mode 1)
+    (yas-minor-mode 1)
+    (rainbow-delimiters-mode 1)
+    (corfu-mode 1)))
  :bind
  (:map
   emacs-lisp-mode-map
@@ -241,34 +235,9 @@ If the buffer associated with the window is not in any other window, kill it too
      (message "Formatting...")
      (elisp-autofmt-buffer)))
   ("C-c D" . xref-find-definitions) ("C-c R" . xref-find-references)))
-;; Setup eshell keybinding
-(defun eshell-buffer-p (buffer)
-  (with-current-buffer buffer
-    (eq major-mode 'eshell-mode)))
-(defun switch-to-eshell-buffer ()
-  (interactive)
-  (let ((buffers (seq-filter #'eshell-buffer-p (buffer-list))))
-    (cond
-     ((eq (length buffers) 0)
-      (message "No eshell buffers open."))
-     ((eq (length buffers) 1)
-      (switch-to-buffer (car buffers)))
-     (t
-      (switch-to-buffer
-       (completing-read
-        "Switch to eshell buffer: " (mapcar #'buffer-name buffers)
-        nil t))))))
-(global-set-key (kbd "C-c e") #'switch-to-eshell-buffer)
-(global-set-key
- (kbd "C-c E")
- (lambda ()
-   (interactive)
-   (eshell t)))
-(use-package
- mostline
- :config (setq-default mode-line-format mostline-format))
 
-;; Unfill paragraph
+;; Whenever we are editing text, it is sometimes useful to unfill
+;; paragraphs.
 (defun unfill-paragraph ()
   "Takes a multi-line paragraph and makes it into a single line of text."
   (interactive)
@@ -276,5 +245,75 @@ If the buffer associated with the window is not in any other window, kill it too
     (fill-paragraph nil)))
 (global-set-key (kbd "M-Q") 'unfill-paragraph)
 
-;; Setup gc back to a decently normal level
+;; Everything from here to the end (except setting back the GC) is
+;; relevant to Evil Mode. You can safely delete this part from the
+;; config.
+
+;; Here is a personal function for window management that I use a lot,
+;; so much so that it overrides the Evil Mode keybinding for 'q'.
+(defun kill-window-possibly-buffer ()
+  "Kill the current window.
+If the buffer associated with the window is not in any other window, kill it too."
+  (interactive)
+  (if (eq (length (window-list)) 1)
+      (if (eq (length (get-buffer-window-list)) 1)
+          (kill-current-buffer))
+    (if (eq (length (get-buffer-window-list)) 1)
+        (kill-buffer-and-window)
+      (delete-window))))
+
+;; My Evil Mode configuration.
+(use-package
+ evil
+ :ensure t
+ :init (setq evil-undo-system 'undo-redo)
+ :config (evil-mode 1) (setq evil-emacs-state-cursor 'bar)
+ (evil-define-key
+  '(normal visual motion) 'global
+  ;; The aforementioned personal window killer.
+  (kbd "q") 'kill-window-possibly-buffer
+  ;; So things like `org-cycle' can work in the normal state.
+  (kbd "TAB") nil)
+ ;; This is so that `corfu-next' and `corfu-previous' can work.
+ (evil-define-key 'insert 'global (kbd "C-n") nil (kbd "C-p") nil)
+ ;; Since we don't have Corfu in Eshell, and my muscle memory likes
+ ;; 'C-n' and 'C-p' for cycling command history, we set that here.
+ (evil-define-key
+  'insert
+  eshell-mode-map
+  (kbd "C-p")
+  'eshell-previous-matching-input-from-input
+  (kbd "C-n")
+  'eshell-next-matching-input-from-input))
+
+;; This is the weirdest part of my configuration. This package enables
+;; me to use the native Emacs keybindings without having to use the
+;; modifier keys. Instead, 'SPC' is the entrypoint, from which I can
+;; press a series of keys in order to imitate any keybinding. This
+;; only works in non-editing states (obviously).
+(use-package
+ spacemaster
+ :config
+ (evil-define-key
+  '(normal visual motion)
+  'global
+  (kbd "C-SPC")
+  'execute-extended-command
+  (kbd "SPC")
+  'spacemaster))
+
+;; Dired doesn't respect the 'SPC' override. So we manually override
+;; it.
+(use-package
+ dired
+ :config (define-key dired-mode-map (kbd "SPC") 'spacemaster))
+
+;; 'ESC' is much easier than 'C-g', so we override it where it's used.
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(use-package
+ transient
+ :config
+ (define-key transient-map (kbd "<escape>") 'transient-quit-one))
+
+;; Set the GC to a more reasonable level.
 (setq gc-cons-threshold (* 2 1000 1000))
