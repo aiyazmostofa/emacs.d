@@ -62,7 +62,6 @@
   (if (and buffer-file-name (buffer-modified-p))
       "*"
     ""))
-
 (defvar-local mostline-saved
     '(:eval (propertize (mostline--saved) 'face 'error))
   "Computes the text+style for whether the current buffer is saved.")

@@ -58,7 +58,7 @@
  ;; I am liking this theme the most (currently).
  :config (ef-themes-select 'ef-symbiosis))
 
-;;; This is a personal package that contains my custom mode line.
+;; This is a personal package that contains my custom mode line.
 (use-package
  mostline
  :config (setq-default mode-line-format mostline-format))

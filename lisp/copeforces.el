@@ -3,8 +3,12 @@
 ;;; Commentary: This package needs to be rewritten.
 
 (defun copeforces--strip-http-header (req)
+  "Strips the HTTP header of REQ, exposing the body."
   (replace-regexp-in-string (rx (*? anychar) "\r\n\r\n") "" req))
+
 (defun copeforces--server-filter (process request)
+  "Server filter that parses REQUEST to get problem details, then sets up
+the problem directory."
   (let* ((body
           (json-parse-string (copeforces--strip-http-header request)))
          ;; Name removes all non-alphanumeric characters
@@ -34,7 +38,11 @@
              (file-name-concat copeforces--directory name "main.cpp")
              name))
     (insert "\n")))
+
 (defun copeforces ()
+  "Main entrypoint for Copeforces. Asks for download directory, then opens
+a new buffer/server. The server accepts requests at port 10043 from the
+Competitive Companion web extension."
   (interactive)
   ;; Have to set global variable to reach inside lambda
   (setq copeforces--directory
@@ -71,5 +79,6 @@
            (interactive)
            (kill-buffer (current-buffer))
            (delete-window)))))))
+
 (provide 'copeforces)
 ;;; copeforces.el ends here
