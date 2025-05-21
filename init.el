@@ -44,16 +44,18 @@
 ;; available. We also set the font size to 14. We skip this section if
 ;; we are in terminal Emacs.
 (when (display-graphic-p)
-  (set-face-attribute 'default nil :height 140)
-  (when (find-font (font-spec :name "JetBrains Mono"))
-    (set-frame-font "JetBrains Mono" nil t)))
+  (if (find-font (font-spec :name "JetBrains Mono"))
+      (set-face-attribute 'default nil
+                          :height 140
+                          :family "JetBrains Mono")
+    (set-face-attribute 'default nil :height 140)))
 
 ;; I like all of the dark themes provided by ef-themes.
 (use-package
  ef-themes
  :ensure t
  :config
- ;; I am liking this theme currently.
+ ;; I am liking this theme the most (currently).
  (ef-themes-select 'ef-symbiosis))
 
 ;;; This is a personal package that contains my custom mode line.
@@ -295,7 +297,11 @@ If the buffer associated with the window is not in any other window, kill it too
   (kbd "C-SPC")
   'execute-extended-command
   (kbd "SPC")
-  'spacemaster))
+  'spacemaster
+  (kbd "C-f")
+  (lambda ()
+    (interactive)
+    (spacemaster "C-x C-"))))
 
 ;; Dired doesn't respect the 'SPC' override. So we manually override
 ;; it.

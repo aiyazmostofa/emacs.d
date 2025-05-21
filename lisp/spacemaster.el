@@ -68,7 +68,7 @@ If it cannot, handle accordingly."
       (call-interactively spacemaster--candidate-function)
       (setq spacemaster--combo "")))))
 
-(defun spacemaster ()
+(defun spacemaster (&optional prefix)
   "The master command that temporarily takes control of the keyboard.
 
 Here are some example keybinding conversions:
@@ -81,10 +81,13 @@ Here are some example keybinding conversions:
 'SPC TAB a TAB b' -> 'M-a C-b'
 'SPC TAB TAB a' -> 'C-M-a'
 'SPC x ESC' -> Nothing happens (escape quits).
+
+Providing an argument for PREFIX allows you to start your keybinding from a place other than 'C-'.
 "
   (interactive)
-  (setq spacemaster--combo "C-")
-  (spacemaster--echo "C-")
+  (or prefix (setq prefix "C-"))
+  (setq spacemaster--combo prefix)
+  (spacemaster--echo prefix)
   (while (not (string-empty-p spacemaster--combo))
     (setq spacemaster--char (read-char))
     (cond
