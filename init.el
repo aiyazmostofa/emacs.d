@@ -308,7 +308,16 @@ If the buffer associated with the window is not in any other window, kill it too
 ;; it.
 (use-package
  dired
- :config (define-key dired-mode-map (kbd "SPC") 'spacemaster))
+ :config
+ (evil-define-key
+  '(normal visual motion)
+  dired-mode-map
+  (kbd "SPC")
+  'spacemaster
+  (kbd "n")
+  'evil-search-next
+  (kbd "p")
+  'evil-search-previous))
 
 ;; 'ESC' is much easier than 'C-g', so we override it where it's used.
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
