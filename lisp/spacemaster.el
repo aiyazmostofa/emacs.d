@@ -1,5 +1,15 @@
 ;;; spacemaster.el --- Use space instead of control because you're lazy. -*- lexical-binding: t; -*-
 
+;;; Commentary: This package is used to avoid modifier keys in Emacs
+;;; as much as possible. By mapping 'SPC' to the `spacemaster' command
+;;; (usually in Evil states like 'normal' and 'motion'), you can build
+;;; up keybindings without the use of modifiers. This is described in
+;;; further detail in the documentation of `spacemaster'. This package
+;;; does not directly integrate into any native Emacs key loop, so
+;;; some features are broken. Things like 'which-key',
+;;; 'describe-key'. Universal arguments work, as long as you use
+;;; 'C-u'. If you don't (like 'C-12'), the argument is corrupted.
+
 (defvar spacemaster--combo ""
   "A string representing the command being built by spacemaster.")
 
@@ -69,6 +79,8 @@ Here are some example keybinding conversions:
 'SPC TAB a' -> 'M-a'
 'SPC TAB a b' -> 'M-a b'
 'SPC TAB a TAB b' -> 'M-a C-b'
+'SPC TAB TAB a' -> 'C-M-a'
+'SPC x ESC' -> Nothing happens (escape quits).
 "
   (interactive)
   (setq spacemaster--combo "C-")

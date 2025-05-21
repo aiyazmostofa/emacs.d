@@ -1,4 +1,15 @@
 ;;; mostline.el --- The worst mode line. -*- lexical-binding: t -*-
+
+;;; Commentary: This mode line is very simple (even though it's called
+;;; "mostline"). Starting from the left, we have a Evil Mode state
+;;; indicator. If Evil Mode is not installed, it defaults to 'E', for
+;;; "Emacs state". Next is the buffer name. Next is an indicator for
+;;; whether or not the current buffer is saved. This indicator only
+;;; shows if the buffer is both unsaved, and is associated with a
+;;; file. Jumping ahead to the portion that is right justified, we get
+;;; the current major mode. Next, if the current buffer has Eglot
+;;; enabled, we will have another indicator.
+
 (defun mostline--state ()
   "Computes the text for the state indicator."
   (cond
@@ -81,8 +92,8 @@
     mode-line-format-right-align
     mostline-major-mode
     mostline-lsp)
-  "The main entrypoint for mostline.
- Set the `mode-line-format' variable using `setq-default'.")
+  "The main entrypoint for mostline. Set the `mode-line-format' variable
+using `setq-default'.")
 
 (provide 'mostline)
 ;;; mostline.el ends here

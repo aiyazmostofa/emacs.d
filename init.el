@@ -60,7 +60,7 @@
   (nth
    (random (length ef-themes-dark-themes)) ef-themes-dark-themes)))
 
-;;; This is a personal package that contains my custom mode-line.
+;;; This is a personal package that contains my custom mode line.
 (use-package
  mostline
  :config (setq-default mode-line-format mostline-format))
@@ -287,10 +287,9 @@ If the buffer associated with the window is not in any other window, kill it too
   'eshell-next-matching-input-from-input))
 
 ;; This is the weirdest part of my configuration. This package enables
-;; me to use the native Emacs keybindings without having to use the
-;; modifier keys. Instead, 'SPC' is the entrypoint, from which I can
-;; press a series of keys in order to imitate any keybinding. This
-;; only works in non-editing states (obviously).
+;; me to use Emacs keybindings without having to use the modifier
+;; keys. This is described more in the documentation of
+;; 'spacemaster.el'.
 (use-package
  spacemaster
  :config
