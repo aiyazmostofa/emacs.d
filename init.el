@@ -41,10 +41,10 @@
 (global-display-line-numbers-mode)
 
 ;; This section manages fonts. By default, we use JetBrains Mono, if
-;; available. We also set the font size to 16. We skip this section if
+;; available. We also set the font size to 14. We skip this section if
 ;; we are in terminal Emacs.
 (when (display-graphic-p)
-  (set-face-attribute 'default nil :height 160)
+  (set-face-attribute 'default nil :height 140)
   (when (find-font (font-spec :name "JetBrains Mono"))
     (set-frame-font "JetBrains Mono" nil t)))
 
@@ -52,13 +52,9 @@
 (use-package
  ef-themes
  :ensure t
- ;; Instead of selecting one theme, getting bored, and then trying to
- ;; find a new theme, I made Emacs choose a random theme for me at
- ;; startup.
  :config
- (ef-themes-select
-  (nth
-   (random (length ef-themes-dark-themes)) ef-themes-dark-themes)))
+ ;; I am liking this theme currently.
+ (ef-themes-select 'ef-symbiosis))
 
 ;;; This is a personal package that contains my custom mode line.
 (use-package
