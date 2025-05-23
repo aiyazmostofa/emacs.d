@@ -38,7 +38,9 @@
 (when (display-graphic-p)
   (scroll-bar-mode -1)
   (tool-bar-mode -1))
-(setq-default truncate-lines t)
+(setq-default
+ truncate-lines t
+ cursor-type 'bar)
 (global-display-line-numbers-mode)
 
 ;; This section manages fonts. By default, we use JetBrains Mono, if
@@ -242,7 +244,7 @@ buffers. If only one buffer exists, automatically switch to that buffer."
      (message "Formatting...")
      (elisp-autofmt-buffer)))))
 
-;; This is a personal package the downloading problems for competitive
+;; This is a personal package for downloading problems for competitive
 ;; programming. This package is due for a rewrite.
 (use-package copeforces :bind (("C-c C" . copeforces)))
 
