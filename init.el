@@ -126,6 +126,12 @@ buffers. If only one buffer exists, automatically switch to that buffer."
     (fill-paragraph nil)))
 (global-set-key (kbd "M-Q") 'unfill-paragraph)
 
+;; If we're just using Emacs keybindings, then 'C-z' is super useless
+;; for me. So instead, map that to `undo'. And because redo is
+;; important to me, also map that to something.
+(global-set-key (kbd "C-z") 'undo)
+(global-set-key (kbd "C-M-z") 'undo-redo)
+
 ;; Some Dired customizations.
 (use-package
  dired
