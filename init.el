@@ -141,6 +141,16 @@ buffers. If only one buffer exists, automatically switch to that buffer."
   '((file (styles partial-completion)))))
 (use-package vertico :ensure t :config (vertico-mode 1))
 
+;; I like a faster control backspace than what is provided by
+;; default. Thankfully, Vertico comes with an extension that already
+;; provide this.
+(use-package
+ vertico-directory
+ :after vertico
+ :ensure nil
+ :bind
+ (:map vertico-map ("C-<backspace>" . vertico-directory-delete-word)))
+
 ;; Rainbow delimiters make code look better and easier to read.
 (use-package rainbow-delimiters :ensure t)
 
