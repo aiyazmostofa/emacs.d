@@ -6,9 +6,10 @@
 ;;; "Emacs state". Next is the buffer name. Next is an indicator for
 ;;; whether or not the current buffer is saved. This indicator only
 ;;; shows if the buffer is both unsaved, and is associated with a
-;;; file. Jumping ahead to the portion that is right justified, we get
-;;; the current major mode. Next, if the current buffer has Eglot
-;;; enabled, we will have another indicator.
+;;; file. Next is an indicator showing the current zoom, with nothing
+;;; showing if no zoom is applied. Jumping ahead to the portion that
+;;; is right justified, we get the current major mode. Next, if the
+;;; current buffer has Eglot enabled, we will have another indicator.
 
 (defun mostline--state ()
   "Computes the text for the state indicator."
@@ -51,7 +52,7 @@
 
 (defun mostline--buffer ()
   "Computes the text for the buffer name."
-  (format " %s " (buffer-name)))
+  (format " %s" (buffer-name)))
 (defvar-local mostline-buffer
     '(:eval (propertize (mostline--buffer) 'face 'bold))
   "Computes the text+style for the buffer name.")
@@ -60,12 +61,26 @@
 (defun mostline--saved ()
   "Computes the text for whether the current buffer is saved."
   (if (and buffer-file-name (buffer-modified-p))
-      "*"
+      " *"
     ""))
 (defvar-local mostline-saved
     '(:eval (propertize (mostline--saved) 'face 'error))
   "Computes the text+style for whether the current buffer is saved.")
 (put 'mostline-saved 'risky-local-variable t)
+
+(defun mostline--zoom ()
+  "Computes the text for the current zoom."
+  (if (or (zerop text-scale-mode-amount) (not (display-graphic-p)))
+      ""
+    (concat
+     (if (> text-scale-mode-amount 0)
+         " +"
+       " ")
+     (number-to-string text-scale-mode-amount))))
+(defvar-local mostline-zoom
+    '(:eval (propertize (mostline--zoom) 'face 'success))
+  "Computes the text+style for the current zoom.")
+(put 'mostline-zoom 'risky-local-variable t)
 
 (defun mostline--major-mode ()
   "Computes the text for whether the current buffer's major mode."
@@ -88,6 +103,7 @@
     mostline-state
     mostline-buffer
     mostline-saved
+    mostline-zoom
     mode-line-format-right-align
     mostline-major-mode
     mostline-lsp)
