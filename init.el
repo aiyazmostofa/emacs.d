@@ -9,19 +9,19 @@
 ;; When you set a variable using Emacs's GUI, those are automatically
 ;; placed in the 'init.el'. We prevent this by putting the settings in
 ;; a "throwaway" file called 'custom.el'.
-(setq custom-file "~/.emacs.d/custom.el")
+(setq custom-file (file-name-concat user-emacs-directory "custom.el"))
 (when (file-exists-p custom-file)
   (load custom-file))
 
 ;; To install external packages from both ELPA and MELPA.
 (require 'package)
-(package-initialize)
 (add-to-list
  'package-archives '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
 
 ;; This directory contains all of my personal packages that can safely
 ;; be isolated from the rest of my configuration.
-(add-to-list 'load-path "~/.emacs.d/lisp")
+(add-to-list 'load-path (file-name-concat user-emacs-directory "lisp"))
 
 ;; These contain general configuration for Emacs's behavior.
 (setq
