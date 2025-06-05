@@ -21,7 +21,8 @@
 
 ;; This directory contains all of my personal packages that can safely
 ;; be isolated from the rest of my configuration.
-(add-to-list 'load-path (file-name-concat user-emacs-directory "lisp"))
+(add-to-list
+ 'load-path (file-name-concat user-emacs-directory "lisp"))
 
 ;; These contain general configuration for Emacs's behavior.
 (setq
@@ -41,7 +42,6 @@
 (setq-default
  truncate-lines t
  cursor-type 'bar)
-(global-display-line-numbers-mode)
 
 ;; This section manages fonts. By default, we use JetBrains Mono, if
 ;; available. We also set the font size to 14. We skip this section if
@@ -337,7 +337,7 @@ in any other window, kill it too."
   'spacemaster
   (kbd "n")
   'evil-search-next
-  (kbd "p")
+  (kbd "N")
   'evil-search-previous))
 
 ;; 'ESC' is much easier than 'C-g', so we override here it where it's
