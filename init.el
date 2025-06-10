@@ -44,21 +44,18 @@
  cursor-type 'bar)
 
 ;; This section manages fonts. By default, we use JetBrains Mono, if
-;; available. We also set the font size to 14. We skip this section if
-;; we are in terminal Emacs.
-(when (display-graphic-p)
-  (if (find-font (font-spec :name "JetBrains Mono"))
-      (set-face-attribute 'default nil
-                          :height 140
-                          :family "JetBrains Mono")
-    (set-face-attribute 'default nil :height 140)))
+;; available. We also set the font size to 22.
+(let ((font "JetBrains Mono"))
+  (set-face-attribute 'default nil :family font :height 220)
+  (set-face-attribute 'fixed-pitch nil :family font :height 1.0)
+  (set-face-attribute 'variable-pitch nil :family font :height 1.0))
 
 ;; I like all of the dark themes provided by Ef themes.
 (use-package
  ef-themes
  :ensure t
  ;; I am liking this theme the most (currently).
- :config (ef-themes-select 'ef-symbiosis))
+ :config (ef-themes-select 'ef-tritanopia-dark))
 
 ;; This is a personal package that contains my custom mode line.
 (use-package
