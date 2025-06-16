@@ -50,12 +50,12 @@
   (set-face-attribute 'fixed-pitch nil :family font :height 1.0)
   (set-face-attribute 'variable-pitch nil :family font :height 1.0))
 
-;; I like all of the dark themes provided by Ef themes.
+;; I like all of the themes provided by Ef themes.
 (use-package
  ef-themes
  :ensure t
  ;; I am liking this theme the most (currently).
- :config (ef-themes-select 'ef-tritanopia-dark))
+ :config (ef-themes-select 'ef-dream))
 
 ;; This is a personal package that contains my custom mode line.
 (use-package
@@ -167,7 +167,8 @@ buffers. If only one buffer exists, automatically switch to that buffer."
  :custom
  (corfu-auto t)
  (corfu-auto-delay 0.01)
- (corfu-auto-prefix 1))
+ (corfu-auto-prefix 1)
+ :bind (:map corfu-map ("RET" . nil)))
 
 ;; YASnippet is here so that the autocompletion can work more
 ;; seamlessly.
@@ -213,6 +214,20 @@ buffers. If only one buffer exists, automatically switch to that buffer."
   ("C-c a" . eglot-code-actions)
   ("C-c D" . xref-find-definitions)
   ("C-c R" . xref-find-references)))
+
+;; Enable Common Lisp development.
+(use-package
+ sly
+ :ensure t
+ :config
+ (add-hook
+  'sly-mode-hook
+  (lambda ()
+    (interactive)
+    (electric-pair-local-mode 1)
+    (rainbow-delimiters-mode 1)
+    (yas-minor-mode 1)
+    (corfu-mode 1))))
 
 ;; To enable the fastest experience with Eglot, we will use this
 ;; package, that depends on an external program called
@@ -294,7 +309,15 @@ in any other window, kill it too."
   (kbd "C-p")
   'eshell-previous-matching-input-from-input
   (kbd "C-n")
-  'eshell-next-matching-input-from-input))
+  'eshell-next-matching-input-from-input)
+ ;; Do the same for 'sly-mode'.
+ (evil-define-key
+  'insert
+  sly-mrepl-mode-map
+  (kbd "C-p")
+  'sly-mrepl-previous-input-or-button
+  (kbd "C-n")
+  'sly-mrepl-next-input-or-button))
 
 ;; This is the weirdest part of my configuration. This package enables
 ;; me to use Emacs keybindings without having to use the modifier
@@ -318,7 +341,11 @@ in any other window, kill it too."
   (kbd "C-f")
   (lambda ()
     (interactive)
-    (spacemaster "C-x C-"))))
+    (spacemaster "C-x C-"))
+  (kbd "C-j")
+  (lambda ()
+    (interactive)
+    (spacemaster "C-c C-"))))
 
 ;; Dired doesn't respect the 'SPC' override for Spacemaster. So we
 ;; manually override it. It also doesn't respect Evil's search
