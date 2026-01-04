@@ -21,7 +21,7 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-(defconst font-name "IBM Plex Mono")
+(defconst font-name "Jetbrains Mono")
 (defvar font-size 140)
 (defun font-change-size (increment)
   (setq font-size (+ font-size increment))
@@ -36,7 +36,7 @@
   :custom (modus-themes-common-palette-overrides
            '((border-mode-line-active unspecified)
              (border-mode-line-inactive unspecified)))
-  :config (modus-themes-select 'ef-symbiosis))
+  :config (modus-themes-select 'ef-cyprus))
 
 (use-package orderless
   :ensure t
@@ -149,8 +149,12 @@ after the invocation of the lambda."
 (use-package sly
   :ensure t
   :custom (sly-mrepl-history-file-name (locate-user-emacs-file "sly-mrepl-history")))
+(use-package envrc
+  :ensure t
+  :hook (after-init . envrc-global-mode))
 (use-package markdown-mode :ensure t)
 (use-package dockerfile-mode :ensure t)
+(use-package nix-mode :ensure t)
 (use-package go-mode :ensure t)
 (use-package zig-mode :ensure t)
 (use-package rust-mode :ensure t)
