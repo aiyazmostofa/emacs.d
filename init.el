@@ -37,6 +37,9 @@
            '((border-mode-line-active unspecified)
              (border-mode-line-inactive unspecified)))
   :config (modus-themes-select 'ef-cyprus))
+(use-package spacious-padding
+  :ensure t
+  :config (spacious-padding-mode 1))
 
 (use-package orderless
   :ensure t
@@ -184,7 +187,8 @@ after the invocation of the lambda."
                    ,(face-attribute (if (mode-line-window-selected-p)
                                         'default
                                       'mode-line-inactive)
-                                    :background))))
+                                    :background)
+                   :box t)))
    (:eval (propertize (format " %s" (buffer-name)) 'face 'bold))
    (:eval (propertize
            (if (and buffer-file-name (buffer-modified-p)) " *" "")
