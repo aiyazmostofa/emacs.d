@@ -22,7 +22,7 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (defconst font-name "Jetbrains Mono")
-(defvar font-size 140)
+(defvar font-size 110)
 (defun font-change-size (increment)
   (setq font-size (+ font-size increment))
   (set-face-attribute
@@ -146,6 +146,7 @@ after the invocation of the lambda."
 (use-package elec-pair
   :custom (electric-pair-skip-self nil)
   :hook (prog-mode . electric-pair-local-mode))
+(use-package dired :hook (dired-mode . hl-line-mode))
 (use-package rainbow-delimiters
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
