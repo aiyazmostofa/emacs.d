@@ -65,14 +65,13 @@
 after the invocation of the lambda."
   `(lambda ()
      (interactive)
-     (let (message-log-max) ; Disable adding messages to the log.
-       (message ,prefix)
-       (let* ((next-key (single-key-description (read-event)))
-              (sequence (concat ,prefix next-key))
-              (command (key-binding (kbd sequence))))
-         (if (and command (not (keymapp command)))
-             (call-interactively command)
-           (message (format "%s is undefined" sequence)))))))
+     (let (message-log-max) (message ,prefix))
+     (let* ((next-key (single-key-description (read-event)))
+            (sequence (concat ,prefix next-key))
+            (command (key-binding (kbd sequence))))
+       (if (and command (not (keymapp command)))
+           (call-interactively command)
+         (message (format "%s is undefined" sequence))))))
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (use-package evil
   :ensure t
