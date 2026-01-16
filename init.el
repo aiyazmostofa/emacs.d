@@ -179,17 +179,18 @@ after the invocation of the lambda."
             ((evil-visual-state-p) " <V> ")
             ((evil-insert-state-p) " <I> ")
             (t " <E> "))
-           'face `(:background
-                   ,(face-attribute (if (mode-line-window-selected-p)
-                                        'font-lock-keyword-face
-                                      'mode-line-inactive)
-                                    :foreground)
-                   :foreground
-                   ,(face-attribute (if (mode-line-window-selected-p)
-                                        'default
-                                      'mode-line-inactive)
-                                    :background)
-                   :box t)))
+           'face
+           (let ((bg (face-attribute (if (mode-line-window-selected-p)
+                                         'font-lock-keyword-face
+                                       'mode-line-inactive)
+                                     :foreground))
+                 (fg (face-attribute (if (mode-line-window-selected-p)
+                                         'default
+                                       'mode-line-inactive)
+                                     :background)))
+             (list ':background bg
+                   ':foreground fg
+                   ':box `(:line-width 1 :color ,bg)))))
    (:eval (propertize (format " %s" (buffer-name)) 'face 'bold))
    (:eval (propertize
            (if (and buffer-file-name (buffer-modified-p)) " *" "")
