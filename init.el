@@ -5,6 +5,7 @@
 
 (setq
  custom-file (locate-user-emacs-file "custom.el")
+ inhibit-startup-screen t
  make-backup-files nil
  auto-save-default nil
  sentence-end-double-space nil
