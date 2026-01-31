@@ -23,7 +23,7 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (defconst font-name "Jetbrains Mono")
-(defvar font-size 110)
+(defvar font-size 140)
 (defun font-change-size (increment)
   (setq font-size (+ font-size increment))
   (set-face-attribute
@@ -34,9 +34,6 @@
 (font-change-size 0)
 (use-package ef-themes
   :ensure t
-  :custom (modus-themes-common-palette-overrides
-           '((border-mode-line-active unspecified)
-             (border-mode-line-inactive unspecified)))
   :config (modus-themes-select 'ef-cyprus))
 (use-package spacious-padding
   :ensure t
@@ -66,13 +63,13 @@
 after the invocation of the lambda."
   `(lambda ()
      (interactive)
-     (let (message-log-max) (message ,prefix))
+     (let (message-log-max) (message "%s" ,prefix))
      (let* ((next-key (single-key-description (read-event)))
             (sequence (concat ,prefix next-key))
             (command (key-binding (kbd sequence))))
        (if (and command (not (keymapp command)))
            (call-interactively command)
-         (message (format "%s is undefined" sequence))))))
+         (message "%s is undefined" sequence)))))
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (use-package evil
   :ensure t
