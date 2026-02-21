@@ -34,7 +34,7 @@
 (font-change-size 0)
 (use-package ef-themes
   :ensure t
-  :config (modus-themes-select 'ef-cyprus))
+  :config (modus-themes-select 'ef-maris-dark))
 (use-package spacious-padding
   :ensure t
   :config (spacious-padding-mode 1))
@@ -86,6 +86,7 @@ after the invocation of the lambda."
   (select-window (if (< (window-pixel-height) (window-pixel-width))
                      (split-window-horizontally)
                    (split-window-vertically))))
+(use-package eat :ensure t)
 (use-package general
   :after evil
   :ensure t
@@ -97,7 +98,7 @@ after the invocation of the lambda."
     "SPC" #'execute-extended-command
     "u" #'universal-argument
     "k" #'kill-current-buffer
-    "e" #'eshell
+    "e" (lambda () (interactive) (eat "fish"))
     "-" (lambda () (interactive) (font-change-size -10))
     "=" (lambda () (interactive) (font-change-size +10))
     "x" (zucchini "C-x ")
@@ -158,6 +159,7 @@ after the invocation of the lambda."
 (use-package nix-mode :ensure t)
 (use-package go-mode :ensure t)
 (use-package zig-mode :ensure t)
+(use-package haskell-mode :ensure t)
 (use-package rust-mode :ensure t)
 (use-package just-mode :ensure t)
 (use-package auctex :ensure t)

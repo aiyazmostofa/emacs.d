@@ -4,7 +4,11 @@ cd ~
 
 # Packages
 sudo pacman -Syu --noconfirm
-sudo pacman -S emacs-wayland git nix ttf-jetbrains-mono direnv --noconfirm
+sudo pacman -S emacs-wayland git nix ttf-jetbrains-mono direnv fish --noconfirm
+
+# Fish
+sudo usermod --shell /usr/bin/fish $USER
+mkdir -p .config/fish
 
 # Nix
 mkdir -p .config/nix
@@ -13,7 +17,7 @@ sudo systemctl enable nix-daemon
 sudo systemctl start nix-daemon
 
 # Direnv
-echo 'eval "$(direnv hook bash)"' >> .bashrc
+echo 'direnv hook fish | source' >> .config/fish/config.fish
 
 # Symlinks
 ln -s /home/aiyaz/.config/emacs .emacs.d
