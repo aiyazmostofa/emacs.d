@@ -4,7 +4,7 @@ cd ~
 
 # Packages
 sudo pacman -Syu --noconfirm
-sudo pacman -S emacs-wayland git nix ttf-jetbrains-mono direnv fish --noconfirm
+sudo pacman -S emacs-wayland git nix ttf-jetbrains-mono direnv fish cmake --noconfirm
 
 # Fish
 sudo usermod --shell /usr/bin/fish $USER
@@ -15,6 +15,15 @@ mkdir -p .config/nix
 echo 'experimental-features = nix-command flakes' >> .config/nix/nix.conf
 sudo systemctl enable nix-daemon
 sudo systemctl start nix-daemon
+
+# VTerm
+echo '
+if test "$INSIDE_EMACS" = "vterm"
+    and set -q EMACS_VTERM_PATH
+    and test -f "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
+    source "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
+end
+' >> .config/fish/config.fish
 
 # Direnv
 echo 'direnv hook fish | source' >> .config/fish/config.fish

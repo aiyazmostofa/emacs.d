@@ -34,7 +34,7 @@
 (font-change-size 0)
 (use-package ef-themes
   :ensure t
-  :config (modus-themes-select 'ef-maris-dark))
+  :config (modus-themes-select 'ef-cyprus))
 (use-package spacious-padding
   :ensure t
   :config (spacious-padding-mode 1))
@@ -56,6 +56,10 @@
   :after vertico
   :ensure nil
   :bind (:map vertico-map ("C-<backspace>" . vertico-directory-delete-word)))
+
+(use-package vterm
+  :ensure t
+  :custom (vterm-shell "fish"))
 
 (defmacro zucchini (prefix)
   "Returns a lambda that will execute an input sequence in the form \"Pe\".
@@ -86,7 +90,6 @@ after the invocation of the lambda."
   (select-window (if (< (window-pixel-height) (window-pixel-width))
                      (split-window-horizontally)
                    (split-window-vertically))))
-(use-package eat :ensure t)
 (use-package general
   :after evil
   :ensure t
@@ -98,7 +101,8 @@ after the invocation of the lambda."
     "SPC" #'execute-extended-command
     "u" #'universal-argument
     "k" #'kill-current-buffer
-    "e" (lambda () (interactive) (eat "fish"))
+    "e" #'eshell
+    "v" (lambda () (interactive) (vterm))
     "-" (lambda () (interactive) (font-change-size -10))
     "=" (lambda () (interactive) (font-change-size +10))
     "x" (zucchini "C-x ")
@@ -141,6 +145,9 @@ after the invocation of the lambda."
   :ensure t
   :defer t
   :config (define-key transient-map (kbd "<escape>") 'transient-quit-one))
+(use-package forge
+  :ensure t
+  :custom (auth-sources '("~/.ssh/authinfo")))
 (use-package elec-pair
   :custom (electric-pair-skip-self nil)
   :hook (prog-mode . electric-pair-local-mode))
@@ -160,6 +167,8 @@ after the invocation of the lambda."
 (use-package go-mode :ensure t)
 (use-package zig-mode :ensure t)
 (use-package haskell-mode :ensure t)
+(use-package tuareg :ensure t)
+(use-package fish-mode :ensure t)
 (use-package rust-mode :ensure t)
 (use-package just-mode :ensure t)
 (use-package auctex :ensure t)
