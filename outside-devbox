@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Validate environment
+if [ "$#" -ne 2 ]; then
+    echo "Error: You did not supply enough arguments"
+    echo "Usage: $0 <name> <home_directory>"
+    exit 1
+fi
+
+if ! command -v distrobox &> /dev/null; then
+    echo "Error: You need Distrobox installed"
+    exit 1
+fi
+
+if [ -d "$2" ]; then
+    echo "Error: Directory '$2' already exists"
+    exit 1
+fi
+
+if [ ! -d ~/.config/emacs ]; then
+    echo "Error: You need a '~/.config/emacs' folder"
+    exit 1
+fi
+
+if [ ! -d ~/.ssh ]; then
+    echo "Error: You need a '~/.ssh' folder"
+    exit 1
+fi
+
+if [ ! -f ~/.config/git/config ]; then
+    echo "Error: You need a '~/.config/git/config' file"
+    exit 1
+fi
+
+# Create and bootstrap devbox
+distrobox create \
+          --yes \
+          --image quay.io/toolbx/arch-toolbox:latest \
+          --name "$1" \
+          --home "$2" \
+          --init \
+          --additional-packages "systemd emacs-wayland git nix ttf-jetbrains-mono direnv fish cmake"
+distrobox enter "$1" -- bash inside-devbox "$HOME"
