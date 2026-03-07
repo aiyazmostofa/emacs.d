@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd ~
-
 # Validate arguments
 if [ "$#" -ne 1 ]; then
     echo "Error: You did not supply enough arguments"
     exit 1
 fi
+
+cd ~
 
 # Symlinks
 ln -s "$1/.config/emacs" .emacs.d

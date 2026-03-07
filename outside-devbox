@@ -34,11 +34,11 @@ if [ ! -f ~/.config/git/config ]; then
 fi
 
 # Create and bootstrap devbox
-distrobox create \
-          --yes \
-          --image quay.io/toolbx/arch-toolbox:latest \
-          --name "$1" \
-          --home "$2" \
-          --init \
-          --additional-packages "systemd emacs-wayland git nix ttf-jetbrains-mono direnv fish cmake"
-distrobox enter "$1" -- bash inside-devbox "$HOME"
+SHELL="/usr/bin/env sh" distrobox create \
+     --yes \
+     --image quay.io/toolbx/arch-toolbox:latest \
+     --name "$1" \
+     --home "$2" \
+     --init \
+     --additional-packages "systemd emacs-wayland git nix ttf-jetbrains-mono direnv fish cmake"
+SHELL="/usr/bin/env sh" distrobox enter "$1" -- bash inside-devbox "$HOME"

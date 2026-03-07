@@ -165,6 +165,8 @@ after the invocation of the lambda."
 (use-package dockerfile-mode :ensure t)
 (use-package nix-mode :ensure t)
 (use-package go-mode :ensure t)
+(use-package meson-mode :ensure t)
+(use-package toml-mode :ensure t)
 (use-package zig-mode :ensure t)
 (use-package haskell-mode :ensure t)
 (use-package tuareg :ensure t)
