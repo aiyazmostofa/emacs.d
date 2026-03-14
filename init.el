@@ -22,13 +22,18 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-(defconst font-name "Jetbrains Mono")
+(defconst font-name-mono "IBM Plex Mono")
+(defconst font-name-sans "IBM Plex Sans")
 (defvar font-size 140)
 (defun font-change-size (increment)
   (setq font-size (+ font-size increment))
   (set-face-attribute
    'default nil
-   :family font-name
+   :family font-name-mono
+   :height font-size)
+  (set-face-attribute
+   'variable-pitch nil
+   :family font-name-sans
    :height font-size)
   (message "Set font size to %d" font-size))
 (font-change-size 0)

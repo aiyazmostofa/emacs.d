@@ -40,5 +40,5 @@ SHELL="/bin/sh" distrobox create \
      --name "$1" \
      --home "$2" \
      --init \
-     --additional-packages "systemd emacs-wayland git nix ttf-jetbrains-mono direnv fish cmake"
+     --additional-packages "systemd emacs-wayland git nix ttf-ibm-plex direnv fish cmake"
 SHELL="/bin/sh" distrobox enter "$1" -- bash inside-devbox "$HOME"
