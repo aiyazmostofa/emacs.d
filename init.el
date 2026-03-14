@@ -141,6 +141,10 @@ after the invocation of the lambda."
         ("C-c r" . 'eglot-rename)
         ("C-c f" . 'eglot-format)
         ("C-c a" . 'eglot-code-actions)))
+(use-package yasnippet
+  :ensure t
+  :custom (yas-prompt-functions '(yas-no-prompt))
+  :config (yas-global-mode 1))
 (use-package magit
   :ensure t
   :defer t
