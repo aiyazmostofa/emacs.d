@@ -1,28 +1,22 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -euo pipefail
-
-# Validate arguments
-if [ "$#" -ne 1 ]; then
-    echo "Error: You did not supply enough arguments"
-    exit 1
-fi
 
 cd ~
 
 # Symlinks
-ln -s "$1/.config/emacs" .emacs.d
-ln -s "$1/.ssh" .ssh
-ln -s "$1/.config/git/config" .gitconfig
+ln -s "$DISTROBOX_HOST_HOME/.config/emacs" .emacs.d
+ln -s "$DISTROBOX_HOST_HOME/.ssh" .ssh
+ln -s "$DISTROBOX_HOST_HOME/.config/git/config" .gitconfig
 
 # Fish
-sudo usermod --shell /usr/bin/fish "$USER"
+sudo usermod --shell /bin/fish "$USER"
 mkdir -p .config/fish
 
 # Nix
+sudo mkdir -p /nix/var/nix
+sudo chown -R "$USER" /nix
 mkdir -p .config/nix
 echo 'experimental-features = nix-command flakes' >> .config/nix/nix.conf
-sudo systemctl enable nix-daemon
-sudo systemctl start nix-daemon
 
 # VTerm
 echo '

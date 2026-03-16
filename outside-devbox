@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -euo pipefail
 
 # Validate environment
@@ -34,11 +34,10 @@ if [ ! -f ~/.config/git/config ]; then
 fi
 
 # Create and bootstrap devbox
-SHELL="/bin/sh" distrobox create \
+SHELL="/bin/bash" distrobox create \
      --yes \
      --image quay.io/toolbx/arch-toolbox:latest \
      --name "$1" \
      --home "$2" \
-     --init \
-     --additional-packages "systemd emacs-wayland git nix ttf-ibm-plex direnv fish cmake"
-SHELL="/bin/sh" distrobox enter "$1" -- bash inside-devbox "$HOME"
+     --additional-packages "emacs-wayland nix git ttf-ibm-plex direnv fish cmake"
+SHELL="/bin/bash" distrobox enter "$1" -- bash inside-devbox
