@@ -37,9 +37,12 @@
    :height font-size)
   (message "Set font size to %d" font-size))
 (font-change-size 0)
-(use-package ef-themes
+;; (use-package ef-themes
+;;   :ensure t
+;;   :config (modus-themes-select 'ef-cyprus))
+(use-package doric-themes
   :ensure t
-  :config (modus-themes-select 'ef-cyprus))
+  :config (doric-themes-select 'doric-oak))
 (use-package spacious-padding
   :ensure t
   :config (spacious-padding-mode 1))
@@ -125,7 +128,9 @@ after the invocation of the lambda."
 (use-package evil-collection
   :after evil
   :ensure t
-  :config (evil-collection-init))
+  :config
+  (evil-collection-forge-setup)
+  (evil-collection-init))
 
 (use-package corfu
   :ensure t
@@ -136,7 +141,9 @@ after the invocation of the lambda."
   :bind (:map corfu-map ("RET" . nil)))
 (use-package cape :ensure t)
 (use-package eglot
-  :custom (eglot-autoshutdown t)
+  :custom
+  (eglot-autoshutdown t)
+  (eglot-ignored-server-capabilities '(:inlayHintProvider))
   :hook (prog-mode . eglot-ensure)
   :config
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
@@ -170,6 +177,9 @@ after the invocation of the lambda."
 (use-package envrc
   :ensure t
   :hook (after-init . envrc-global-mode))
+(use-package exec-path-from-shell
+  :ensure t
+  :config (exec-path-from-shell-initialize))
 (use-package markdown-mode :ensure t)
 (use-package dockerfile-mode :ensure t)
 (use-package nix-mode :ensure t)
