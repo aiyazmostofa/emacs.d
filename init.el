@@ -37,12 +37,15 @@
    :height font-size)
   (message "Set font size to %d" font-size))
 (font-change-size 0)
+(use-package modus-themes
+  :ensure t
+  :config (modus-themes-select 'modus-vivendi-tritanopia))
 ;; (use-package ef-themes
 ;;   :ensure t
 ;;   :config (modus-themes-select 'ef-cyprus))
-(use-package doric-themes
-  :ensure t
-  :config (doric-themes-select 'doric-oak))
+;; (use-package doric-themes
+;;   :ensure t
+;;   :config (doric-themes-select 'doric-oak))
 (use-package spacious-padding
   :ensure t
   :config (spacious-padding-mode 1))
@@ -68,6 +71,8 @@
 (use-package vterm
   :ensure t
   :custom (vterm-shell "fish"))
+(use-package tramp
+  :config (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 (defmacro zucchini (prefix)
   "Returns a lambda that will execute an input sequence in the form \"Pe\".

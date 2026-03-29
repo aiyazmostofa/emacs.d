@@ -9,7 +9,7 @@
 			    (if (string-prefix-p "\#" intermediate)
 				intermediate
 			      (substring (apply #'color-rgb-to-hex (color-name-to-rgb intermediate)) 0 -6)))))))
-(dolist (theme ef-themes-collection)
+(dolist (theme (append ef-themes-collection modus-themes-collection))
   (with-temp-file (format "%s.palette" (symbol-name theme))
     (insert (format "[Palette]\n"))
     (insert (format "Name=%s\n" (format "%s" (capitalize
