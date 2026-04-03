@@ -174,9 +174,6 @@ after the invocation of the lambda."
 (use-package rainbow-delimiters
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
-(use-package sly
-  :ensure t
-  :custom (sly-mrepl-history-file-name (locate-user-emacs-file "sly-mrepl-history")))
 (use-package envrc
   :ensure t
   :hook (after-init . envrc-global-mode))

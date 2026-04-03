@@ -64,12 +64,6 @@
 (defun loon-line--mode-indicator ()
   (format "(%s)" (loon-line--mode-string-formatted)))
 
-(defun loon-line--lsp-indicator ()
-  (cond
-   ((bound-and-true-p eglot--managed-mode) "[LSP] ")
-   ((and (bound-and-true-p sly-mode) (sly-connected-p)) "[SLY] ")
-   (t " ")))
-
 (defconst loon-line
   '("%e"
     (:eval (loon-line--state-indicator))
@@ -78,7 +72,7 @@
     (:eval (loon-line--zoom-indicator))
     mode-line-format-right-align
     (:eval (loon-line--mode-indicator))
-    (:eval (loon-line--lsp-indicator))))
+    (:eval (if (bound-and-true-p eglot--managed-mode) "[LSP] " " "))))
 
 (provide 'loon-line)
 
