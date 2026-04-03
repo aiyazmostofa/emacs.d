@@ -34,9 +34,10 @@
    :height font-size)
   (message "Set font size to %d" font-size))
 (font-change-size 0)
-(use-package doric-themes
-  :ensure t
-  :config (doric-themes-select 'doric-oak))
+(use-package modus-themes :ensure t)
+(use-package ef-themes :ensure t)
+(use-package doric-themes :ensure t)
+(doric-themes-select 'doric-oak)
 (use-package spacious-padding
   :ensure t
   :config (spacious-padding-mode 1))
