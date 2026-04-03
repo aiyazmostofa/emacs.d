@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: start
-# key: start
+# key: \start
 # --
 \\start$1
   $0
