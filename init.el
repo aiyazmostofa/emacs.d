@@ -45,9 +45,7 @@
 (use-package loon-line
   :load-path "lisp/"
   :config (setq-default mode-line-format loon-line))
-(use-package prot-ptyxis
-  :load-path "lisp/"
-  :commands prot-ptyxis-install-themes)
+(use-package prot-ptyxis :load-path "lisp/")
 
 (use-package orderless
   :ensure t
