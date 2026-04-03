@@ -111,7 +111,7 @@ after the invocation of the lambda."
     "u" #'universal-argument
     "k" #'kill-current-buffer
     "e" #'eshell
-    "v" (lambda () (interactive) (vterm))
+    "v" #'vterm
     "-" (lambda () (interactive) (font-change-size -10))
     "=" (lambda () (interactive) (font-change-size +10))
     "x" (zucchini "C-x ")
