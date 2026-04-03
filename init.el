@@ -38,7 +38,7 @@
 (use-package standard-themes :ensure t)
 (use-package ef-themes :ensure t)
 (use-package doric-themes :ensure t)
-(doric-themes-select 'doric-oak)
+(modus-themes-select 'standard-light-tinted)
 (use-package spacious-padding
   :ensure t
   :config (spacious-padding-mode 1))
@@ -127,9 +127,7 @@ after the invocation of the lambda."
 (use-package evil-collection
   :after evil
   :ensure t
-  :config
-  (evil-collection-forge-setup)
-  (evil-collection-init))
+  :config (evil-collection-init))
 
 (use-package vterm
   :ensure t
@@ -172,6 +170,7 @@ after the invocation of the lambda."
   :defer t
   :config (define-key transient-map (kbd "<escape>") 'transient-quit-one))
 (use-package forge
+  :after magit
   :ensure t
   :custom (auth-sources '("~/.ssh/authinfo")))
 (use-package yasnippet
