@@ -62,13 +62,6 @@
   :ensure nil
   :bind (:map vertico-map ("C-<backspace>" . vertico-directory-delete-word)))
 
-(use-package vterm
-  :ensure t
-  :custom (vterm-shell "fish"))
-(use-package tramp
-  :custom (tramp-histfile-override t)
-  :config (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
-
 (defmacro zucchini (prefix)
   "Returns a lambda that will execute an input sequence in the form \"Pe\".
 \"P\" is the argument PREFIX. \"e\" is the first input event recorded
@@ -133,6 +126,23 @@ after the invocation of the lambda."
   (evil-collection-forge-setup)
   (evil-collection-init))
 
+(use-package vterm
+  :ensure t
+  :custom (vterm-shell "fish"))
+(use-package tramp
+  :custom (tramp-histfile-override t)
+  :config (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+(use-package dired
+  :custom
+  (dired-listing-switches "-alh --group-directories-first")
+  (dired-dwim-target t)
+  :hook (dired-mode . hl-line-mode))
+(use-package envrc
+  :ensure t
+  :hook (after-init . envrc-global-mode))
+(use-package exec-path-from-shell
+  :ensure t
+  :config (exec-path-from-shell-initialize))
 (use-package corfu
   :ensure t
   :custom
@@ -152,10 +162,6 @@ after the invocation of the lambda."
         ("C-c r" . 'eglot-rename)
         ("C-c f" . 'eglot-format)
         ("C-c a" . 'eglot-code-actions)))
-(use-package yasnippet
-  :ensure t
-  :custom (yas-prompt-functions '(yas-no-prompt))
-  :config (yas-global-mode 1))
 (use-package magit
   :ensure t
   :defer t
@@ -163,23 +169,16 @@ after the invocation of the lambda."
 (use-package forge
   :ensure t
   :custom (auth-sources '("~/.ssh/authinfo")))
+(use-package yasnippet
+  :ensure t
+  :custom (yas-prompt-functions '(yas-no-prompt))
+  :config (yas-global-mode 1))
 (use-package elec-pair
   :custom (electric-pair-skip-self nil)
   :hook (prog-mode . electric-pair-local-mode))
-(use-package dired
-  :custom
-  (dired-listing-switches "-alh --group-directories-first")
-  (dired-dwim-target t)
-  :hook (dired-mode . hl-line-mode))
 (use-package rainbow-delimiters
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
-(use-package envrc
-  :ensure t
-  :hook (after-init . envrc-global-mode))
-(use-package exec-path-from-shell
-  :ensure t
-  :config (exec-path-from-shell-initialize))
 (use-package markdown-mode :ensure t)
 (use-package dockerfile-mode :ensure t)
 (use-package nix-mode :ensure t)
