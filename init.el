@@ -35,6 +35,7 @@
   (message "Set font size to %d" font-size))
 (font-change-size 0)
 (use-package modus-themes :ensure t)
+(use-package standard-themes :ensure t)
 (use-package ef-themes :ensure t)
 (use-package doric-themes :ensure t)
 (doric-themes-select 'doric-oak)
@@ -44,6 +45,9 @@
 (use-package loon-line
   :load-path "lisp/"
   :config (setq-default mode-line-format loon-line))
+(use-package prot-ptyxis
+  :load-path "lisp/"
+  :commands prot-ptyxis-install-themes)
 
 (use-package orderless
   :ensure t
