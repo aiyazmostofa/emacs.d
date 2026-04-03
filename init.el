@@ -37,15 +37,15 @@
    :height font-size)
   (message "Set font size to %d" font-size))
 (font-change-size 0)
-;; (use-package ef-themes
-;;   :ensure t
-;;   :config (modus-themes-select 'ef-cyprus))
 (use-package doric-themes
   :ensure t
   :config (doric-themes-select 'doric-oak))
 (use-package spacious-padding
   :ensure t
   :config (spacious-padding-mode 1))
+(use-package loon-line
+  :load-path "lisp/"
+  :config (setq-default mode-line-format loon-line))
 
 (use-package orderless
   :ensure t
@@ -193,54 +193,3 @@ after the invocation of the lambda."
 (use-package rust-mode :ensure t)
 (use-package just-mode :ensure t)
 (use-package auctex :ensure t)
-
-(setq-default
- mode-line-format
- '("%e"
-   (:eval (propertize
-           (cond
-            ((not (bound-and-true-p evil-mode)) "")
-            ((evil-normal-state-p) " <N> ")
-            ((evil-replace-state-p) " <R> ")
-            ((evil-motion-state-p) " <M> ")
-            ((evil-operator-state-p) " <O> ")
-            ((evil-visual-state-p) " <V> ")
-            ((evil-visual-state-p) " <V> ")
-            ((evil-insert-state-p) " <I> ")
-            (t " <E> "))
-           'face
-           (let ((bg (face-attribute (if (mode-line-window-selected-p)
-                                         'font-lock-keyword-face
-                                       'mode-line-inactive)
-                                     :foreground))
-                 (fg (face-attribute (if (mode-line-window-selected-p)
-                                         'default
-                                       'mode-line-inactive)
-                                     :background)))
-             (list ':background bg
-                   ':foreground fg
-                   ':box `(:line-width 1 :color ,bg)))))
-   (:eval (propertize (format " %s" (buffer-name)) 'face 'bold))
-   (:eval (propertize
-           (if (and buffer-file-name (buffer-modified-p)) " *" "")
-           'face 'error))
-   (:eval (propertize
-           (if (and
-                (display-graphic-p)
-                (not (zerop text-scale-mode-amount)))
-               (concat
-                (if (> text-scale-mode-amount 0) " +" " ")
-                (number-to-string text-scale-mode-amount))
-             "")
-           'face 'success))
-   mode-line-format-right-align
-   (:eval (format "(%s)" (capitalize
-                          (string-replace
-                           "-" " "
-                           (substring
-                            (symbol-name major-mode) 0 -5)))))
-   (:eval (cond
-           ((bound-and-true-p eglot--managed-mode) "[LSP] ")
-           ((and (bound-and-true-p sly-mode) (sly-connected-p))
-            "[SLY] ")
-           (t " ")))))
