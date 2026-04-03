@@ -142,9 +142,7 @@ after the invocation of the lambda."
   :bind (:map corfu-map ("RET" . nil)))
 (use-package cape :ensure t)
 (use-package eglot
-  :custom
-  (eglot-autoshutdown t)
-  (eglot-ignored-server-capabilities '(:inlayHintProvider))
+  :custom (eglot-autoshutdown t)
   :hook (prog-mode . eglot-ensure)
   :config
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
