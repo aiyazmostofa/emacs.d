@@ -120,6 +120,7 @@ after the invocation of the lambda."
     "j" (zucchini "C-c C-")
     "h" (zucchini "C-h ")
     "p" (zucchini "C-x p ")
+    "r" (zucchini "C-x r ")
     "b" #'consult-buffer
     "l" #'consult-line
     "a" #'arrange-window
