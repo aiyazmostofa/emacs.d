@@ -128,12 +128,15 @@ after the invocation of the lambda."
   :config (evil-collection-init))
 
 (use-package vterm
+  :defer t
   :ensure t
   :custom (vterm-shell "fish"))
 (use-package tramp
+  :defer t
   :custom (tramp-histfile-override t)
   :config (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 (use-package dired
+  :defer t
   :custom
   (dired-listing-switches "-alh --group-directories-first")
   (dired-dwim-target t)
@@ -188,8 +191,6 @@ after the invocation of the lambda."
 (use-package meson-mode :ensure t)
 (use-package toml-mode :ensure t)
 (use-package zig-mode :ensure t)
-(use-package haskell-mode :ensure t)
-(use-package tuareg :ensure t)
 (use-package fish-mode :ensure t)
 (use-package rust-mode :ensure t)
 (use-package just-mode :ensure t)
