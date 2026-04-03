@@ -10,10 +10,7 @@
  auto-save-default nil
  sentence-end-double-space nil
  ring-bell-function 'ignore
- org-edit-src-content-indentation 0
- tramp-histfile-override t
- dired-listing-switches "-alh --group-directories-first"
- dired-dwim-target t)
+ org-edit-src-content-indentation 0)
 (load custom-file 'noerror)
 (setq-default truncate-lines t
               indent-tabs-mode nil
@@ -69,6 +66,7 @@
   :ensure t
   :custom (vterm-shell "fish"))
 (use-package tramp
+  :custom (tramp-histfile-override t)
   :config (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 (defmacro zucchini (prefix)
@@ -97,9 +95,10 @@ after the invocation of the lambda."
     (kbd "q") 'bury-buffer))
 (defun arrange-window ()
   (interactive)
-  (select-window (if (< (window-pixel-height) (window-pixel-width))
-                     (split-window-horizontally)
-                   (split-window-vertically))))
+  (select-window
+   (if (< (window-pixel-height) (window-pixel-width))
+       (split-window-horizontally)
+     (split-window-vertically))))
 (use-package general
   :after evil
   :ensure t
@@ -169,7 +168,11 @@ after the invocation of the lambda."
 (use-package elec-pair
   :custom (electric-pair-skip-self nil)
   :hook (prog-mode . electric-pair-local-mode))
-(use-package dired :hook (dired-mode . hl-line-mode))
+(use-package dired
+  :custom
+  (dired-listing-switches "-alh --group-directories-first")
+  (dired-dwim-target t)
+  :hook (dired-mode . hl-line-mode))
 (use-package rainbow-delimiters
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
