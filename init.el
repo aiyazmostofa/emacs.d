@@ -68,6 +68,8 @@
 (use-package vterm
   :ensure t
   :custom (vterm-shell "fish"))
+(use-package tramp
+  :config (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 (defmacro zucchini (prefix)
   "Returns a lambda that will execute an input sequence in the form \"Pe\".
