@@ -1,7 +1,6 @@
 ;;; loon-line.el --- A personal mode-line -*- lexical-binding: t; -*-
 
 ;; Usage:
-;; (require 'loon-line)
 ;; (setq-default mode-line-format loon-line)
 
 (defun loon-line--state-bg ()

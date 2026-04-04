@@ -2,6 +2,7 @@
 (add-to-list
  'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
+(use-package my :load-path "lisp/")
 
 (setq
  custom-file (locate-user-emacs-file "custom.el")
@@ -19,21 +20,7 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-(defconst font-name-mono "IBM Plex Mono")
-(defconst font-name-sans "IBM Plex Sans")
-(defvar font-size 140)
-(defun font-change-size (increment)
-  (setq font-size (+ font-size increment))
-  (set-face-attribute
-   'default nil
-   :family font-name-mono
-   :height font-size)
-  (set-face-attribute
-   'variable-pitch nil
-   :family font-name-sans
-   :height font-size)
-  (message "Set font size to %d" font-size))
-(font-change-size 0)
+(my-font-change-size 0)
 (use-package modus-themes :ensure t)
 (use-package standard-themes :ensure t)
 (use-package ef-themes :ensure t)
@@ -65,19 +52,6 @@
   :ensure nil
   :bind (:map vertico-map ("C-<backspace>" . vertico-directory-delete-word)))
 
-(defmacro zucchini (prefix)
-  "Returns a lambda that will execute an input sequence in the form \"Pe\".
-\"P\" is the argument PREFIX. \"e\" is the first input event recorded
-after the invocation of the lambda."
-  `(lambda ()
-     (interactive)
-     (let (message-log-max) (message "%s" ,prefix))
-     (let* ((next-key (single-key-description (read-event)))
-            (sequence (concat ,prefix next-key))
-            (command (key-binding (kbd sequence))))
-       (if (and command (not (keymapp command)))
-           (call-interactively command)
-         (message "%s is undefined" sequence)))))
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (use-package evil
   :ensure t
@@ -89,12 +63,6 @@ after the invocation of the lambda."
   (evil-define-key
     '(normal motion visual) 'global
     (kbd "q") 'bury-buffer))
-(defun arrange-window ()
-  (interactive)
-  (select-window
-   (if (< (window-pixel-height) (window-pixel-width))
-       (split-window-horizontally)
-     (split-window-vertically))))
 (use-package general
   :after evil
   :ensure t
@@ -108,18 +76,18 @@ after the invocation of the lambda."
     "k" #'kill-current-buffer
     "e" #'eshell
     "v" #'vterm
-    "-" (lambda () (interactive) (font-change-size -10))
-    "=" (lambda () (interactive) (font-change-size +10))
-    "x" (zucchini "C-x ")
-    "f" (zucchini "C-x C-")
-    "c" (zucchini "C-c ")
-    "j" (zucchini "C-c C-")
-    "h" (zucchini "C-h ")
-    "p" (zucchini "C-x p ")
-    "r" (zucchini "C-x r ")
+    "-" (lambda () (interactive) (my-font-change-size -10))
+    "=" (lambda () (interactive) (my-font-change-size +10))
+    "x" (my-key-prefix "C-x ")
+    "f" (my-key-prefix "C-x C-")
+    "c" (my-key-prefix "C-c ")
+    "j" (my-key-prefix "C-c C-")
+    "h" (my-key-prefix "C-h ")
+    "p" (my-key-prefix "C-x p ")
+    "r" (my-key-prefix "C-x r ")
     "b" #'consult-buffer
     "l" #'consult-line
-    "a" #'arrange-window
+    "a" #'my-arrange-window
     "s" #'other-window
     "d" #'delete-window))
 (use-package evil-collection
@@ -128,8 +96,8 @@ after the invocation of the lambda."
   :config (evil-collection-init))
 
 (use-package vterm
-  :defer t
   :ensure t
+  :defer t
   :custom (vterm-shell "fish"))
 (use-package tramp
   :defer t
@@ -184,14 +152,16 @@ after the invocation of the lambda."
 (use-package rainbow-delimiters
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
-(use-package markdown-mode :ensure t)
-(use-package dockerfile-mode :ensure t)
-(use-package nix-mode :ensure t)
-(use-package go-mode :ensure t)
-(use-package meson-mode :ensure t)
-(use-package toml-mode :ensure t)
-(use-package zig-mode :ensure t)
-(use-package fish-mode :ensure t)
-(use-package rust-mode :ensure t)
-(use-package just-mode :ensure t)
-(use-package auctex :ensure t)
+
+(my-install-languages
+ auctex!
+ dockerfile
+ fish
+ go
+ just
+ markdown
+ meson
+ nix
+ rust
+ toml
+ zig)
