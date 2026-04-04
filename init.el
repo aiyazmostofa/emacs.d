@@ -10,8 +10,7 @@
  make-backup-files nil
  auto-save-default nil
  sentence-end-double-space nil
- ring-bell-function 'ignore
- org-edit-src-content-indentation 0)
+ ring-bell-function 'ignore)
 (load custom-file 'noerror)
 (setq-default truncate-lines t
               indent-tabs-mode nil
@@ -152,6 +151,9 @@
 (use-package rainbow-delimiters
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
+(use-package org
+  :defer t
+  :custom (org-edit-src-content-indentation 0))
 
 (my-install-languages
  auctex!
