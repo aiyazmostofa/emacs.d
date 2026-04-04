@@ -16,6 +16,7 @@
  truncate-lines t
  indent-tabs-mode nil
  cursor-type 'bar)
+(recentf-mode 1)
 (global-display-line-numbers-mode -1)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -84,7 +85,8 @@
     "j" (my-key-prefix "C-c C-")
     "h" (my-key-prefix "C-h ")
     "p" (my-key-prefix "C-x p ")
-    "r" (my-key-prefix "C-x r ")
+    "g" #'consult-ripgrep
+    "r" #'consult-recent-file
     "b" #'consult-buffer
     "l" #'consult-line
     "a" #'my-arrange-windows

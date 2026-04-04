@@ -39,5 +39,5 @@ SHELL="/bin/bash" distrobox create \
      --image quay.io/toolbx/arch-toolbox:latest \
      --name "$1" \
      --home "$2" \
-     --additional-packages "emacs-wayland nix git ttf-ibm-plex direnv fish cmake"
+     --additional-packages "emacs-wayland nix git ttf-ibm-plex direnv fish cmake ripgrep"
 SHELL="/bin/bash" distrobox enter "$1" -- bash inside-devbox
