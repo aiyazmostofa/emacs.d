@@ -27,7 +27,7 @@
    :height my-font-size)
   (message "Set font size to %d" my-font-size))
 
-(defun my-arrange-window ()
+(defun my-arrange-windows ()
   (interactive)
   (select-window
    (if (< (window-pixel-height) (window-pixel-width))

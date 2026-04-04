@@ -86,7 +86,7 @@
     "r" (my-key-prefix "C-x r ")
     "b" #'consult-buffer
     "l" #'consult-line
-    "a" #'my-arrange-window
+    "a" #'my-arrange-windows
     "s" #'other-window
     "d" #'delete-window))
 (use-package evil-collection
