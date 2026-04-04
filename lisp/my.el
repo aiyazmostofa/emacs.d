@@ -12,20 +12,20 @@
          (message "%s is undefined" sequence)))))
 
 ;; TODO: Make these configurable
-(defconst my-font-name-mono "IBM Plex Mono")
-(defconst my-font-name-sans "IBM Plex Sans")
-(defvar my-font-size 140)
+(defconst my--font-name-mono "IBM Plex Mono")
+(defconst my--font-name-sans "IBM Plex Sans")
+(defvar my--font-size 140)
 (defun my-font-change-size (increment)
-  (setq my-font-size (+ my-font-size increment))
+  (setq my--font-size (+ my--font-size increment))
   (set-face-attribute
    'default nil
-   :family my-font-name-mono
-   :height my-font-size)
+   :family my--font-name-mono
+   :height my--font-size)
   (set-face-attribute
    'variable-pitch nil
-   :family my-font-name-sans
-   :height my-font-size)
-  (message "Set font size to %d" my-font-size))
+   :family my--font-name-sans
+   :height my--font-size)
+  (message "Set font size to %d" my--font-size))
 
 (defun my-arrange-windows ()
   (interactive)
