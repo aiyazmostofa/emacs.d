@@ -164,4 +164,5 @@
  nix
  rust
  toml
+ tuareg!
  zig)
