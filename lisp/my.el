@@ -3,7 +3,7 @@
 (defmacro my-key-prefix (prefix)
   `(lambda ()
      (interactive)
-     (let (message-log-max) (message "%s" ,prefix))
+     (let ((message-log-max nil)) (message "%s" ,prefix))
      (let* ((next-key (single-key-description (read-event)))
             (sequence (concat ,prefix next-key))
             (command (key-binding (kbd sequence))))

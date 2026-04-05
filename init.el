@@ -64,6 +64,7 @@
   (evil-define-key
     '(normal motion visual) 'global
     (kbd "q") 'bury-buffer))
+(use-package zucchini :load-path "lisp/")
 (use-package general
   :after evil
   :ensure t
@@ -85,8 +86,8 @@
     "j" (my-key-prefix "C-c C-")
     "h" (my-key-prefix "C-h ")
     "p" (my-key-prefix "C-x p ")
+    "r" #'zucchini-play
     "g" #'consult-ripgrep
-    "r" #'consult-recent-file
     "b" #'consult-buffer
     "l" #'consult-line
     "a" #'my-arrange-windows
