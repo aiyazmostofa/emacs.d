@@ -3,6 +3,7 @@
  'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 (use-package my :load-path "lisp/")
+(use-package no-littering :ensure t)
 
 (setq
  custom-file (locate-user-emacs-file "custom.el")
@@ -147,7 +148,9 @@
   :custom (auth-sources '("~/.ssh/authinfo")))
 (use-package yasnippet
   :ensure t
-  :custom (yas-prompt-functions '(yas-no-prompt))
+  :custom
+  (yas-prompt-functions '(yas-no-prompt))
+  (yas-snippet-dirs (list (locate-user-emacs-file "snippets")))
   :config (yas-global-mode 1))
 (use-package elec-pair
   :custom (electric-pair-skip-self nil)
