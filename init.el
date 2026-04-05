@@ -27,7 +27,7 @@
 (use-package standard-themes :ensure t)
 (use-package ef-themes :ensure t)
 (use-package doric-themes :ensure t)
-(modus-themes-select 'standard-light-tinted)
+(modus-themes-select 'modus-operandi-tinted)
 (use-package spacious-padding
   :ensure t
   :config (spacious-padding-mode 1))
