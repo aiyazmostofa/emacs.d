@@ -52,7 +52,9 @@
 (use-package vertico-directory
   :after vertico
   :ensure nil
-  :bind (:map vertico-map ("C-<backspace>" . vertico-directory-delete-word)))
+  :bind
+  (:map vertico-map
+        ("C-<backspace>" . vertico-directory-delete-word)))
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (use-package evil
