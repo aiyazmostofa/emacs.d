@@ -6,7 +6,7 @@
 (use-package no-littering :ensure t)
 
 (setq
- custom-file (locate-user-emacs-file "custom.el")
+ custom-file (no-littering-expand-etc-file-name "custom.el")
  inhibit-startup-screen t
  make-backup-files nil
  auto-save-default nil
