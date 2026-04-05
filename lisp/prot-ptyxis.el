@@ -11,7 +11,7 @@
   (capitalize (string-replace "-" " " name)))
 
 (defun prot-ptyxis--convert-named-color (color)
-  (substring (apply #'color-rgb-to-hex (color-name-to-rgb color)) 0 -6))
+  (substring (color-rgb-to-hex (color-name-to-rgb color)) 0 -6))
 
 (defun prot-ptyxis--get-color (theme key)
   (upcase
