@@ -89,8 +89,8 @@
     "j" (my-key-prefix "C-c C-")
     "h" (my-key-prefix "C-h ")
     "p" (my-key-prefix "C-x p ")
-    "r" #'zucchini-play
-    "g" #'consult-ripgrep
+    "g" #'zucchini-play
+    "r" #'consult-ripgrep
     "b" #'consult-buffer
     "l" #'consult-line
     "a" #'my-arrange-windows
@@ -163,9 +163,13 @@
 (use-package org
   :defer t
   :custom (org-edit-src-content-indentation 0))
+(use-package compile
+  :defer t
+  :custom (compilation-scroll-output t))
 
 (my-install-languages
  auctex!
+ cmake
  dockerfile
  fish
  go

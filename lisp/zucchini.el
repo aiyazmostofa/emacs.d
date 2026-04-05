@@ -1,15 +1,15 @@
-;;; zucchini.el --- Per project keybindings -*- lexical-binding: t; -*-
+;;; zucchini.el --- Per project keybindings and task runner -*- lexical-binding: t; -*-
 
 ;; TODO: Add documentation
 
-(defvar zucchini--actions nil)
+(defvar zucchini--tasks nil)
 (defvar zucchini--dominating-directory nil)
 (defcustom zucchini-trusted-scripts nil
   "Trusted Zucchini scripts"
   :group 'zucchini
   :type '(repeat (file)))
 
-(defun zucchini--parse-action (args)
+(defun zucchini--parse-task (args)
   (let ((key (car args))
         (arg nil)
         (from (cdr args))
@@ -26,38 +26,38 @@
       (setq from (cdr from)))
     (cons (cons key (reverse to)) from)))
 
-(defun zucchini--parse-actions (args)
-  (let ((actions nil))
+(defun zucchini--parse-tasks (args)
+  (let ((tasks nil))
     (while args
-      (setq args (zucchini--parse-action args))
-      (setq actions (cons (car args) actions))
+      (setq args (zucchini--parse-task args))
+      (setq tasks (cons (car args) tasks))
       (setq args (cdr args)))
-    (reverse actions)))
+    (reverse tasks)))
 
-(defun zucchini--action-wrapper (body)
+(defun zucchini--task-wrapper (body)
   `(lambda ()
      (interactive)
      (let ((default-directory ,zucchini--dominating-directory))
        ,@body)))
 
-(defun zucchini--add-action (action)
+(defun zucchini--add-task (task)
   `(add-to-list
-    'zucchini--actions
-    (cons ,(car action) ,(zucchini--action-wrapper (cdr action)))))
+    'zucchini--tasks
+    (cons ,(car task) ,(zucchini--task-wrapper (cdr task)))))
 
 (defmacro zucchini-register (&rest args)
   `(progn
      ,@(mapcar
-        #'zucchini--add-action (zucchini--parse-actions args))))
+        #'zucchini--add-task (zucchini--parse-tasks args))))
 
 (defun zucchini--press ()
   (message "Zucchini waiting for key press...")
   (let* ((key (single-key-description (read-event)))
-         (action
-          (assoc (vector (intern key)) zucchini--actions 'equal)))
-    (if action
-        (call-interactively (cdr action))
-      (message "Can't find action bound to [%s]" key))))
+         (task
+          (assoc (vector (intern key)) zucchini--tasks 'equal)))
+    (if task
+        (call-interactively (cdr task))
+      (message "Can't find task bound to [%s]" key))))
 
 (defun zucchini--load (file)
   (when (and
@@ -72,7 +72,7 @@
 
 (defun zucchini-play ()
   (interactive)
-  (setq zucchini--actions nil)
+  (setq zucchini--tasks nil)
   (setq zucchini--dominating-directory
         (locate-dominating-file "." "zucchini.el"))
   (if (not zucchini--dominating-directory)
