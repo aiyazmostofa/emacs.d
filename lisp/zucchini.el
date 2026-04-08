@@ -3,8 +3,8 @@
 ;; TODO: Add documentation
 
 (defvar zucchini--tasks nil)
-(defvar zucchini--project-directory nil)
-(defvar zucchini--local-directory nil)
+(defvar zucchini-project-directory nil)
+(defvar zucchini-local-directory nil)
 (defcustom zucchini-trusted-scripts nil
   "Trusted Zucchini scripts"
   :group 'zucchini
@@ -20,9 +20,9 @@
     (while (and from (not (vectorp (car from))))
       (setq arg (car from))
       (cond ((eq arg :local)
-             (setq arg `(cd ,zucchini--local-directory)))
+             (setq arg `(cd ,zucchini-local-directory)))
             ((eq arg :project)
-             (setq arg `(cd ,zucchini--project-directory))))
+             (setq arg `(cd ,zucchini-project-directory))))
       (setq to (cons arg to))
       (setq from (cdr from)))
     (cons (cons key (reverse to)) from)))
@@ -40,7 +40,7 @@
      (interactive)
      (unwind-protect
          (progn ,@body)
-       (cd ,zucchini--local-directory))))
+       (cd ,zucchini-local-directory))))
 
 (defun zucchini--add-task (task)
   `(add-to-list
@@ -75,14 +75,14 @@
 (defun zucchini-play ()
   (interactive)
   (setq zucchini--tasks nil)
-  (setq zucchini--project-directory
+  (setq zucchini-project-directory
         (locate-dominating-file "." "zucchini.el"))
-  (setq zucchini--local-directory default-directory)
-  (if (not zucchini--project-directory)
+  (setq zucchini-local-directory default-directory)
+  (if (not zucchini-project-directory)
       (message "Can't find Zucchini script")
     (when (zucchini--load
            (file-name-concat
-            zucchini--project-directory "zucchini.el"))
+            zucchini-project-directory "zucchini.el"))
       (zucchini--press))))
 
 (provide 'zucchini)

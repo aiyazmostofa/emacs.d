@@ -27,7 +27,7 @@
 (use-package standard-themes :ensure t)
 (use-package ef-themes :ensure t)
 (use-package doric-themes :ensure t)
-(modus-themes-select 'modus-operandi-tinted)
+(modus-themes-select 'ef-cyprus)
 (use-package spacious-padding
   :ensure t
   :config (spacious-padding-mode 1))
@@ -181,3 +181,4 @@
  toml
  tuareg!
  zig)
+(put 'dired-find-alternate-file 'disabled nil)
